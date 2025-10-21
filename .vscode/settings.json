@@ -1,0 +1,10 @@
+{
+  "biome.lsp.bin": "web/node_modules/@biomejs/cli-win32-x64/biome",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "emmet.showExpandedAbbreviation": "never",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  }
+}
