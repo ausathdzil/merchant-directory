@@ -2,15 +2,19 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.models.util import Message
-from app.routes import utils
+from app.database import lifespan
+from app.models.utils import Message
+from app.routes import auth, users, utils
 
 api_router = APIRouter()
+api_router.include_router(auth.router)
 api_router.include_router(utils.router)
+api_router.include_router(users.router)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    lifespan=lifespan,
 )
 
 if settings.all_cors_origin:

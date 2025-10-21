@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
-from app.models.util import HealthCheck
+from app.models.utils import Status
 
 router = APIRouter(prefix="/utils", tags=["utils"])
 
 
-@router.get("/", response_model=HealthCheck)
+@router.get("/", response_model=Status)
 def health_check():
-    return HealthCheck(ok=True)
+    return Status(ok=True)
