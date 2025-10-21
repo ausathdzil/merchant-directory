@@ -18,7 +18,7 @@ export function Heading({ className, ...props }: ComponentProps<'h2'>) {
   return (
     <h2
       className={cn(
-        'scroll-m-20 border-b pb-2 font-alt font-semibold text-3xl tracking-tight first:mt-0',
+        'scroll-m-20 font-alt font-semibold text-3xl tracking-tight first:mt-0',
         className
       )}
       {...props}
