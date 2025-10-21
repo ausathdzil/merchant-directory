@@ -1,14 +1,23 @@
+import { GlobeIcon } from 'lucide-react';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { DM_Sans, Inter } from 'next/font/google';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { ModeToggle } from '@/components/mode-toggle';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Small } from '@/components/typography';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
   subsets: ['latin'],
 });
 
@@ -23,12 +32,76 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(inter.variable, dmSans.variable, 'font-sans antialiased')}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
+  );
+}
+
+function Header() {
+  return (
+    <header className="flex flex-wrap items-center justify-between gap-4 px-32 py-8">
+      <nav className="flex items-center gap-4">
+        <Link
+          className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+          href="/"
+        >
+          <GlobeIcon className="stroke-primary" />
+          Merchant Directory
+        </Link>
+        <Link
+          className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+          href="/"
+        >
+          Home
+        </Link>
+        <Link
+          className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+          href="/"
+        >
+          Browse
+        </Link>
+      </nav>
+      <ModeToggle />
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="flex flex-wrap items-center justify-between gap-4 px-32 py-8">
+      <Small>&copy; 2025</Small>
+      <a
+        className={buttonVariants({ variant: 'link', size: 'sm' })}
+        href="https://github.com/ausathdzil/merchant-directory"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Image
+          alt="GitHub icon"
+          aria-hidden
+          className="dark:invert"
+          height={16}
+          src="/GitHub_light.svg"
+          width={16}
+        />
+        Source
+      </a>
+    </footer>
   );
 }
