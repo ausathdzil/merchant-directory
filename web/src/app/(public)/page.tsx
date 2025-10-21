@@ -18,12 +18,15 @@ export default function Home() {
           </Text>
         </article>
         <div className="flex items-center gap-4 pt-8">
-          <Link className={buttonVariants({ size: 'pill' })} href="/">
+          <Link className={buttonVariants({ size: 'pill-lg' })} href="/">
             <SearchIcon />
             Explore Directory
           </Link>
           <Link
-            className={buttonVariants({ size: 'pill', variant: 'secondary' })}
+            className={buttonVariants({
+              size: 'pill-lg',
+              variant: 'secondary',
+            })}
             href="/"
           >
             List Your Business
@@ -51,7 +54,7 @@ export default function Home() {
         <Link
           className={cn(
             buttonVariants({
-              size: 'pill',
+              size: 'pill-lg',
               variant: 'ghost-colorful',
             }),
             'hover:scale-105'
