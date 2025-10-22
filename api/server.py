@@ -14,6 +14,7 @@ api_router.include_router(users.router)
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    docs_url=f"{settings.API_V1_STR}/docs",
     lifespan=lifespan,
 )
 

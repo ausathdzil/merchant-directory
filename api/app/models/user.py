@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel  # pyright: ignore[reportUnknownVariableType]
 

@@ -1,5 +1,6 @@
 import secrets
 from typing import Annotated, ClassVar, Literal
+
 from pydantic import AnyUrl, BeforeValidator, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
