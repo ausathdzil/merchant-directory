@@ -11,7 +11,7 @@ export default function AuthLayout({
     <main className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden bg-primary/5 p-6 md:p-10 lg:block">
         <div className="flex justify-center gap-2 md:justify-start">
-          <Wordmark />
+          <Wordmark href="/" />
         </div>
       </div>
       <div className="flex flex-1 items-center justify-center">

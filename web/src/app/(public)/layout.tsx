@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import type { ComponentProps } from 'react';
+import { type ComponentProps, Suspense } from 'react';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { DesktopNav } from '@/components/nav';
+import { DesktopNav, MobileNav } from '@/components/nav';
 import { Small } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { UserButton } from '@/components/user-button';
 import { Wordmark } from '@/components/wordmark';
 import { cn } from '@/lib/utils';
 
@@ -27,24 +28,17 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex flex-wrap items-center gap-4 bg-background px-8 py-8 lg:px-32',
+        'sticky top-0 z-50 flex flex-wrap items-center gap-4 bg-background px-8 py-8 xl:px-32',
         className
       )}
       {...props}
     >
-      <Wordmark />
-      <DesktopNav />
-      <div className="ml-auto flex items-center gap-4">
-        <Link
-          className={buttonVariants({ variant: 'secondary', size: 'pill' })}
-          href="/login"
-        >
-          Login
-        </Link>
-        <Link className={buttonVariants({ size: 'pill' })} href="/">
-          Get Started
-        </Link>
-      </div>
+      <Wordmark className="mr-auto" href="/" />
+      <DesktopNav className="hidden md:block" />
+      <MobileNav className="md:hidden" />
+      <Suspense fallback={<Skeleton className="hidden h-8 w-36 md:block" />}>
+        <UserButton />
+      </Suspense>
       <ModeToggle />
     </header>
   );
@@ -54,7 +48,7 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
   return (
     <footer
       className={cn(
-        'flex flex-wrap items-center justify-between gap-4 px-8 py-8 lg:px-32',
+        'flex flex-wrap items-center justify-between gap-4 px-8 py-8 xl:px-32',
         className
       )}
       {...props}

@@ -1,7 +1,12 @@
+import { cookies } from 'next/headers';
+import { cache } from 'react';
 import type { UserResponse } from '../types/user';
 import { API_URL } from '../utils';
 
-export async function getUser(accessToken: string | undefined) {
+export const getUser = cache(async () => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('session')?.value;
+
   if (!accessToken) {
     return null;
   }
@@ -21,4 +26,4 @@ export async function getUser(accessToken: string | undefined) {
   const data = (await res.json()) as UserResponse;
 
   return data;
-}
+});

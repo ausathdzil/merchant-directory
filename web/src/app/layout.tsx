@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import { DM_Sans, Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/theme-provider';
+import { UserProvider } from '@/components/user-provider';
+import { getUser } from '@/lib/data/users';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import { Suspense } from 'react';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -25,6 +28,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userPromise = getUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -36,7 +41,9 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          {children}
+          <Suspense fallback={null}>
+            <UserProvider userPromise={userPromise}>{children}</UserProvider>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

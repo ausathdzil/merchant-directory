@@ -14,3 +14,8 @@ export async function createSession(jwt: string) {
     path: '/',
   });
 }
+
+export async function deleteSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete('session');
+}

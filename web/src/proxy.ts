@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getUser } from './lib/data/users';
 
@@ -8,10 +7,7 @@ export default async function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isAuthRoute = authRoute.includes(path);
 
-  const cookieStore = await cookies();
-  const session = cookieStore.get('session')?.value;
-
-  const user = await getUser(session);
+  const user = await getUser();
 
   if (isAuthRoute && user?.id) {
     return NextResponse.redirect(new URL('/', req.nextUrl));

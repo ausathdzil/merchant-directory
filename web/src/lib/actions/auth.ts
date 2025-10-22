@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createSession } from '../session';
+import { createSession, deleteSession } from '../session';
 import type {
   LoginBody,
   LoginError,
@@ -213,4 +213,9 @@ export async function register(
   await createSession(data.access_token);
 
   redirect('/');
+}
+
+export async function logout() {
+  await deleteSession();
+  redirect('/login');
 }

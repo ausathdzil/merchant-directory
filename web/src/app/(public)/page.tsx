@@ -8,16 +8,18 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col items-center gap-32 pt-16">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center px-8">
         <article className="max-w-[60ch]">
-          <Title>Discover local businesses in South Jakarta.</Title>
-          <Text className="text-center">
+          <Title className="text-2xl md:text-4xl">
+            Discover local businesses in South Jakarta.
+          </Title>
+          <Text className="text-center text-sm md:text-base">
             Connect with the best small and medium enterprises in South Jakarta.
             Find trusted merchants, explore local services, and support your
             community.
           </Text>
         </article>
-        <div className="flex items-center gap-4 pt-8">
+        <div className="flex flex-col items-center gap-4 pt-8 md:flex-row">
           <Link className={buttonVariants({ size: 'pill-lg' })} href="/">
             <SearchIcon />
             Explore Directory
@@ -34,19 +36,23 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col items-center">
-        <Heading>How It Works</Heading>
+      <div className="flex flex-col items-center px-8">
+        <Heading className="text-xl md:text-2xl">How It Works</Heading>
         {/* TODO: Features */}
       </div>
-      <div className="flex flex-col items-center">
-        <Heading>Frequently Asked Questions</Heading>
+      <div className="flex flex-col items-center px-8">
+        <Heading className="text-xl md:text-2xl">
+          Frequently Asked Questions
+        </Heading>
         {/* TODO: FAQ */}
       </div>
       <div className="flex w-full flex-col items-center gap-4 bg-accent/50 py-8">
         <TelescopeIcon className="stroke-primary" size={64} />
-        <article className="max-w-[60ch] text-center">
-          <Heading>What are you waiting for?</Heading>
-          <Text>
+        <article className="max-w-[60ch] px-8 text-center md:px-0">
+          <Heading className="text-xl md:text-2xl">
+            What are you waiting for?
+          </Heading>
+          <Text className="text-sm md:text-base">
             Start exploring hundreds of verified merchants in Jakarta Selatan
             today. Find the perfect business for your needs.
           </Text>
