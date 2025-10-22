@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/noUnknownTypeSelector: View Transition */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -133,5 +134,44 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+@supports (view-transition-name: none) {
+  @media not (prefers-reduced-motion: reduce) {
+    ::view-transition-old(page),
+    ::view-transition-old(form) {
+      animation: hide 0.2s ease-out forwards;
+    }
+
+    ::view-transition-new(page),
+    ::view-transition-new(form) {
+      opacity: 0;
+      animation: appear 0.2s ease 0.2s forwards;
+    }
+  }
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
   }
 }

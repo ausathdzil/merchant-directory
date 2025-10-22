@@ -1,11 +1,19 @@
-import { GlobeIcon } from 'lucide-react';
+import { ArrowLeftIcon, GlobeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { type ComponentProps, ViewTransition } from 'react';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from './ui/button';
 
-export function Wordmark({ className, ...props }: ComponentProps<typeof Link>) {
+type WordmarkProps = {
+  prevIcon?: boolean;
+};
+
+export function Wordmark({
+  className,
+  prevIcon,
+  ...props
+}: WordmarkProps & ComponentProps<typeof Link>) {
   return (
     <ViewTransition name="logo">
       <Link
@@ -16,7 +24,11 @@ export function Wordmark({ className, ...props }: ComponentProps<typeof Link>) {
         )}
         {...props}
       >
-        <GlobeIcon className="stroke-primary" />
+        {prevIcon ? (
+          <ArrowLeftIcon className="stroke-primary" />
+        ) : (
+          <GlobeIcon className="stroke-primary" />
+        )}
         Merchant Directory
       </Link>
     </ViewTransition>

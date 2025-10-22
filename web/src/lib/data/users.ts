@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { cache } from 'react';
+
 import type { UserResponse } from '../types/user';
 import { API_URL } from '../utils';
 

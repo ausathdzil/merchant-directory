@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { type ComponentProps, Suspense } from 'react';
+import { type ComponentProps, Suspense, ViewTransition } from 'react';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/nav';
@@ -18,7 +18,7 @@ export default function PublicLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      {children}
+      <ViewTransition name="page">{children}</ViewTransition>
       <Footer />
     </div>
   );
@@ -28,7 +28,7 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex flex-wrap items-center gap-4 bg-background px-8 py-8 xl:px-32',
+        'sticky top-0 z-50 flex flex-wrap items-center gap-4 bg-background px-4 py-4 md:py-8 lg:px-32',
         className
       )}
       {...props}
@@ -39,7 +39,7 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
       <Suspense fallback={<Skeleton className="hidden h-8 w-36 md:block" />}>
         <UserButton />
       </Suspense>
-      <ModeToggle />
+      <ModeToggle className="hidden md:flex" />
     </header>
   );
 }

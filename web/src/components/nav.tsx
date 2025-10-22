@@ -4,7 +4,8 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { type ComponentProps, type JSX, useState } from 'react';
+import { type ComponentProps, useEffect, useState } from 'react';
+
 import { useUser } from '@/hooks/use-user';
 import { logout } from '@/lib/actions/auth';
 import { cn } from '@/lib/utils';
@@ -14,11 +15,10 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 type NavItem<T extends string = string> = {
   href: T;
   label: string;
-  icon?: JSX.Element;
 };
 
 const navItems: NavItem<Route>[] = [
-  { label: 'Explore', href: '#' },
+  { label: 'Explore', href: '/explore' },
   { label: 'About', href: '#' },
 ];
 
@@ -53,12 +53,21 @@ export function MobileNav({
   ...props
 }: ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
 
-  const handleNavigate = (href: Route) => {
-    router.push(href);
-    setOpen(false);
-  };
+  const router = useRouter();
+  const user = useUser();
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [open]);
 
   return (
     <Popover onOpenChange={setOpen} open={open}>
@@ -74,7 +83,7 @@ export function MobileNav({
         side="bottom"
         sideOffset={14}
       >
-        <div className="flex flex-col gap-12 overflow-auto px-11 py-6">
+        <div className="flex flex-col gap-12 overflow-auto px-8 py-4">
           <div className="flex flex-col gap-4">
             <div className="font-medium text-muted-foreground">Menu</div>
             <nav className="flex flex-col gap-3">
@@ -83,60 +92,52 @@ export function MobileNav({
                   className="font-medium text-2xl"
                   href={item.href}
                   key={item.label}
-                  onClick={() => handleNavigate(item.href)}
+                  onClick={() => setOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
           </div>
-          <MobileUserButton handleNavigate={handleNavigate} setOpen={setOpen} />
+          <div className="flex flex-col gap-4">
+            {user ? (
+              <button
+                className="text-left font-medium text-2xl"
+                onClick={() => {
+                  logout();
+                  setOpen(false);
+                }}
+                type="button"
+              >
+                Logout
+              </button>
+            ) : (
+              <nav className="flex flex-col gap-3">
+                <Link
+                  className="font-medium text-2xl"
+                  href="/login"
+                  onClick={() => {
+                    setOpen(false);
+                    router.push('/login');
+                  }}
+                >
+                  Login
+                </Link>
+                <Link
+                  className="font-medium text-2xl"
+                  href="/register"
+                  onClick={() => {
+                    setOpen(false);
+                    router.push('/login');
+                  }}
+                >
+                  Register
+                </Link>
+              </nav>
+            )}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
-  );
-}
-
-function MobileUserButton({
-  handleNavigate,
-  setOpen,
-}: {
-  handleNavigate: (href: Route) => void;
-  setOpen: (value: boolean) => void;
-}) {
-  const user = useUser();
-
-  return (
-    <div className="flex flex-col gap-4">
-      {user ? (
-        <button
-          className="text-left font-medium text-2xl"
-          onClick={() => {
-            logout();
-            setOpen(false);
-          }}
-          type="button"
-        >
-          Logout
-        </button>
-      ) : (
-        <nav className="flex flex-col gap-3">
-          <Link
-            className="font-medium text-2xl"
-            href="/login"
-            onClick={() => handleNavigate('/login')}
-          >
-            Login
-          </Link>
-          <Link
-            className="font-medium text-2xl"
-            href="/register"
-            onClick={() => handleNavigate('/register')}
-          >
-            Register
-          </Link>
-        </nav>
-      )}
-    </div>
   );
 }

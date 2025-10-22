@@ -6,7 +6,7 @@ export function Title({ className, ...props }: ComponentProps<'h1'>) {
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-balance text-center font-alt font-medium text-4xl tracking-tight',
+        'scroll-m-20 text-balance text-center font-alt font-medium text-2xl tracking-tight md:text-4xl',
         className
       )}
       {...props}
@@ -18,7 +18,7 @@ export function Heading({ className, ...props }: ComponentProps<'h2'>) {
   return (
     <h2
       className={cn(
-        'scroll-m-20 font-alt font-semibold text-3xl tracking-tight first:mt-0',
+        'scroll-m-20 font-alt font-semibold text-lg tracking-tight first:mt-0 md:text-2xl',
         className
       )}
       {...props}
