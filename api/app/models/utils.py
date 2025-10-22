@@ -11,11 +11,10 @@ class Status(SQLModel):
 
 
 class Token(SQLModel):
-    token: str
-    type: str
+    access_token: str
+    token_type: str
 
 
 class TokenPayload(SQLModel):
     sub: str | None = None
-    type: str | None = None
     exp: datetime | None = None
