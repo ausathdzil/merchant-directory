@@ -1,9 +1,13 @@
-import { z } from 'zod';
+'use server';
 
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
+import { createSession } from '../session';
 import type {
   LoginBody,
   LoginError,
   LoginResponse,
+  RegisterBody,
   RegisterError,
 } from '../types/auth';
 import { API_URL } from '../utils';
@@ -63,7 +67,6 @@ export async function login(_prevState: LoginFormState, formData: FormData) {
       password: rawFormData.password,
       scope: '',
     } satisfies LoginBody),
-    credentials: 'include',
   });
 
   if (!res.ok) {
@@ -87,16 +90,11 @@ export async function login(_prevState: LoginFormState, formData: FormData) {
     };
   }
 
-  const _data = (await res.json()) as LoginResponse;
+  const data = (await res.json()) as LoginResponse;
 
-  return {
-    success: true,
-    message: 'Login success',
-    fields: {
-      email: '',
-      password: '',
-    },
-  };
+  await createSession(data.access_token);
+
+  redirect('/');
 }
 
 const MAX_NAME_LENGTH = 255;
@@ -185,8 +183,7 @@ export async function register(
       accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name, email, password }),
-    credentials: 'include',
+    body: JSON.stringify({ name, email, password } satisfies RegisterBody),
   });
 
   if (!res.ok) {
@@ -211,15 +208,9 @@ export async function register(
     };
   }
 
-  const _data = (await res.json()) as LoginResponse;
+  const data = (await res.json()) as LoginResponse;
 
-  return {
-    success: true,
-    message: 'Register success',
-    fields: {
-      name: '',
-      email: '',
-      password: '',
-    },
-  };
+  await createSession(data.access_token);
+
+  redirect('/');
 }

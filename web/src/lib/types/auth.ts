@@ -19,9 +19,3 @@ export type RegisterResponse =
 
 export type RegisterError =
   paths['/api/v1/auth/register']['post']['responses']['422']['content']['application/json'];
-
-export type LogoutResponse =
-  paths['/api/v1/auth/logout']['post']['responses']['200']['content']['application/json'];
-
-export type RefreshResponse =
-  paths['/api/v1/auth/refresh']['post']['responses']['200']['content']['application/json'];

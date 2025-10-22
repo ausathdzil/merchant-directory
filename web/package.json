@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "pnpm dlx ultracite check",
     "format": "pnpm dlx ultracite fix",
-    "generate:types": "pnpm dlx openapi-typescript https://merchant-directory-api.vercel.app/api/v1/openapi.json -o ./src/lib/schema.d.ts"
+    "generate:types": "pnpm dlx openapi-typescript http://localhost:8000/api/v1/openapi.json -o ./src/lib/schema.d.ts"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -23,6 +23,7 @@
     "next-themes": "^0.4.6",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "server-only": "^0.0.1",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.1.12"
   },
