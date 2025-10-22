@@ -1,4 +1,3 @@
-import { GlobeIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ComponentProps } from 'react';
@@ -7,6 +6,7 @@ import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav } from '@/components/nav';
 import { Small } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
+import { Wordmark } from '@/components/wordmark';
 import { cn } from '@/lib/utils';
 
 export default function PublicLayout({
@@ -32,16 +32,7 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
       )}
       {...props}
     >
-      <Link
-        className={cn(
-          buttonVariants({ variant: 'ghost' }),
-          'font-alt font-semibold text-base'
-        )}
-        href="/"
-      >
-        <GlobeIcon className="stroke-primary" />
-        Merchant Directory
-      </Link>
+      <Wordmark />
       <DesktopNav />
       <div className="ml-auto flex items-center gap-4">
         <Link

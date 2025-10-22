@@ -1,9 +1,10 @@
 'use client';
 
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { useActionState, useId, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useId, useState } from 'react';
 
-import { Text } from '@/components/typography';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -37,66 +38,81 @@ export default function LoginPage() {
   const [state, action, isPending] = useActionState(login, initialState);
   const [showPassword, setShowPassword] = useState(false);
 
+  const router = useRouter();
   const id = useId();
 
+  useEffect(() => {
+    if (state.success) {
+      router.push('/');
+    }
+  }, [router, state.success]);
+
   return (
-    <form action={action} className="w-full max-w-md">
-      <FieldGroup>
-        <FieldSet>
-          <FieldLegend>Login</FieldLegend>
-          <FieldDescription>Login to your account.</FieldDescription>
-          <FieldGroup>
-            <Field data-invalid={!!state.errors?.email}>
-              <FieldLabel htmlFor={`${id}-email`}>Email</FieldLabel>
-              <Input
-                aria-invalid={!!state.errors?.email}
-                defaultValue={state.fields.email}
-                id={`${id}-email`}
-                name="email"
-                placeholder="m@example.com"
+    <form action={action} className="flex flex-col gap-6">
+      <FieldSet>
+        <FieldLegend className="text-center font-alt text-xl!">
+          Login
+        </FieldLegend>
+        <FieldDescription className="text-center">
+          Enter your email below to login to your account
+        </FieldDescription>
+        <FieldGroup>
+          <Field data-invalid={!!state.errors?.email}>
+            <FieldLabel htmlFor={`${id}-email`}>Email</FieldLabel>
+            <Input
+              aria-invalid={!!state.errors?.email}
+              defaultValue={state.fields.email}
+              id={`${id}-email`}
+              name="email"
+              placeholder="m@example.com"
+              required
+              type="email"
+            />
+            {state.errors?.email && (
+              <FieldError>{state.errors.email[0]}</FieldError>
+            )}
+          </Field>
+          <Field data-invalid={!!state.errors?.password}>
+            <FieldLabel htmlFor={`${id}-password`}>Password</FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                aria-invalid={!!state.errors?.password}
+                autoComplete="off"
+                defaultValue={state.fields.password}
+                id={`${id}-password`}
+                name="password"
                 required
-                type="email"
+                type={showPassword ? 'text' : 'password'}
               />
-              {state.errors?.email && (
-                <FieldError>{state.errors.email[0]}</FieldError>
-              )}
-            </Field>
-            <Field data-invalid={!!state.errors?.password}>
-              <FieldLabel htmlFor={`${id}-password`}>Password</FieldLabel>
-              <InputGroup>
-                <InputGroupInput
-                  aria-invalid={!!state.errors?.password}
-                  autoComplete="off"
-                  defaultValue={state.fields.password}
-                  id={`${id}-password`}
-                  name="password"
-                  required
-                  type={showPassword ? 'text' : 'password'}
-                />
-                <InputGroupAddon align="inline-end">
-                  <InputGroupButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    size="icon-xs"
-                  >
-                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                  </InputGroupButton>
-                </InputGroupAddon>
-              </InputGroup>
-              {state.errors?.password && (
-                <FieldError>{state.errors.password[0]}</FieldError>
-              )}
-            </Field>
-          </FieldGroup>
-        </FieldSet>
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  size="icon-xs"
+                >
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+            {state.errors?.password && (
+              <FieldError>{state.errors.password[0]}</FieldError>
+            )}
+          </Field>
+        </FieldGroup>
         <Field>
           <Button disabled={isPending} type="submit">
-            {isPending ? <Spinner /> : 'Submit'}
+            {isPending ? <Spinner /> : 'Login'}
           </Button>
           {!state.success && (
-            <Text className="text-destructive">{state.message}</Text>
+            <FieldError className="text-center">{state.message}</FieldError>
           )}
+          <FieldDescription className="text-center">
+            Don&apos;t have an account?{' '}
+            <Link className="underline underline-offset-4" href="/register">
+              Register
+            </Link>
+          </FieldDescription>
         </Field>
-      </FieldGroup>
+      </FieldSet>
     </form>
   );
 }

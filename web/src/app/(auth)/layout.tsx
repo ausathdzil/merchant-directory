@@ -1,11 +1,24 @@
+import { ViewTransition } from 'react';
+
+import { Wordmark } from '@/components/wordmark';
+
 export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      {children}
+    <main className="grid min-h-svh lg:grid-cols-2">
+      <div className="relative hidden bg-primary/5 p-6 md:p-10 lg:block">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <Wordmark />
+        </div>
+      </div>
+      <div className="flex flex-1 items-center justify-center">
+        <ViewTransition name="form">
+          <div className="w-full max-w-xs">{children}</div>
+        </ViewTransition>
+      </div>
     </main>
   );
 }
