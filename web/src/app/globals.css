@@ -135,6 +135,10 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  html {
+    scrollbar-gutter: stable both-edges;
+  }
 }
 
 @supports (view-transition-name: none) {

@@ -19,8 +19,7 @@ export function Wordmark({
       <Link
         className={cn(
           buttonVariants({ variant: 'ghost-colorful' }),
-          'font-alt font-semibold text-base',
-          className
+          'font-alt font-semibold text-base'
         )}
         {...props}
       >
@@ -29,7 +28,7 @@ export function Wordmark({
         ) : (
           <GlobeIcon className="stroke-primary" />
         )}
-        Merchant Directory
+        <span className="hidden xl:block">Merchant Directory</span>
       </Link>
     </ViewTransition>
   );

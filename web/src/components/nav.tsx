@@ -9,6 +9,7 @@ import { type ComponentProps, useEffect, useState } from 'react';
 import { useUser } from '@/hooks/use-user';
 import { logout } from '@/lib/actions/auth';
 import { cn } from '@/lib/utils';
+import { SearchInput } from './search-input';
 import { Button, buttonVariants } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
@@ -19,32 +20,35 @@ type NavItem<T extends string = string> = {
 
 const navItems: NavItem<Route>[] = [
   { label: 'Explore', href: '/explore' },
-  { label: 'About', href: '#' },
+  // { label: 'About', href: '#' },
 ];
 
-export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
+export function DesktopNav({ className, ...props }: ComponentProps<'div'>) {
   const pathname = usePathname();
 
   return (
-    <nav
-      className={cn('-translate-x-1/2 absolute left-1/2', className)}
-      {...props}
-    >
-      <ul className="flex items-center gap-4">
-        {navItems.map((item, index) => (
+    <div className={cn('flex items-center gap-4', className)} {...props}>
+      <nav className={cn('hidden items-center gap-4 md:flex')}>
+        {navItems.map((item) => (
           <Link
             className={cn(
               buttonVariants({ variant: 'ghost', size: 'sm' }),
               pathname === item.href && 'bg-accent'
             )}
             href={item.href}
-            key={`${item.label}-${index}`}
+            key={`${item.label}`}
           >
             {item.label}
           </Link>
         ))}
-      </ul>
-    </nav>
+      </nav>
+      {pathname.startsWith('/explore') && (
+        <SearchInput
+          className="max-w-lg"
+          placeholder="Search merchant names or keywords…"
+        />
+      )}
+    </div>
   );
 }
 
@@ -87,6 +91,13 @@ export function MobileNav({
           <div className="flex flex-col gap-4">
             <div className="font-medium text-muted-foreground">Menu</div>
             <nav className="flex flex-col gap-3">
+              <Link
+                className="font-medium text-2xl"
+                href="/"
+                onClick={() => setOpen(false)}
+              >
+                Home
+              </Link>
               {navItems.map((item) => (
                 <Link
                   className="font-medium text-2xl"

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Inter } from 'next/font/google';
+import { Suspense } from 'react';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { UserProvider } from '@/components/user-provider';
 import { getUser } from '@/lib/data/users';
 import { cn } from '@/lib/utils';
 import './globals.css';
-import { Suspense } from 'react';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -19,7 +19,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Merchant Directory',
+  title: {
+    default: 'Merchant Directory',
+    template: '%s | Merchant Directory',
+  },
   description: 'Discover local businesses in South Jakarta.',
 };
 

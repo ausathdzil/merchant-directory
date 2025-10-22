@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { type ComponentProps, Suspense, ViewTransition } from 'react';
-
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/nav';
 import { Small } from '@/components/typography';
@@ -28,18 +27,17 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex flex-wrap items-center gap-4 bg-background px-4 py-4 md:py-8 lg:px-32',
+        'sticky top-0 z-50 flex items-center gap-4 bg-background px-4 py-4 md:py-8 lg:px-32',
         className
       )}
       {...props}
     >
-      <Wordmark className="mr-auto" href="/" />
-      <DesktopNav className="hidden md:block" />
+      <Wordmark href="/" />
+      <DesktopNav className="flex-1" />
       <MobileNav className="md:hidden" />
       <Suspense fallback={<Skeleton className="hidden h-8 w-36 md:block" />}>
         <UserButton />
       </Suspense>
-      <ModeToggle className="hidden md:flex" />
     </header>
   );
 }
@@ -54,22 +52,25 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
       {...props}
     >
       <Small>&copy; 2025</Small>
-      <a
-        className={buttonVariants({ variant: 'link', size: 'sm' })}
-        href="https://github.com/ausathdzil/merchant-directory"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <Image
-          alt="GitHub icon"
-          aria-hidden
-          className="dark:invert"
-          height={16}
-          src="/GitHub_light.svg"
-          width={16}
-        />
-        Source
-      </a>
+      <div className="flex items-center gap-4">
+        <a
+          className={buttonVariants({ variant: 'link', size: 'sm' })}
+          href="https://github.com/ausathdzil/merchant-directory"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Image
+            alt="GitHub icon"
+            aria-hidden
+            className="dark:invert"
+            height={16}
+            src="/GitHub_light.svg"
+            width={16}
+          />
+          Source
+        </a>
+        <ModeToggle />
+      </div>
     </footer>
   );
 }
