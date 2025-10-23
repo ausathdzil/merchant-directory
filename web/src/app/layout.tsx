@@ -35,12 +35,7 @@ export default function RootLayout({
         className={cn(inter.variable, dmSans.variable, 'font-sans antialiased')}
       >
         <Suspense fallback={null}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            disableTransitionOnChange
-            enableSystem
-          >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
           </ThemeProvider>
         </Suspense>

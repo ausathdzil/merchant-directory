@@ -1,5 +1,6 @@
 {
   "biome.lsp.bin": "./web/node_modules/@biomejs/cli-win32-x64/biome.exe",
+  "biome.configurationPath": "./web/biome.jsonc",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "emmet.showExpandedAbbreviation": "never",

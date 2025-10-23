@@ -108,11 +108,40 @@ export function MobileNav({
     };
   }, [open]);
 
+  const pathname = usePathname();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Force close popover when pathname changes
+  useEffect(() => {
+    if (open) {
+      setOpen(false);
+    }
+  }, [pathname]);
+
   return (
     <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
-        <Button className={className} size="icon-sm" variant="ghost" {...props}>
-          {open ? <XIcon /> : <MenuIcon />}
+        <Button
+          className={cn('relative, overflow-hidden', className)}
+          size="icon"
+          variant="ghost"
+          {...props}
+        >
+          <MenuIcon
+            className={cn(
+              'absolute transition-all duration-200',
+              open
+                ? 'rotate-90 scale-0 opacity-0'
+                : 'rotate-0 scale-100 opacity-100'
+            )}
+          />
+          <XIcon
+            className={cn(
+              'absolute transition-all duration-200',
+              open
+                ? 'rotate-0 scale-100 opacity-100'
+                : '-rotate-90 scale-0 opacity-0'
+            )}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent

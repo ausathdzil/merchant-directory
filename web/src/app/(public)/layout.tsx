@@ -40,17 +40,17 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
     >
       <Wordmark href="/" />
       <DesktopNav />
-      <Suspense fallback={<Spinner className="ml-auto md:hidden" />}>
+      <Suspense fallback={<Spinner className="md:hidden" />}>
         <UserProvider userPromise={userPromise}>
-          <MobileNav className="ml-auto md:hidden" />
+          <MobileNav className="md:hidden" />
         </UserProvider>
       </Suspense>
       <Suspense
-        fallback={<Skeleton className="ml-auto hidden h-8 w-36 md:block" />}
+        fallback={<Skeleton className="ml-auto hidden h-8 w-52 md:block" />}
       >
         <UserButton className="ml-auto" />
       </Suspense>
-      <ModeToggle />
+      <ModeToggle className="ml-auto md:ml-0" />
     </header>
   );
 }
