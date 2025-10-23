@@ -1,31 +1,58 @@
 'use client';
 
 import { SearchIcon } from 'lucide-react';
-import { usePathname } from 'next/navigation';
-import { type ComponentProps, useEffect, useRef } from 'react';
-
+import type { Route } from 'next';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { type ComponentProps, useId } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
+
+const DEBOUNCE_MS = 300;
 
 export function SearchInput({
   className,
   placeholder,
   ...props
 }: { placeholder?: string } & ComponentProps<typeof InputGroup>) {
-  const pathname = usePathname();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const id = useId();
 
-  useEffect(() => {
-    if (pathname === '/explore') {
-      inputRef.current?.focus();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSearch = useDebouncedCallback((term: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+    if (term) {
+      params.set('q', term);
+    } else {
+      params.delete('page');
+      params.delete('q');
     }
-  }, [pathname]);
+    router.replace(`${pathname as Route}?${params.toString()}`, {
+      scroll: false,
+    });
+  }, DEBOUNCE_MS);
 
   return (
     <InputGroup className={className} {...props}>
-      <InputGroupAddon>
-        <SearchIcon />
-      </InputGroupAddon>
-      <InputGroupInput placeholder={placeholder} ref={inputRef} type="search" />
+      <label aria-hidden htmlFor={id}>
+        <InputGroupAddon>
+          <SearchIcon />
+        </InputGroupAddon>
+      </label>
+      <InputGroupInput
+        aria-label="Search"
+        autoComplete="off"
+        autoFocus
+        defaultValue={searchParams.get('q')?.toString()}
+        id={id}
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        placeholder={placeholder}
+        type="search"
+      />
     </InputGroup>
   );
 }

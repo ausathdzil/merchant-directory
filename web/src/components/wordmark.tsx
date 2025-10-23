@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, GlobeIcon } from 'lucide-react';
+import { ArrowLeftIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { type ComponentProps, ViewTransition } from 'react';
 
@@ -19,16 +20,22 @@ export function Wordmark({
       <Link
         className={cn(
           buttonVariants({ variant: 'ghost-colorful' }),
-          'font-alt font-semibold text-base'
+          'hidden font-alt font-semibold text-base sm:flex'
         )}
         {...props}
       >
         {prevIcon ? (
           <ArrowLeftIcon className="stroke-primary" />
         ) : (
-          <GlobeIcon className="stroke-primary" />
+          <Image
+            alt="Logo"
+            aria-hidden
+            height={16}
+            src="/globe.svg"
+            width={16}
+          />
         )}
-        <span className="hidden xl:block">Merchant Directory</span>
+        <span className="hidden lg:block">Merchant Directory</span>
       </Link>
     </ViewTransition>
   );

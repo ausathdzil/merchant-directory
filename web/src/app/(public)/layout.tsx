@@ -1,12 +1,16 @@
 import Image from 'next/image';
 import { type ComponentProps, Suspense, ViewTransition } from 'react';
+
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/nav';
 import { Small } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Spinner } from '@/components/ui/spinner';
 import { UserButton } from '@/components/user-button';
+import { UserProvider } from '@/components/user-provider';
 import { Wordmark } from '@/components/wordmark';
+import { getUser } from '@/lib/data/users';
 import { cn } from '@/lib/utils';
 
 export default function PublicLayout({
@@ -24,6 +28,8 @@ export default function PublicLayout({
 }
 
 function Header({ className, ...props }: ComponentProps<'header'>) {
+  const userPromise = getUser();
+
   return (
     <header
       className={cn(
@@ -33,11 +39,18 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
       {...props}
     >
       <Wordmark href="/" />
-      <DesktopNav className="flex-1" />
-      <MobileNav className="md:hidden" />
-      <Suspense fallback={<Skeleton className="hidden h-8 w-36 md:block" />}>
-        <UserButton />
+      <DesktopNav />
+      <Suspense fallback={<Spinner className="ml-auto md:hidden" />}>
+        <UserProvider userPromise={userPromise}>
+          <MobileNav className="ml-auto md:hidden" />
+        </UserProvider>
       </Suspense>
+      <Suspense
+        fallback={<Skeleton className="ml-auto hidden h-8 w-36 md:block" />}
+      >
+        <UserButton className="ml-auto" />
+      </Suspense>
+      <ModeToggle />
     </header>
   );
 }
@@ -46,7 +59,7 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
   return (
     <footer
       className={cn(
-        'flex flex-wrap items-center justify-between gap-4 px-8 py-8 xl:px-32',
+        'flex flex-wrap items-center justify-between gap-4 px-4 py-4 lg:px-32',
         className
       )}
       {...props}
@@ -69,7 +82,6 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
           />
           Source
         </a>
-        <ModeToggle />
       </div>
     </footer>
   );

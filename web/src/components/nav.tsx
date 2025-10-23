@@ -4,7 +4,13 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { type ComponentProps, useEffect, useState } from 'react';
+import {
+  type ComponentProps,
+  Suspense,
+  useEffect,
+  useState,
+  ViewTransition,
+} from 'react';
 
 import { useUser } from '@/hooks/use-user';
 import { logout } from '@/lib/actions/auth';
@@ -12,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { SearchInput } from './search-input';
 import { Button, buttonVariants } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Skeleton } from './ui/skeleton';
 
 type NavItem<T extends string = string> = {
   href: T;
@@ -20,34 +27,62 @@ type NavItem<T extends string = string> = {
 
 const navItems: NavItem<Route>[] = [
   { label: 'Explore', href: '/explore' },
-  // { label: 'About', href: '#' },
+  { label: 'About', href: '#' },
 ];
 
-export function DesktopNav({ className, ...props }: ComponentProps<'div'>) {
+export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
   const pathname = usePathname();
 
-  return (
-    <div className={cn('flex items-center gap-4', className)} {...props}>
-      <nav className={cn('hidden items-center gap-4 md:flex')}>
-        {navItems.map((item) => (
-          <Link
-            className={cn(
-              buttonVariants({ variant: 'ghost', size: 'sm' }),
-              pathname === item.href && 'bg-accent'
-            )}
-            href={item.href}
-            key={`${item.label}`}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-      {pathname.startsWith('/explore') && (
+  return pathname.startsWith('/explore') ? (
+    <div className="flex flex-1 items-center justify-center gap-4">
+      <ViewTransition name="explore">
+        <Link
+          className={cn(
+            buttonVariants({ variant: 'ghost', size: 'sm' }),
+            pathname === '/explore' && 'bg-accent',
+            'hidden xl:flex'
+          )}
+          href="/explore"
+        >
+          Explore
+        </Link>
+      </ViewTransition>
+      <Suspense fallback={<Skeleton className="mx-auto h-9 w-full max-w-lg" />}>
         <SearchInput
-          className="max-w-lg"
-          placeholder="Search merchant names or keywords…"
+          className="mx-auto max-w-lg"
+          placeholder="Search merchant name or keywords…"
         />
-      )}
+      </Suspense>
+    </div>
+  ) : (
+    <div className="-translate-x-1/2 absolute left-1/2">
+      <nav
+        className={cn('hidden items-center gap-4 md:flex', className)}
+        {...props}
+      >
+        {navItems.map((item) => {
+          const link = (
+            <Link
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'sm' }),
+                pathname === item.href && 'bg-accent'
+              )}
+              href={item.href}
+              key={item.label}
+            >
+              {item.label}
+            </Link>
+          );
+
+          return item.label === 'Explore' || item.href === '/explore' ? (
+            <ViewTransition key={item.label} name="explore">
+              {link}
+            </ViewTransition>
+          ) : (
+            link
+          );
+        })}
+      </nav>
     </div>
   );
 }
@@ -94,7 +129,10 @@ export function MobileNav({
               <Link
                 className="font-medium text-2xl"
                 href="/"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false);
+                  router.push('/');
+                }}
               >
                 Home
               </Link>
@@ -103,7 +141,10 @@ export function MobileNav({
                   className="font-medium text-2xl"
                   href={item.href}
                   key={item.label}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    router.push(item.href);
+                  }}
                 >
                   {item.label}
                 </Link>
