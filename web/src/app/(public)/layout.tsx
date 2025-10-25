@@ -4,7 +4,7 @@ import { type ComponentProps, Suspense, ViewTransition } from 'react';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { Small } from '@/components/typography';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { UserButton } from '@/components/user-button';
@@ -40,7 +40,13 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
     >
       <Wordmark href="/" />
       <DesktopNav />
-      <Suspense fallback={<Spinner className="ml-auto md:hidden" />}>
+      <Suspense
+        fallback={
+          <Button className="ml-auto md:hidden" size="icon" variant="ghost">
+            <Spinner />
+          </Button>
+        }
+      >
         <UserProvider userPromise={userPromise}>
           <MobileNav className="ml-auto md:hidden" />
         </UserProvider>
@@ -59,7 +65,7 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
   return (
     <footer
       className={cn(
-        'flex flex-wrap items-center justify-between gap-4 px-4 py-4 lg:px-32',
+        'flex flex-wrap items-center justify-between gap-4 p-4',
         className
       )}
       {...props}

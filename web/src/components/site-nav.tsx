@@ -44,11 +44,8 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
           Explore
         </Link>
       </ViewTransition>
-      <Suspense fallback={<Skeleton className="mx-auto h-9 w-full max-w-xl" />}>
-        <SearchInput
-          className="mx-auto max-w-xl"
-          placeholder="Search merchant name or keywords…"
-        />
+      <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+        <SearchInput placeholder="Search merchant name or keywords…" />
       </Suspense>
     </div>
   ) : (

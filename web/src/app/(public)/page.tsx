@@ -1,41 +1,28 @@
-import { ArrowRightIcon, SearchIcon, TelescopeIcon } from 'lucide-react';
+import { ArrowRightIcon, TelescopeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { ViewTransition } from 'react';
+import { ExploreButton } from '@/components/explore-button';
 import { Heading, Text, Title } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col items-center gap-32 pt-8 md:pt-16">
+    <main className="flex flex-1 flex-col items-center gap-16 pt-16 md:pt-24">
       <ViewTransition name="content">
         <div className="flex flex-col items-center px-8">
           <article className="max-w-[60ch]">
-            <Title>Discover local businesses in South Jakarta.</Title>
-            <Text className="text-center text-sm md:text-base">
+            <Title className="text-wrap sm:text-balance">
+              Discover local businesses in South Jakarta.
+            </Title>
+            <Text className="text-center text-sm sm:text-base">
               Connect with the best small and medium enterprises in South
               Jakarta. Find trusted merchants, explore local services, and
               support your community.
             </Text>
           </article>
           <div className="flex flex-col items-center gap-4 pt-8 md:flex-row">
-            <Link
-              className={buttonVariants({ size: 'pill-lg' })}
-              href="/explore"
-            >
-              <SearchIcon />
-              Explore Directory
-            </Link>
-            <Link
-              className={buttonVariants({
-                size: 'pill-lg',
-                variant: 'secondary',
-              })}
-              href="/"
-            >
-              List Your Business
-              <ArrowRightIcon />
-            </Link>
+            <ExploreButton />
           </div>
         </div>
         <div className="flex flex-col items-center px-8">

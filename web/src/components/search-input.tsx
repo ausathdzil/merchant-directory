@@ -3,10 +3,11 @@
 import { SearchIcon } from 'lucide-react';
 import type { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { type ComponentProps, useId } from 'react';
+import { type ComponentProps, useEffect, useId, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
+import { Kbd } from './ui/kbd';
 
 const DEBOUNCE_MS = 300;
 
@@ -15,6 +16,7 @@ export function SearchInput({
   placeholder,
   ...props
 }: { placeholder?: string } & ComponentProps<typeof InputGroup>) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
 
   const searchParams = useSearchParams();
@@ -35,6 +37,18 @@ export function SearchInput({
     });
   }, DEBOUNCE_MS);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && inputRef.current) {
+        inputRef.current.value = '';
+        handleSearch('');
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [handleSearch]);
+
   return (
     <InputGroup className={className} {...props}>
       <label aria-hidden htmlFor={id}>
@@ -52,8 +66,14 @@ export function SearchInput({
           handleSearch(e.target.value);
         }}
         placeholder={placeholder}
+        ref={inputRef}
         type="search"
       />
+      {(inputRef.current?.value || searchParams.get('q')) && (
+        <InputGroupAddon align="inline-end">
+          <Kbd className="hidden sm:flex">Esc</Kbd>
+        </InputGroupAddon>
+      )}
     </InputGroup>
   );
 }
