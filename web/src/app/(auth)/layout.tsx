@@ -27,7 +27,7 @@ export default function AuthLayout({
         <Link
           className={cn(
             buttonVariants({ variant: 'ghost-colorful' }),
-            'absolute top-8'
+            'absolute top-8 flex lg:hidden'
           )}
           href="/"
         >
