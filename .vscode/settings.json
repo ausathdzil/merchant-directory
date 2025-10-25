@@ -1,4 +1,0 @@
-{
-  "biome.configurationPath": "./web/biome.jsonc",
-  "biome.lsp.bin": "./web/node_modules/@biomejs/cli-win32-x64/biome.exe"
-}

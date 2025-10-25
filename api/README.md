@@ -1,3 +1,5 @@
+# Merchant Directory API
+
 ## Getting Started
 
 Install uv:
@@ -27,4 +29,10 @@ Install dependencies:
 
 ```bash
 uv sync
+```
+
+Run the development server:
+
+```bash
+uvicorn server:app --reload
 ```
