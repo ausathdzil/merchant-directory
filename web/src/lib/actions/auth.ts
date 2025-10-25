@@ -45,10 +45,7 @@ export async function login(_prevState: LoginFormState, formData: FormData) {
     return {
       success: false,
       message: '',
-      fields: {
-        email: rawFormData.email,
-        password: rawFormData.password,
-      },
+      fields: rawFormData,
       errors: {
         email: flattenedErrors.fieldErrors.email,
         password: flattenedErrors.fieldErrors.password,
@@ -56,44 +53,52 @@ export async function login(_prevState: LoginFormState, formData: FormData) {
     };
   }
 
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      grant_type: 'password',
-      username: rawFormData.email,
-      password: rawFormData.password,
-      scope: '',
-    } satisfies LoginBody),
-  });
+  try {
+    const res = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'password',
+        username: rawFormData.email,
+        password: rawFormData.password,
+        scope: '',
+      } satisfies LoginBody),
+    });
 
-  if (!res.ok) {
-    const error = (await res.json()) as LoginError | { detail?: unknown };
+    if (!res.ok) {
+      const error = (await res.json()) as LoginError | { detail?: unknown };
 
-    let message = 'Failed to login';
+      let message = 'Failed to login';
 
-    if (Array.isArray(error.detail)) {
-      message = error.detail[0].msg;
-    } else if (typeof error.detail === 'string') {
-      message = error.detail;
+      if (Array.isArray(error.detail)) {
+        message = error.detail[0].msg;
+      } else if (typeof error.detail === 'string') {
+        message = error.detail;
+      }
+
+      return {
+        success: false,
+        message,
+        fields: rawFormData,
+      };
     }
+
+    const data = (await res.json()) as LoginResponse;
+
+    await createSession(data.access_token);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unexpected error occured';
 
     return {
       success: false,
       message,
-      fields: {
-        email: rawFormData.email,
-        password: rawFormData.password,
-      },
+      fields: rawFormData,
     };
   }
-
-  const data = (await res.json()) as LoginResponse;
-
-  await createSession(data.access_token);
 
   redirect('/');
 }
@@ -163,11 +168,7 @@ export async function register(
     return {
       success: false,
       message: '',
-      fields: {
-        name: rawFormData.name,
-        email: rawFormData.email,
-        password: rawFormData.password,
-      },
+      fields: rawFormData,
       errors: {
         name: flattenedErrors.fieldErrors.name,
         email: flattenedErrors.fieldErrors.email,
@@ -178,40 +179,47 @@ export async function register(
 
   const { name, email, password } = validatedFields.data;
 
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, email, password } satisfies RegisterBody),
-  });
+  try {
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password } satisfies RegisterBody),
+    });
 
-  if (!res.ok) {
-    const error = (await res.json()) as RegisterError | { detail?: unknown };
+    if (!res.ok) {
+      const error = (await res.json()) as RegisterError | { detail?: unknown };
 
-    let message = 'Failed to register';
+      let message = 'Failed to register';
 
-    if (Array.isArray(error.detail)) {
-      message = error.detail[0].msg;
-    } else if (typeof error.detail === 'string') {
-      message = error.detail;
+      if (Array.isArray(error.detail)) {
+        message = error.detail[0].msg;
+      } else if (typeof error.detail === 'string') {
+        message = error.detail;
+      }
+
+      return {
+        success: false,
+        message,
+        fields: rawFormData,
+      };
     }
+
+    const data = (await res.json()) as LoginResponse;
+
+    await createSession(data.access_token);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unexpected error occured';
 
     return {
       success: false,
       message,
-      fields: {
-        name: rawFormData.name,
-        email: rawFormData.email,
-        password: rawFormData.password,
-      },
+      fields: rawFormData,
     };
   }
-
-  const data = (await res.json()) as LoginResponse;
-
-  await createSession(data.access_token);
 
   redirect('/');
 }

@@ -14,10 +14,7 @@ export async function UserButton({
   const user = await getUser();
 
   return (
-    <div
-      className={cn('hidden items-center gap-4 md:flex', className)}
-      {...props}
-    >
+    <div className={cn('flex items-center gap-4', className)} {...props}>
       {user ? (
         <>
           <Small>👋 Hey, {user.name}!</Small>
@@ -26,12 +23,15 @@ export async function UserButton({
       ) : (
         <>
           <Link
-            className={buttonVariants({ variant: 'secondary', size: 'pill' })}
+            className={cn(
+              buttonVariants({ variant: 'secondary', size: 'pill' }),
+              'hidden md:flex'
+            )}
             href="/login"
           >
             Login
           </Link>
-          <Link className={buttonVariants({ size: 'pill' })} href="/">
+          <Link className={buttonVariants({ size: 'pill' })} href="/register">
             Get Started
           </Link>
         </>

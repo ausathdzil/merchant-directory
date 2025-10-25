@@ -3,7 +3,7 @@
 import { MenuIcon, XIcon } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   type ComponentProps,
   Suspense,
@@ -12,8 +12,6 @@ import {
   ViewTransition,
 } from 'react';
 
-import { useUser } from '@/hooks/use-user';
-import { logout } from '@/lib/actions/auth';
 import { cn } from '@/lib/utils';
 import { SearchInput } from './search-input';
 import { Button, buttonVariants } from './ui/button';
@@ -39,7 +37,6 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
         <Link
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'sm' }),
-            pathname === '/explore' && 'bg-accent',
             'hidden xl:flex'
           )}
           href="/explore"
@@ -47,9 +44,9 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
           Explore
         </Link>
       </ViewTransition>
-      <Suspense fallback={<Skeleton className="mx-auto h-9 w-full max-w-lg" />}>
+      <Suspense fallback={<Skeleton className="mx-auto h-9 w-full max-w-xl" />}>
         <SearchInput
-          className="mx-auto max-w-lg"
+          className="mx-auto max-w-xl"
           placeholder="Search merchant name or keywords…"
         />
       </Suspense>
@@ -93,9 +90,6 @@ export function MobileNav({
 }: ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
 
-  const router = useRouter();
-  const user = useUser();
-
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -107,15 +101,6 @@ export function MobileNav({
       document.body.style.overflow = 'unset';
     };
   }, [open]);
-
-  const pathname = usePathname();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Force close popover when pathname changes
-  useEffect(() => {
-    if (open) {
-      setOpen(false);
-    }
-  }, [pathname]);
 
   return (
     <Popover onOpenChange={setOpen} open={open}>
@@ -151,72 +136,27 @@ export function MobileNav({
         side="bottom"
         sideOffset={14}
       >
-        <div className="flex flex-col gap-12 overflow-auto px-8 py-4">
-          <div className="flex flex-col gap-4">
-            <div className="font-medium text-muted-foreground">Menu</div>
-            <nav className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4 overflow-auto px-8 py-4">
+          <div className="font-medium text-muted-foreground">Menu</div>
+          <nav className="flex flex-col gap-3">
+            <Link
+              className="font-medium text-2xl"
+              href="/"
+              onClick={() => setOpen(false)}
+            >
+              Home
+            </Link>
+            {navItems.map((item) => (
               <Link
                 className="font-medium text-2xl"
-                href="/"
-                onClick={() => {
-                  setOpen(false);
-                  router.push('/');
-                }}
+                href={item.href}
+                key={item.label}
+                onClick={() => setOpen(false)}
               >
-                Home
+                {item.label}
               </Link>
-              {navItems.map((item) => (
-                <Link
-                  className="font-medium text-2xl"
-                  href={item.href}
-                  key={item.label}
-                  onClick={() => {
-                    setOpen(false);
-                    router.push(item.href);
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-          <div className="flex flex-col gap-4">
-            {user ? (
-              <button
-                className="text-left font-medium text-2xl"
-                onClick={() => {
-                  logout();
-                  setOpen(false);
-                }}
-                type="button"
-              >
-                Logout
-              </button>
-            ) : (
-              <nav className="flex flex-col gap-3">
-                <Link
-                  className="font-medium text-2xl"
-                  href="/login"
-                  onClick={() => {
-                    setOpen(false);
-                    router.push('/login');
-                  }}
-                >
-                  Login
-                </Link>
-                <Link
-                  className="font-medium text-2xl"
-                  href="/register"
-                  onClick={() => {
-                    setOpen(false);
-                    router.push('/login');
-                  }}
-                >
-                  Register
-                </Link>
-              </nav>
-            )}
-          </div>
+            ))}
+          </nav>
         </div>
       </PopoverContent>
     </Popover>

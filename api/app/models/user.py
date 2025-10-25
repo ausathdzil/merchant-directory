@@ -31,3 +31,8 @@ class UserPublic(UserBase):
     id: int
     created_at: datetime
     updated_at: datetime
+
+
+class UserLogin(SQLModel):
+    email: EmailStr
+    password: str

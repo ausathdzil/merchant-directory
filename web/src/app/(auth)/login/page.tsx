@@ -2,8 +2,7 @@
 
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useId, useState } from 'react';
+import { useActionState, useId, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -38,14 +37,7 @@ export default function LoginPage() {
   const [state, action, isPending] = useActionState(login, initialState);
   const [showPassword, setShowPassword] = useState(false);
 
-  const router = useRouter();
   const id = useId();
-
-  useEffect(() => {
-    if (state.success) {
-      router.push('/');
-    }
-  }, [router, state.success]);
 
   return (
     <form action={action} className="flex flex-col gap-6">

@@ -20,7 +20,7 @@ export function Wordmark({
       <Link
         className={cn(
           buttonVariants({ variant: 'ghost-colorful' }),
-          'hidden font-alt font-semibold text-base sm:flex'
+          'font-alt font-semibold'
         )}
         {...props}
       >
@@ -35,7 +35,7 @@ export function Wordmark({
             width={16}
           />
         )}
-        <span className="hidden lg:block">Merchant Directory</span>
+        <span className="hidden md:inline">Merchant Directory</span>
       </Link>
     </ViewTransition>
   );

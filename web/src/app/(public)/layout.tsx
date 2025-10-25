@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { type ComponentProps, Suspense, ViewTransition } from 'react';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { DesktopNav, MobileNav } from '@/components/nav';
+import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { Small } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -33,24 +33,24 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex items-center gap-4 bg-background px-4 py-4 md:py-8 lg:px-32',
+        'sticky top-0 z-50 flex items-center gap-4 border-b bg-background p-4',
         className
       )}
       {...props}
     >
       <Wordmark href="/" />
       <DesktopNav />
-      <Suspense fallback={<Spinner className="md:hidden" />}>
+      <Suspense fallback={<Spinner className="ml-auto md:hidden" />}>
         <UserProvider userPromise={userPromise}>
-          <MobileNav className="md:hidden" />
+          <MobileNav className="ml-auto md:hidden" />
         </UserProvider>
       </Suspense>
-      <Suspense
-        fallback={<Skeleton className="ml-auto hidden h-8 w-52 md:block" />}
-      >
-        <UserButton className="ml-auto" />
-      </Suspense>
-      <ModeToggle className="ml-auto md:ml-0" />
+      <div className="ml-auto hidden items-center gap-4 md:flex">
+        <Suspense fallback={<Skeleton className="h-8 w-52" />}>
+          <UserButton />
+        </Suspense>
+        <ModeToggle />
+      </div>
     </header>
   );
 }
