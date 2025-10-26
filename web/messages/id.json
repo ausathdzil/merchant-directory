@@ -1,0 +1,54 @@
+{
+  "NotFoundPage": {
+    "title": "Halaman Tidak Ditemukan",
+    "description": "Halaman yang kamu cari tidak ada",
+    "button": "Kembali ke Beranda",
+    "logoBy": "Logo oleh"
+  },
+  "Header": {
+    "title": "Direktori UMKM",
+    "navigation": {
+      "home": "Beranda",
+      "explore": "Jelajahi",
+      "about": "Tentang Kami"
+    },
+    "search": {
+      "placeholder": "Cari nama atau kata kunci bisnis…"
+    }
+  },
+  "HomePage": {
+    "hero": {
+      "title": "Temukan bisnis lokal di Jakarta Selatan.",
+      "description": "Temukan bisnis UMKM terpercaya, jelajahi layanan lokal, dan dukung komunitasmu.",
+      "button": "Jelajahi Direktori",
+      "search": {
+        "placeholder": "Cari nama atau kata kunci bisnis…",
+        "search": "Cari",
+        "press": "Tekan",
+        "toSearch": "untuk mencari, atau",
+        "toClose": "untuk menutup."
+      }
+    },
+    "features": {
+      "heading": "Cara kerja"
+    },
+    "faq": {
+      "heading": "Pertanyaan yang sering diajukan"
+    },
+    "cta": {
+      "heading": "Apa yang kamu tunggu lagi?",
+      "description": "Mulai menjelajahi ratusan bisnis UMKM terverifikasi di Jakarta Selatan hari ini. Temukan bisnis yang tepat untuk kebutuhanmu.",
+      "button": "Jelajahi Direktori"
+    }
+  },
+  "ExplorePage": {
+    "search": {
+      "searching": "Mencari \"{query}\"…"
+    },
+    "empty": {
+      "title": "Mulai pencarian",
+      "description": "Masukkan nama atau kata kunci untuk mencari bisnis terdekat",
+      "button": "Butuh Bantuan?"
+    }
+  }
+}

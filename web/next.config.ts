@@ -1,12 +1,16 @@
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
   experimental: {
     turbopackFileSystemCacheForDev: true,
     viewTransition: true,
   },
-  typedRoutes: true,
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    createMessagesDeclaration: './messages/id.json',
+  },
+});
+export default withNextIntl(nextConfig);

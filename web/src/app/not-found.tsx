@@ -1,6 +1,7 @@
 import { ArrowUpRightIcon, HouseIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { Muted } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
@@ -13,7 +14,9 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty';
 
-export default function NotFoundPage() {
+export default async function NotFoundPage() {
+  const t = await getTranslations('NotFoundPage');
+
   return (
     <main className="flex min-h-screen justify-center">
       <Empty>
@@ -26,19 +29,17 @@ export default function NotFoundPage() {
               width={384}
             />
           </EmptyMedia>
-          <EmptyTitle>Page Not Found</EmptyTitle>
-          <EmptyDescription>
-            The page you&apos;re looking for does not exist
-          </EmptyDescription>
+          <EmptyTitle>{t('title')}</EmptyTitle>
+          <EmptyDescription>{t('description')}</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <Link className={buttonVariants({ size: 'pill-lg' })} href="/">
             <HouseIcon />
-            Go Back Home
+            {t('button')}
           </Link>
         </EmptyContent>
         <Muted>
-          Logo by
+          {t('logoBy')}
           <a
             className={buttonVariants({ variant: 'link', size: 'sm' })}
             href="https://github.com/SAWARATSUKI/KawaiiLogos/blob/main/ResponseCode/404%20NotFound.png"

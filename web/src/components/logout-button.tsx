@@ -13,12 +13,16 @@ export function LogoutButton({
 }: ComponentProps<typeof Button>) {
   const [isPending, startTransition] = useTransition();
 
+  const handleLogout = () => {
+    startTransition(async () => await logout());
+  };
+
   return (
     <Button
       className={cn('min-w-[71px]', className)}
       {...props}
       disabled={isPending}
-      onClick={() => startTransition(() => logout())}
+      onClick={handleLogout}
       size="pill"
       type="submit"
       variant="destructive"

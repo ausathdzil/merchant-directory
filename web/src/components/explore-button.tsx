@@ -5,6 +5,7 @@ import { SearchIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Form from 'next/form';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useEffect, useId, useState } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,6 +21,7 @@ import { Kbd, KbdGroup } from './ui/kbd';
 
 export function ExploreButton() {
   const isMobile = useIsMobile();
+  const t = useTranslations('HomePage');
 
   return isMobile ? (
     <div className="relative mt-4 flex h-16 items-center justify-center">
@@ -28,7 +30,7 @@ export function ExploreButton() {
         href="/explore"
       >
         <SearchIcon />
-        Explore Directory
+        {t('hero.button')}
       </Link>
     </div>
   ) : (
@@ -42,6 +44,8 @@ function AnimatedSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMac, setIsMac] = useState(false);
   const id = useId();
+
+  const t = useTranslations('HomePage');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -105,7 +109,7 @@ function AnimatedSearch() {
                     autoComplete="off"
                     autoFocus
                     name="q"
-                    placeholder="Search for a merchant name…"
+                    placeholder={t('hero.search.placeholder')}
                     type="search"
                   />
                   <InputGroupAddon align="inline-end">
@@ -114,12 +118,14 @@ function AnimatedSearch() {
                       type="submit"
                       variant="secondary"
                     >
-                      Search
+                      {t('hero.search.search')}
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
                 <FieldDescription className="hidden text-center md:block">
-                  Hit <Kbd>Enter</Kbd> to search, or <Kbd>Esc</Kbd> to close.
+                  {t('hero.search.press')} <Kbd>Enter</Kbd>{' '}
+                  {t('hero.search.toSearch')} <Kbd>Esc</Kbd>{' '}
+                  {t('hero.search.toClose')}
                 </FieldDescription>
               </Field>
             </Form>
@@ -134,7 +140,7 @@ function AnimatedSearch() {
           >
             <Button onClick={handleToggle} size="pill-lg" variant="outline">
               <SearchIcon />
-              Explore Directory
+              {t('hero.button')}
               <KbdGroup>
                 <Kbd>{isMac ? '⌘' : 'Ctrl'}</Kbd>
                 <Kbd>K</Kbd>

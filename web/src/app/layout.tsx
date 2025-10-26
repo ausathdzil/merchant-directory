@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Inter } from 'next/font/google';
-import { Suspense } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import { getLocale } from 'next-intl/server';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -24,21 +25,23 @@ export const metadata: Metadata = {
   description: 'Discover local businesses in South Jakarta.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(inter.variable, dmSans.variable, 'font-sans antialiased')}
       >
-        <Suspense fallback={null}>
+        <NextIntlClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
           </ThemeProvider>
-        </Suspense>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

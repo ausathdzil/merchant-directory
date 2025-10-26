@@ -1,8 +1,9 @@
 import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 
+import { Suspense } from 'react';
 import {
   Empty,
   EmptyDescription,
@@ -15,20 +16,19 @@ export const metadata: Metadata = {
   title: 'Explore',
 };
 
-type ExplorePageProps = {
-  searchParams: Promise<{
-    q: string;
-  }>;
-};
-
-export default async function ExplorePage({ searchParams }: ExplorePageProps) {
+export default async function ExplorePage({
+  searchParams,
+}: PageProps<'/explore'>) {
   const { q } = await searchParams;
+  const t = await getTranslations('ExplorePage');
 
   return (
     <main className="flex flex-1 flex-col items-center">
       {q ? (
         <Suspense fallback={null}>
-          <pre className="pt-16 md:pt-24">Searching for "{q}"</pre>
+          <pre className="pt-16">
+            {t('search.searching', { query: q as string })}
+          </pre>
         </Suspense>
       ) : (
         <Empty>
@@ -36,13 +36,11 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
             <EmptyMedia variant="icon">
               <SearchIcon />
             </EmptyMedia>
-            <EmptyTitle>Start searching</EmptyTitle>
-            <EmptyDescription>
-              Enter a name or keyword to find nearby merchants
-            </EmptyDescription>
+            <EmptyTitle>{t('empty.title')}</EmptyTitle>
+            <EmptyDescription>{t('empty.description')}</EmptyDescription>
           </EmptyHeader>
           <EmptyDescription>
-            <Link href="/">Need Help?</Link>
+            <Link href="/">{t('empty.button')}</Link>
           </EmptyDescription>
         </Empty>
       )}

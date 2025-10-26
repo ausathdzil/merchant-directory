@@ -1,0 +1,54 @@
+{
+  "NotFoundPage": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for does not exist",
+    "button": "Go Back Home",
+    "logoBy": "Logo by"
+  },
+  "Header": {
+    "title": "Merchant Directory",
+    "navigation": {
+      "home": "Home",
+      "explore": "Explore",
+      "about": "About Us"
+    },
+    "search": {
+      "placeholder": "Search merchant name or keywords…"
+    }
+  },
+  "HomePage": {
+    "hero": {
+      "title": "Discover local businesses in South Jakarta.",
+      "description": "Connect with the best small and medium enterprises in South Jakarta. Find trusted merchants, explore local services, and support your community.",
+      "button": "Explore Directory",
+      "search": {
+        "placeholder": "Search for a merchant name…",
+        "search": "Search",
+        "press": "Press",
+        "toSearch": "to search, or",
+        "toClose": "to close."
+      }
+    },
+    "features": {
+      "heading": "How It Works"
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions"
+    },
+    "cta": {
+      "heading": "What are you waiting for?",
+      "description": "Start exploring hundreds of verified merchants in Jakarta Selatan today. Find the perfect business for your needs.",
+      "button": "Explore Directory"
+    }
+  },
+  "ExplorePage": {
+    "search": {
+      "searching": "Searching for \"{query}\"…"
+    },
+    "empty": {
+      "title": "Start searching",
+      "description": "Enter a name or keyword to find nearby merchants",
+      "button": "Need Help?"
+    }
+  }
+}

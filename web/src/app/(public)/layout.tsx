@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import { type ComponentProps, Suspense } from 'react';
+import type { ComponentProps } from 'react';
 
+import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { Small } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { UserButton } from '@/components/user-button';
 import { Wordmark } from '@/components/wordmark';
 import { cn } from '@/lib/utils';
 
@@ -39,9 +38,7 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
       </div>
       <DesktopNav />
       <div className="flex items-center justify-end gap-4 p-4 md:w-1/3">
-        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
-          <UserButton />
-        </Suspense>
+        <LocaleSelect />
         <ModeToggle />
       </div>
     </header>

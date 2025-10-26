@@ -58,7 +58,7 @@ export function ModeToggle({
         <Button
           className={cn('relative', className)}
           onClick={toggleTheme}
-          size="icon-sm"
+          size="icon"
           variant="secondary"
           {...props}
         >

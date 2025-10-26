@@ -4,12 +4,8 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  type ComponentProps,
-  useEffect,
-  useState,
-  ViewTransition,
-} from 'react';
+import { useTranslations } from 'next-intl';
+import { type ComponentProps, useEffect, useState } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -22,18 +18,20 @@ type NavItem<T extends string = string> = {
   label: string;
 };
 
-const navItems: NavItem<Route>[] = [
-  { label: 'Explore', href: '/explore' },
-  { label: 'About', href: '#' },
-];
-
 export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
+  const t = useTranslations('Header');
+
   const pathname = usePathname();
   const isMobile = useIsMobile();
 
+  const navItems: NavItem<Route>[] = [
+    { label: t('navigation.explore'), href: '/explore' },
+    { label: t('navigation.about'), href: '#' },
+  ];
+
   return pathname.startsWith('/explore') ? (
     <div className="order-1 flex w-full border-t p-4 md:order-0 md:border-none md:p-0">
-      <SearchInput placeholder="Search merchant name or keywords…" />
+      <SearchInput placeholder={t('search.placeholder')} />
     </div>
   ) : (
     !isMobile && (
@@ -41,28 +39,18 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
         className={cn('hidden items-center gap-4 md:flex', className)}
         {...props}
       >
-        {navItems.map((item) => {
-          const link = (
-            <Link
-              className={cn(
-                buttonVariants({ variant: 'ghost', size: 'sm' }),
-                pathname === item.href && 'bg-accent'
-              )}
-              href={item.href}
-              key={item.label}
-            >
-              {item.label}
-            </Link>
-          );
-
-          return item.label === 'Explore' || item.href === '/explore' ? (
-            <ViewTransition key={item.label} name="explore">
-              {link}
-            </ViewTransition>
-          ) : (
-            link
-          );
-        })}
+        {navItems.map((item) => (
+          <Link
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'sm' }),
+              pathname === item.href && 'bg-accent'
+            )}
+            href={item.href}
+            key={item.label}
+          >
+            {item.label}
+          </Link>
+        ))}
       </nav>
     )
   );
@@ -72,8 +60,15 @@ export function MobileNav({
   className,
   ...props
 }: ComponentProps<typeof Button>) {
+  const t = useTranslations('Header');
+
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  const navItems: NavItem<Route>[] = [
+    { label: t('navigation.explore'), href: '/explore' },
+    { label: t('navigation.about'), href: '#' },
+  ];
 
   useEffect(() => {
     if (open) {
@@ -130,7 +125,7 @@ export function MobileNav({
                 href="/"
                 onClick={() => setOpen(false)}
               >
-                Home
+                {t('navigation.home')}
               </Link>
               {navItems.map((item) => (
                 <Link
