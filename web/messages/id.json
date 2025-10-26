@@ -30,7 +30,43 @@
       }
     },
     "features": {
-      "heading": "Cara kerja"
+      "heading": "Cara Kerja",
+      "description": "Menghubungkan kamu dengan bisnis lokal dalam tiga langkah sederhana",
+      "steps": {
+        "discovery": {
+          "label": "Penemuan",
+          "title": "Temukan Bisnis Lokal",
+          "description": "Jelajahi direktori komprehensif kami yang berisi usaha kecil dan menengah di seluruh Jakarta Selatan. Dari restoran hingga ritel, layanan hingga pemasok - temukan bisnis lokal terpercaya di lingkunganmu.",
+          "benefits": {
+            "curatedDirectory": "Direktori Terkurasi",
+            "categoryFilters": "Filter Kategori",
+            "locationBasedSearch": "Pencarian Berbasis Lokasi",
+            "verifiedListings": "Daftar Terverifikasi"
+          }
+        },
+        "information": {
+          "label": "Informasi",
+          "title": "Profil Bisnis Detail",
+          "description": "Akses informasi lengkap tentang setiap bisnis termasuk layanan yang ditawarkan, jam operasional, detail kontak, dan ulasan pelanggan. Buat keputusan yang tepat dengan informasi bisnis yang transparan dan terkini.",
+          "benefits": {
+            "completeDetails": "Detail Lengkap",
+            "customerReviews": "Ulasan Pelanggan",
+            "operatingHours": "Jam Operasional",
+            "contactInformation": "Informasi Kontak"
+          }
+        },
+        "connection": {
+          "label": "Koneksi",
+          "title": "Dukung Ekonomi Lokal",
+          "description": "Hubungi langsung dengan pemilik bisnis dan berkontribusi pada komunitas lokalmu. Setiap interaksi membantu usaha kecil berkembang dan memperkuat ekonomi Jakarta Selatan.",
+          "benefits": {
+            "directContact": "Kontak Langsung",
+            "communityImpact": "Dampak Komunitas",
+            "localSupport": "Dukungan Lokal",
+            "easyCommunication": "Komunikasi Mudah"
+          }
+        }
+      }
     },
     "faq": {
       "heading": "Pertanyaan yang sering diajukan"

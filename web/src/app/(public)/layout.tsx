@@ -1,11 +1,8 @@
-import Image from 'next/image';
 import type { ComponentProps } from 'react';
 
 import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
-import { Small } from '@/components/typography';
-import { buttonVariants } from '@/components/ui/button';
 import { Wordmark } from '@/components/wordmark';
 import { cn } from '@/lib/utils';
 
@@ -18,7 +15,6 @@ export default function PublicLayout({
     <div className="flex min-h-screen flex-col">
       <Header />
       {children}
-      <Footer />
     </div>
   );
 }
@@ -42,37 +38,5 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
         <ModeToggle />
       </div>
     </header>
-  );
-}
-
-function Footer({ className, ...props }: ComponentProps<'footer'>) {
-  return (
-    <footer
-      className={cn(
-        'flex flex-wrap items-center justify-between gap-4 p-4',
-        className
-      )}
-      {...props}
-    >
-      <Small>&copy; 2025</Small>
-      <div className="flex items-center gap-4">
-        <a
-          className={buttonVariants({ variant: 'link', size: 'sm' })}
-          href="https://github.com/ausathdzil/merchant-directory"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <Image
-            alt="GitHub icon"
-            aria-hidden
-            className="dark:invert"
-            height={16}
-            src="/GitHub_light.svg"
-            width={16}
-          />
-          Source
-        </a>
-      </div>
-    </footer>
   );
 }

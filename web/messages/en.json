@@ -30,7 +30,43 @@
       }
     },
     "features": {
-      "heading": "How It Works"
+      "heading": "How It Works",
+      "description": "Connecting you with local businesses in three simple steps",
+      "steps": {
+        "discovery": {
+          "label": "Discovery",
+          "title": "Find Local Businesses",
+          "description": "Explore our comprehensive directory of small and medium enterprises across South Jakarta. From restaurants to retail, services to suppliers - discover trusted local businesses in your neighborhood.",
+          "benefits": {
+            "curatedDirectory": "Curated Directory",
+            "categoryFilters": "Category Filters",
+            "locationBasedSearch": "Location-Based Search",
+            "verifiedListings": "Verified Listings"
+          }
+        },
+        "information": {
+          "label": "Information",
+          "title": "Detailed Business Profiles",
+          "description": "Access complete information about each business including services offered, operating hours, contact details, and customer reviews. Make informed decisions with transparent, up-to-date business information.",
+          "benefits": {
+            "completeDetails": "Complete Details",
+            "customerReviews": "Customer Reviews",
+            "operatingHours": "Operating Hours",
+            "contactInformation": "Contact Information"
+          }
+        },
+        "connection": {
+          "label": "Connection",
+          "title": "Support Local Economy",
+          "description": "Connect directly with business owners and contribute to your local community. Every interaction helps small businesses thrive and strengthens the South Jakarta economy.",
+          "benefits": {
+            "directContact": "Direct Contact",
+            "communityImpact": "Community Impact",
+            "localSupport": "Local Support",
+            "easyCommunication": "Easy Communication"
+          }
+        }
+      }
     },
     "faq": {
       "heading": "Frequently Asked Questions"
