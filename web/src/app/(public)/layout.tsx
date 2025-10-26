@@ -1,16 +1,13 @@
 import Image from 'next/image';
-import { type ComponentProps, Suspense, ViewTransition } from 'react';
+import { type ComponentProps, Suspense } from 'react';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { Small } from '@/components/typography';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Spinner } from '@/components/ui/spinner';
 import { UserButton } from '@/components/user-button';
-import { UserProvider } from '@/components/user-provider';
 import { Wordmark } from '@/components/wordmark';
-import { getUser } from '@/lib/data/users';
 import { cn } from '@/lib/utils';
 
 export default function PublicLayout({
@@ -21,38 +18,28 @@ export default function PublicLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <ViewTransition name="page">{children}</ViewTransition>
+      {children}
       <Footer />
     </div>
   );
 }
 
 function Header({ className, ...props }: ComponentProps<'header'>) {
-  const userPromise = getUser();
-
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex items-center gap-4 border-b bg-background p-4',
+        'sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background md:flex-nowrap',
         className
       )}
       {...props}
     >
-      <Wordmark href="/" />
+      <div className="flex w-1/3 p-4">
+        <MobileNav />
+        <Wordmark className="hidden md:flex" href="/" />
+      </div>
       <DesktopNav />
-      <Suspense
-        fallback={
-          <Button className="ml-auto md:hidden" size="icon" variant="ghost">
-            <Spinner />
-          </Button>
-        }
-      >
-        <UserProvider userPromise={userPromise}>
-          <MobileNav className="ml-auto md:hidden" />
-        </UserProvider>
-      </Suspense>
-      <div className="ml-auto hidden items-center gap-4 md:flex">
-        <Suspense fallback={<Skeleton className="h-8 w-52" />}>
+      <div className="flex items-center justify-end gap-4 p-4 md:w-1/3">
+        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
           <UserButton />
         </Suspense>
         <ModeToggle />

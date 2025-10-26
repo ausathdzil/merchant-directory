@@ -4,7 +4,6 @@ import { MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { type ComponentProps, useCallback } from 'react';
 
-import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
@@ -13,7 +12,6 @@ export function ModeToggle({
   className,
   ...props
 }: ComponentProps<typeof Button>) {
-  const isMobile = useIsMobile();
   const { setTheme, resolvedTheme } = useTheme();
 
   const toggleTheme = useCallback(
@@ -60,7 +58,7 @@ export function ModeToggle({
         <Button
           className={cn('relative', className)}
           onClick={toggleTheme}
-          size={isMobile ? 'icon' : 'icon-sm'}
+          size="icon-sm"
           variant="secondary"
           {...props}
         >

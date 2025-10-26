@@ -4,9 +4,11 @@
 import { SearchIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Form from 'next/form';
+import Link from 'next/link';
 import { useEffect, useId, useState } from 'react';
 
-import { Button } from './ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Button, buttonVariants } from './ui/button';
 import { Field, FieldDescription } from './ui/field';
 import {
   InputGroup,
@@ -17,10 +19,35 @@ import {
 import { Kbd, KbdGroup } from './ui/kbd';
 
 export function ExploreButton() {
+  const isMobile = useIsMobile();
+
+  return isMobile ? (
+    <div className="relative mt-4 flex h-16 items-center justify-center">
+      <Link
+        className={buttonVariants({ size: 'pill-lg', variant: 'outline' })}
+        href="/explore"
+      >
+        <SearchIcon />
+        Explore Directory
+      </Link>
+    </div>
+  ) : (
+    <AnimatedSearch />
+  );
+}
+
+const macRegex = /Mac/;
+
+function AnimatedSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMac, setIsMac] = useState(false);
   const id = useId();
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMac(macRegex.test(window.navigator.userAgent));
+    }
+
     const handleKeyboardShortcut = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !isExpanded) {
         e.preventDefault();
@@ -106,10 +133,10 @@ export function ExploreButton() {
             transition={{ duration: 0.15 }}
           >
             <Button onClick={handleToggle} size="pill-lg" variant="outline">
-              <SearchIcon className="block md:hidden" />
+              <SearchIcon />
               Explore Directory
-              <KbdGroup className="hidden md:flex">
-                <Kbd>Ctrl</Kbd>
+              <KbdGroup>
+                <Kbd>{isMac ? '⌘' : 'Ctrl'}</Kbd>
                 <Kbd>K</Kbd>
               </KbdGroup>
             </Button>

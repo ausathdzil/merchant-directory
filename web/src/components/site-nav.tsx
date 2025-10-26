@@ -6,17 +6,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   type ComponentProps,
-  Suspense,
   useEffect,
   useState,
   ViewTransition,
 } from 'react';
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { SearchInput } from './search-input';
 import { Button, buttonVariants } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Skeleton } from './ui/skeleton';
 
 type NavItem<T extends string = string> = {
   href: T;
@@ -30,26 +29,14 @@ const navItems: NavItem<Route>[] = [
 
 export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
 
   return pathname.startsWith('/explore') ? (
-    <div className="flex flex-1 items-center justify-center gap-4">
-      <ViewTransition name="explore">
-        <Link
-          className={cn(
-            buttonVariants({ variant: 'ghost', size: 'sm' }),
-            'hidden xl:flex'
-          )}
-          href="/explore"
-        >
-          Explore
-        </Link>
-      </ViewTransition>
-      <Suspense fallback={<Skeleton className="h-9 w-full" />}>
-        <SearchInput placeholder="Search merchant name or keywords…" />
-      </Suspense>
+    <div className="order-1 flex w-full border-t p-4 md:order-0 md:border-none md:p-0">
+      <SearchInput placeholder="Search merchant name or keywords…" />
     </div>
   ) : (
-    <div className="-translate-x-1/2 absolute left-1/2">
+    !isMobile && (
       <nav
         className={cn('hidden items-center gap-4 md:flex', className)}
         {...props}
@@ -77,7 +64,7 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
           );
         })}
       </nav>
-    </div>
+    )
   );
 }
 
@@ -86,6 +73,7 @@ export function MobileNav({
   ...props
 }: ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (open) {
@@ -100,62 +88,64 @@ export function MobileNav({
   }, [open]);
 
   return (
-    <Popover onOpenChange={setOpen} open={open}>
-      <PopoverTrigger asChild>
-        <Button
-          className={cn('relative, overflow-hidden', className)}
-          size="icon"
-          variant="ghost"
-          {...props}
+    isMobile && (
+      <Popover onOpenChange={setOpen} open={open}>
+        <PopoverTrigger asChild>
+          <Button
+            className={cn('relative, overflow-hidden', className)}
+            size="icon"
+            variant="ghost"
+            {...props}
+          >
+            <MenuIcon
+              className={cn(
+                'absolute transition-all duration-200',
+                open
+                  ? 'rotate-90 scale-0 opacity-0'
+                  : 'rotate-0 scale-100 opacity-100'
+              )}
+            />
+            <XIcon
+              className={cn(
+                'absolute transition-all duration-200',
+                open
+                  ? 'rotate-0 scale-100 opacity-100'
+                  : '-rotate-90 scale-0 opacity-0'
+              )}
+            />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          alignOffset={-16}
+          className="no-scrollbar h-(--radix-popper-available-height) w-(--radix-popper-available-width) overflow-y-auto rounded-none border-none bg-background/90 p-0 shadow-none backdrop-blur duration-100"
+          side="bottom"
+          sideOffset={14}
         >
-          <MenuIcon
-            className={cn(
-              'absolute transition-all duration-200',
-              open
-                ? 'rotate-90 scale-0 opacity-0'
-                : 'rotate-0 scale-100 opacity-100'
-            )}
-          />
-          <XIcon
-            className={cn(
-              'absolute transition-all duration-200',
-              open
-                ? 'rotate-0 scale-100 opacity-100'
-                : '-rotate-90 scale-0 opacity-0'
-            )}
-          />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="start"
-        alignOffset={-16}
-        className="no-scrollbar h-(--radix-popper-available-height) w-(--radix-popper-available-width) overflow-y-auto rounded-none border-none bg-background/90 p-0 shadow-none backdrop-blur duration-100"
-        side="bottom"
-        sideOffset={14}
-      >
-        <div className="flex flex-col gap-4 overflow-auto px-8 py-4">
-          <div className="font-medium text-muted-foreground">Menu</div>
-          <nav className="flex flex-col gap-3">
-            <Link
-              className="font-medium text-2xl"
-              href="/"
-              onClick={() => setOpen(false)}
-            >
-              Home
-            </Link>
-            {navItems.map((item) => (
+          <div className="flex flex-col gap-4 overflow-auto px-6 py-4">
+            <div className="font-medium text-muted-foreground">Menu</div>
+            <nav className="flex flex-col gap-3">
               <Link
                 className="font-medium text-2xl"
-                href={item.href}
-                key={item.label}
+                href="/"
                 onClick={() => setOpen(false)}
               >
-                {item.label}
+                Home
               </Link>
-            ))}
-          </nav>
-        </div>
-      </PopoverContent>
-    </Popover>
+              {navItems.map((item) => (
+                <Link
+                  className="font-medium text-2xl"
+                  href={item.href}
+                  key={item.label}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </PopoverContent>
+      </Popover>
+    )
   );
 }

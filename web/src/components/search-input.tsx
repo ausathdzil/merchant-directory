@@ -13,9 +13,8 @@ const DEBOUNCE_MS = 300;
 
 export function SearchInput({
   className,
-  placeholder,
   ...props
-}: { placeholder?: string } & ComponentProps<typeof InputGroup>) {
+}: ComponentProps<typeof InputGroupInput>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
 
@@ -50,13 +49,15 @@ export function SearchInput({
   }, [handleSearch]);
 
   return (
-    <InputGroup className={className} {...props}>
+    <InputGroup>
       <label aria-hidden htmlFor={id}>
         <InputGroupAddon>
           <SearchIcon />
         </InputGroupAddon>
       </label>
       <InputGroupInput
+        className={className}
+        {...props}
         aria-label="Search"
         autoComplete="off"
         autoFocus
@@ -65,7 +66,6 @@ export function SearchInput({
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        placeholder={placeholder}
         ref={inputRef}
         type="search"
       />

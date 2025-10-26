@@ -2,6 +2,7 @@ import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
+
 import {
   Empty,
   EmptyDescription,
@@ -24,10 +25,10 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
   const { q } = await searchParams;
 
   return (
-    <main className="flex flex-1 flex-col items-center px-8">
+    <main className="flex flex-1 flex-col items-center">
       {q ? (
         <Suspense fallback={null}>
-          <pre>Searching for "{q}"</pre>
+          <pre className="pt-16 md:pt-24">Searching for "{q}"</pre>
         </Suspense>
       ) : (
         <Empty>

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Inter } from 'next/font/google';
+import { Suspense } from 'react';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
-import { Suspense } from 'react';
 
 const inter = Inter({
   variable: '--font-inter',
