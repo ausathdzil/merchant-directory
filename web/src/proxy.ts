@@ -1,5 +1,6 @@
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
+import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { locales } from '../global';
@@ -20,7 +21,11 @@ const authRoute = ['/login', '/register'];
 
 export default async function proxy(req: NextRequest) {
   const locale = getLocale(req) as (typeof locales)[number];
-  await setLocale(locale);
+
+  const cookieStore = await cookies();
+  if (!cookieStore.get('locale')) {
+    await setLocale(locale);
+  }
 
   const path = req.nextUrl.pathname;
   const isAuthRoute = authRoute.includes(path);
