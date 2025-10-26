@@ -143,12 +143,10 @@
 
 @supports (view-transition-name: none) {
   @media not (prefers-reduced-motion: reduce) {
-    ::view-transition-old(page),
     ::view-transition-old(form) {
       animation: hide 0.2s ease-out forwards;
     }
 
-    ::view-transition-new(page),
     ::view-transition-new(form) {
       opacity: 0;
       animation: appear 0.2s ease 0.2s forwards;
@@ -192,4 +190,96 @@
     opacity: 1;
     filter: blur(0);
   }
+}
+
+@keyframes float-up {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes float-down {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@keyframes float-rotate-up {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(5deg);
+  }
+}
+
+@keyframes float-rotate-down {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(6px) rotate(-3deg);
+  }
+}
+
+@keyframes float-scale {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.1);
+  }
+}
+
+@keyframes float-scale-down {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(3px) scale(0.9);
+  }
+}
+
+@keyframes float-rotate-scale {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(7px) rotate(2deg) scale(1.05);
+  }
+}
+
+.float-up {
+  animation: float-up 3s ease-in-out infinite;
+}
+.float-down {
+  animation: float-down 4s ease-in-out infinite;
+}
+.float-rotate-up {
+  animation: float-rotate-up 2.5s ease-in-out infinite;
+}
+.float-rotate-down {
+  animation: float-rotate-down 4.2s ease-in-out infinite;
+}
+.float-scale {
+  animation: float-scale 2s ease-in-out infinite;
+}
+.float-scale-down {
+  animation: float-scale-down 2.2s ease-in-out infinite;
+}
+.float-rotate-scale {
+  animation: float-rotate-scale 4.5s ease-in-out infinite;
 }

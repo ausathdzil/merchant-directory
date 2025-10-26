@@ -3,8 +3,8 @@
 import { useLocale } from 'next-intl';
 import { useTransition } from 'react';
 
+import type { locales } from '@/i18n/request';
 import { setLocale } from '@/lib/actions/locale';
-import type { locales } from '../../global';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
 export function LocaleSelect() {

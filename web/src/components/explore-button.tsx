@@ -20,19 +20,22 @@ import {
 import { Kbd, KbdGroup } from './ui/kbd';
 
 export function ExploreButton() {
+  const t = useTranslations('HomePage.hero');
   const isMobile = useIsMobile();
-  const t = useTranslations('HomePage');
 
   return isMobile ? (
-    <div className="relative mt-4 flex h-16 items-center justify-center">
-      <Link
-        className={buttonVariants({ size: 'pill-lg', variant: 'outline' })}
-        href="/explore"
-      >
+    <motion.div
+      whileHover={{
+        scale: 1.05,
+        transition: { duration: 0.2 },
+      }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <Link className={buttonVariants({ size: 'pill-lg' })} href="/explore">
         <SearchIcon />
-        {t('hero.button')}
+        {t('button')}
       </Link>
-    </div>
+    </motion.div>
   ) : (
     <AnimatedSearch />
   );
@@ -45,7 +48,7 @@ function AnimatedSearch() {
   const [isMac, setIsMac] = useState(false);
   const id = useId();
 
-  const t = useTranslations('HomePage');
+  const t = useTranslations('HomePage.hero');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -78,27 +81,31 @@ function AnimatedSearch() {
         width: isExpanded ? 400 : 'auto',
         maxWidth: isExpanded ? '80vw' : '100vw',
       }}
-      className="relative mt-4 flex h-16 items-center justify-center"
+      className="relative flex h-16 items-start justify-center"
       layout
       transition={{
         type: 'spring',
-        stiffness: 400,
-        damping: 30,
+        stiffness: 300,
+        damping: 25,
+        mass: 0.8,
       }}
     >
       <AnimatePresence mode="wait">
         {isExpanded ? (
           <motion.div
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             className="w-full"
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             key="input-group"
-            transition={{ duration: 0.15 }}
+            transition={{
+              duration: 0.15,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
           >
             <Form action="/explore">
               <Field>
-                <InputGroup>
+                <InputGroup className="bg-background">
                   <label aria-hidden htmlFor={id}>
                     <InputGroupAddon>
                       <SearchIcon />
@@ -109,7 +116,7 @@ function AnimatedSearch() {
                     autoComplete="off"
                     autoFocus
                     name="q"
-                    placeholder={t('hero.search.placeholder')}
+                    placeholder={t('search.placeholder')}
                     type="search"
                   />
                   <InputGroupAddon align="inline-end">
@@ -118,32 +125,44 @@ function AnimatedSearch() {
                       type="submit"
                       variant="secondary"
                     >
-                      {t('hero.search.search')}
+                      {t('search.search')}
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
                 <FieldDescription className="hidden text-center md:block">
-                  {t('hero.search.press')} <Kbd>Enter</Kbd>{' '}
-                  {t('hero.search.toSearch')} <Kbd>Esc</Kbd>{' '}
-                  {t('hero.search.toClose')}
+                  {t('search.press')} <Kbd>Enter</Kbd> {t('search.toSearch')}{' '}
+                  <Kbd>Esc</Kbd> {t('search.toClose')}
                 </FieldDescription>
               </Field>
             </Form>
           </motion.div>
         ) : (
           <motion.div
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             key="button"
-            transition={{ duration: 0.15 }}
+            transition={{
+              duration: 0.1,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                duration: 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              },
+            }}
           >
-            <Button onClick={handleToggle} size="pill-lg" variant="outline">
+            <Button onClick={handleToggle} size="pill-lg" variant="default">
               <SearchIcon />
-              {t('hero.button')}
+              {t('button')}
+
               <KbdGroup>
-                <Kbd>{isMac ? '⌘' : 'Ctrl'}</Kbd>
-                <Kbd>K</Kbd>
+                <Kbd className="bg-blue-500/50 text-primary-foreground">
+                  {isMac ? '⌘' : 'Ctrl'}
+                </Kbd>
+                <Kbd className="bg-blue-500/50 text-primary-foreground">K</Kbd>
               </KbdGroup>
             </Button>
           </motion.div>

@@ -3,7 +3,7 @@
 import { MenuIcon, XIcon } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { type ComponentProps, useEffect, useState } from 'react';
 
@@ -61,9 +61,10 @@ export function MobileNav({
   ...props
 }: ComponentProps<typeof Button>) {
   const t = useTranslations('Header');
+  const isMobile = useIsMobile();
 
   const [open, setOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const router = useRouter();
 
   const navItems: NavItem<Route>[] = [
     { label: t('navigation.explore'), href: '/explore' },
@@ -123,7 +124,10 @@ export function MobileNav({
               <Link
                 className="font-medium text-2xl"
                 href="/"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false);
+                  router.push('/');
+                }}
               >
                 {t('navigation.home')}
               </Link>
@@ -132,7 +136,10 @@ export function MobileNav({
                   className="font-medium text-2xl"
                   href={item.href}
                   key={item.label}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    router.push(item.href);
+                  }}
                 >
                   {item.label}
                 </Link>

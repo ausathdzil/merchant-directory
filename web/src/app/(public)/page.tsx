@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noMagicNumbers: Motion values */
 import {
   ArrowRightIcon,
   CheckCircleIcon,
@@ -6,12 +7,15 @@ import {
   StoreIcon,
   TelescopeIcon,
 } from 'lucide-react';
+// biome-ignore lint/performance/noNamespaceImport: Motion for React Server Components
+import * as motion from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { ComponentProps } from 'react';
 
 import { ExploreButton } from '@/components/explore-button';
+import { HeroDecorations } from '@/components/hero-decoration';
 import { Heading, Small, Text, Title } from '@/components/typography';
 import {
   Accordion,
@@ -35,21 +39,73 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col items-center gap-32 pt-16 md:pt-24">
-        <div className="flex flex-col items-center px-8">
-          <article className="max-w-[60ch]">
-            <Title className="text-wrap sm:text-balance">
-              {t('hero.title')}
-            </Title>
-            <Text className="text-center text-sm sm:text-base">
-              {t('hero.description')}
-            </Text>
-          </article>
-          <div className="flex flex-col items-center gap-4 pt-8 md:flex-row">
+      <main className="flex flex-1 flex-col items-center gap-16 md:gap-32">
+        <motion.div
+          animate={{ opacity: 1 }}
+          className="flex w-full flex-col items-center gap-4 overflow-hidden px-8 py-8 sm:gap-8 md:py-32"
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <HeroDecorations />
+          <motion.article
+            animate={{ opacity: 1, y: 0 }}
+            className="flex max-w-[80ch] flex-col gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.2,
+            }}
+          >
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94],
+                delay: 0.4,
+              }}
+            >
+              <Title className="text-wrap sm:text-balance">
+                {t('hero.title')}
+              </Title>
+            </motion.div>
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.7,
+                ease: [0.25, 0.46, 0.45, 0.94],
+                delay: 0.6,
+              }}
+            >
+              <Text className="text-center text-sm sm:text-base">
+                {t('hero.description')}
+              </Text>
+            </motion.div>
+          </motion.article>
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.6,
+            }}
+          >
             <ExploreButton />
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-8 px-8">
+          </motion.div>
+        </motion.div>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          className="flex w-full flex-col items-center gap-8 px-8"
+          initial={{ opacity: 0, y: 30 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.25, 0.46, 0.45, 0.94],
+            delay: 0.6,
+          }}
+        >
           <article className="text-center">
             <Heading>{t('features.heading')}</Heading>
             <Text className="text-sm sm:text-base">
@@ -57,13 +113,17 @@ export default async function Home() {
             </Text>
           </article>
           <Features className="lg:max-w-4/5" />
-        </div>
-        <div className="flex w-full flex-col items-center gap-8 px-8 lg:max-w-4/5">
+        </motion.div>
+        <div className="flex w-full flex-col items-center gap-8 px-8">
           <article className="text-center">
             <Heading>{t('faq.heading')}</Heading>
             <Text className="text-sm sm:text-base">{t('faq.description')}</Text>
           </article>
-          <FrequentlyAskedQuestions />
+          <FrequentlyAskedQuestions
+            className="w-full lg:max-w-4/5"
+            collapsible
+            type="single"
+          />
         </div>
         <div className="flex w-full flex-col items-center gap-4 bg-accent/50 py-8">
           <TelescopeIcon className="stroke-primary" size={64} />
@@ -178,7 +238,9 @@ async function Features({
   );
 }
 
-async function FrequentlyAskedQuestions() {
+async function FrequentlyAskedQuestions({
+  ...props
+}: ComponentProps<typeof Accordion>) {
   const t = await getTranslations('HomePage.faq.questions');
 
   const questions = [
@@ -201,7 +263,7 @@ async function FrequentlyAskedQuestions() {
   ];
 
   return (
-    <Accordion className="w-full" collapsible type="single">
+    <Accordion {...props}>
       {questions.map((question) => (
         <AccordionItem key={question.question} value={question.question}>
           <AccordionTrigger className="md:text-lg">

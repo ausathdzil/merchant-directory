@@ -1,6 +1,7 @@
 'use client';
 
 import { MoonIcon, SunIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { type ComponentProps, useCallback } from 'react';
 
@@ -13,6 +14,7 @@ export function ModeToggle({
   ...props
 }: ComponentProps<typeof Button>) {
   const { setTheme, resolvedTheme } = useTheme();
+  const t = useTranslations('Header');
 
   const toggleTheme = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,7 +68,7 @@ export function ModeToggle({
           <MoonIcon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Toggle Theme</TooltipContent>
+      <TooltipContent>{t('modeToggle')}</TooltipContent>
     </Tooltip>
   );
 }

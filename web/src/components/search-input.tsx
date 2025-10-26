@@ -49,7 +49,7 @@ export function SearchInput({
   }, [handleSearch]);
 
   return (
-    <InputGroup>
+    <InputGroup className="bg-background">
       <label aria-hidden htmlFor={id}>
         <InputGroupAddon>
           <SearchIcon />
@@ -63,6 +63,7 @@ export function SearchInput({
         autoFocus
         defaultValue={searchParams.get('q')?.toString()}
         id={id}
+        name="q"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
