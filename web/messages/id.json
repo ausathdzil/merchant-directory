@@ -69,7 +69,26 @@
       }
     },
     "faq": {
-      "heading": "Pertanyaan yang sering diajukan"
+      "heading": "Pertanyaan yang sering diajukan",
+      "description": "Semua yang perlu kamu ketahui tentang Direktori UMKM",
+      "questions": {
+        "whatIsMerchantDirectory": {
+          "question": "Apa itu Direktori UMKM?",
+          "answer": "Direktori UMKM adalah platform komprehensif yang menghubungkan pelanggan dengan usaha kecil dan menengah terverifikasi di Jakarta Selatan. Kami membantumu menemukan bisnis lokal, mulai dari restoran dan kafe hingga toko ritel dan penyedia layanan."
+        },
+        "isItFree": {
+          "question": "Apakah gratis untuk menjelajahi direktori?",
+          "answer": "Ya! Menjelajahi Direktori UMKM sepenuhnya gratis. Kamu dapat mencari, memfilter, dan menjelajahi semua bisnis yang terdaftar tanpa biaya apa pun."
+        },
+        "doIHaveToRegister": {
+          "question": "Apakah saya harus mendaftar untuk menggunakan direktori?",
+          "answer": "Tidak, kamu tidak perlu mendaftar untuk menggunakan Direktori UMKM. Kamu dapat menjelajahi direktori dan mencari bisnis tanpa membuat akun."
+        },
+        "whatTypeOfBusinessCanIDiscover": {
+          "question": "Apa jenis bisnis yang dapat saya temukan?",
+          "answer": "Kami daftarkan semua jenis usaha kecil dan menengah yang beroperasi di Jakarta Selatan, termasuk restoran, kafe, toko ritel, penyedia layanan, fasilitas kesehatan, institusi pendidikan, dan lainnya."
+        }
+      }
     },
     "cta": {
       "heading": "Apa yang kamu tunggu lagi?",

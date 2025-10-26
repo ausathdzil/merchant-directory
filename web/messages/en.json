@@ -69,7 +69,26 @@
       }
     },
     "faq": {
-      "heading": "Frequently Asked Questions"
+      "heading": "Frequently Asked Questions",
+      "description": "Everything you need to know about Merchant Directory",
+      "questions": {
+        "whatIsMerchantDirectory": {
+          "question": "What is Merchant Directory?",
+          "answer": "Merchant Directory is a comprehensive platform that connects customers with verified small and medium enterprises in Jakarta Selatan. We help you discover local businesses, from restaurants and cafes to retail stores and service providers."
+        },
+        "isItFree": {
+          "question": "Is it free to browse the directory?",
+          "answer": "Yes! Browsing the Merchant Directory is completely free. You can search, filter, and explore all listed businesses without any charges."
+        },
+        "doIHaveToRegister": {
+          "question": "Do I have to register to use the directory?",
+          "answer": "No, you don't need to register to use the Merchant Directory. You can browse the directory and search for businesses without creating an account."
+        },
+        "whatTypeOfBusinessCanIDiscover": {
+          "question": "What type of businesses can I discover?",
+          "answer": "We list all types of small and medium enterprises operating in Jakarta Selatan, including restaurants, cafes, retail stores, service providers, healthcare facilities, educational institutions, and more."
+        }
+      }
     },
     "cta": {
       "heading": "What are you waiting for?",

@@ -13,6 +13,12 @@ import type { ComponentProps } from 'react';
 
 import { ExploreButton } from '@/components/explore-button';
 import { Heading, Small, Text, Title } from '@/components/typography';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Item,
@@ -29,7 +35,7 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col items-center gap-16 pt-16 md:pt-24">
+      <main className="flex flex-1 flex-col items-center gap-32 pt-16 md:pt-24">
         <div className="flex flex-col items-center px-8">
           <article className="max-w-[60ch]">
             <Title className="text-wrap sm:text-balance">
@@ -52,9 +58,12 @@ export default async function Home() {
           </article>
           <Features className="lg:max-w-4/5" />
         </div>
-        <div className="flex flex-col items-center px-8">
-          <Heading>{t('faq.heading')}</Heading>
-          {/* TODO: FAQ */}
+        <div className="flex w-full flex-col items-center gap-8 px-8 lg:max-w-4/5">
+          <article className="text-center">
+            <Heading>{t('faq.heading')}</Heading>
+            <Text className="text-sm sm:text-base">{t('faq.description')}</Text>
+          </article>
+          <FrequentlyAskedQuestions />
         </div>
         <div className="flex w-full flex-col items-center gap-4 bg-accent/50 py-8">
           <TelescopeIcon className="stroke-primary" size={64} />
@@ -139,7 +148,7 @@ async function Features({
         <Item
           className="flex-col gap-4 p-8 md:flex-row"
           key={feature.label}
-          variant={index % 2 === 0 ? 'muted' : 'default'}
+          variant={index % 2 === 0 ? 'default' : 'muted'}
         >
           <ItemMedia className="self-center! size-48 md:size-64 lg:size-96">
             <feature.icon className={cn('size-1/2', feature.iconColor)} />
@@ -166,6 +175,44 @@ async function Features({
         </Item>
       ))}
     </ItemGroup>
+  );
+}
+
+async function FrequentlyAskedQuestions() {
+  const t = await getTranslations('HomePage.faq.questions');
+
+  const questions = [
+    {
+      question: t('whatIsMerchantDirectory.question'),
+      answer: t('whatIsMerchantDirectory.answer'),
+    },
+    {
+      question: t('isItFree.question'),
+      answer: t('isItFree.answer'),
+    },
+    {
+      question: t('doIHaveToRegister.question'),
+      answer: t('doIHaveToRegister.answer'),
+    },
+    {
+      question: t('whatTypeOfBusinessCanIDiscover.question'),
+      answer: t('whatTypeOfBusinessCanIDiscover.answer'),
+    },
+  ];
+
+  return (
+    <Accordion className="w-full" collapsible type="single">
+      {questions.map((question) => (
+        <AccordionItem key={question.question} value={question.question}>
+          <AccordionTrigger className="md:text-lg">
+            {question.question}
+          </AccordionTrigger>
+          <AccordionContent className="md:text-base">
+            {question.answer}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
   );
 }
 
