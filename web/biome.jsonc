@@ -9,8 +9,8 @@
       "**",
       "!messages/*.d.json.ts",
       "!src/components/ui",
-      "!src/lib/*.d.ts",
-      "!src/i18n/*.d.ts"
+      "!src/i18n/*.d.ts",
+      "!src/lib/types/*.d.ts"
     ]
   },
   "linter": {
@@ -19,8 +19,8 @@
       "react": "recommended"
     },
     "rules": {
-      "suspicious": {
-        "noUnknownAtRules": "off"
+      "style": {
+        "noMagicNumbers": "off"
       }
     }
   },

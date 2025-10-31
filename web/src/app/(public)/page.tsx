@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/noMagicNumbers: Motion values */
 import {
   ArrowRightIcon,
   CheckCircleIcon,
@@ -42,28 +41,18 @@ export default async function Home() {
       <main className="flex flex-1 flex-col items-center gap-16 md:gap-32">
         <motion.div
           animate={{ opacity: 1 }}
-          className="flex w-full flex-col items-center gap-4 overflow-hidden px-8 py-8 sm:gap-8 md:py-32"
+          className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-32"
           initial={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
         >
-          <HeroDecorations />
-          <motion.article
-            animate={{ opacity: 1, y: 0 }}
-            className="flex max-w-[80ch] flex-col gap-4"
-            initial={{ opacity: 0, y: 30 }}
-            transition={{
-              duration: 0.8,
-              ease: [0.25, 0.46, 0.45, 0.94],
-              delay: 0.2,
-            }}
-          >
+          <article className="flex max-w-[80ch] flex-col items-center gap-4">
+            <HeroDecorations />
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
               transition={{
-                duration: 0.7,
+                duration: 0.4,
                 ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.4,
               }}
             >
               <Title className="text-wrap sm:text-balance">
@@ -74,23 +63,23 @@ export default async function Home() {
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
               transition={{
-                duration: 0.7,
+                duration: 0.4,
                 ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.6,
+                delay: 0.2,
               }}
             >
               <Text className="text-center text-sm sm:text-base">
                 {t('hero.description')}
               </Text>
             </motion.div>
-          </motion.article>
+          </article>
           <motion.div
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{
-              duration: 0.8,
+              duration: 0.5,
               ease: [0.25, 0.46, 0.45, 0.94],
-              delay: 0.6,
+              delay: 0.2,
             }}
           >
             <ExploreButton />
@@ -98,12 +87,12 @@ export default async function Home() {
         </motion.div>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="flex w-full flex-col items-center gap-8 px-8"
+          className="flex flex-col items-center gap-8 px-8"
           initial={{ opacity: 0, y: 30 }}
           transition={{
             duration: 0.8,
             ease: [0.25, 0.46, 0.45, 0.94],
-            delay: 0.6,
+            delay: 0.3,
           }}
         >
           <article className="text-center">
@@ -131,19 +120,24 @@ export default async function Home() {
             <Heading>{t('cta.heading')}</Heading>
             <Text className="text-sm md:text-base">{t('cta.description')}</Text>
           </article>
-          <Link
-            className={cn(
-              buttonVariants({
+          <motion.div
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link
+              className={buttonVariants({
                 size: 'pill-lg',
                 variant: 'ghost-colorful',
-              }),
-              'hover:scale-105'
-            )}
-            href="/explore"
-          >
-            {t('cta.button')}
-            <ArrowRightIcon />
-          </Link>
+              })}
+              href="/explore"
+            >
+              {t('cta.button')}
+              <ArrowRightIcon />
+            </Link>
+          </motion.div>
         </div>
       </main>
       <Footer />

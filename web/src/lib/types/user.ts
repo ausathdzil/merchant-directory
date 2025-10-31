@@ -1,4 +1,4 @@
-import type { components, paths } from '../schema';
+import type { components, paths } from './schema';
 
 export type User = components['schemas']['UserPublic'];
 

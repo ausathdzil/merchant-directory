@@ -1,13 +1,16 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useTransition } from 'react';
+import { type ComponentProps, useTransition } from 'react';
 
 import type { locales } from '@/i18n/request';
 import { setLocale } from '@/lib/actions/locale';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
-export function LocaleSelect() {
+export function LocaleSelect({
+  className,
+  ...props
+}: ComponentProps<typeof NativeSelect>) {
   const [isPending, startTransition] = useTransition();
   const locale = useLocale();
 
@@ -23,6 +26,7 @@ export function LocaleSelect() {
       defaultValue={locale}
       disabled={isPending}
       onChange={handleChange}
+      {...props}
     >
       <NativeSelectOption value="id">Indonesian</NativeSelectOption>
       <NativeSelectOption value="en">English</NativeSelectOption>

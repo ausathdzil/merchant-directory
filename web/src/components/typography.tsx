@@ -6,7 +6,7 @@ export function Title({ className, ...props }: ComponentProps<'h1'>) {
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-balance text-center font-alt font-medium text-4xl tracking-tight md:text-6xl',
+        'scroll-m-20 text-balance text-center font-alt font-medium text-4xl tracking-tight md:text-5xl',
         className
       )}
       {...props}

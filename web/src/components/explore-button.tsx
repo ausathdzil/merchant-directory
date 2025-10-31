@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/noMagicNumbers: Motion values */
 'use client';
 
 import { SearchIcon } from 'lucide-react';
@@ -157,7 +156,6 @@ function AnimatedSearch() {
             <Button onClick={handleToggle} size="pill-lg" variant="default">
               <SearchIcon />
               {t('button')}
-
               <KbdGroup>
                 <Kbd className="bg-blue-500/50 text-primary-foreground">
                   {isMac ? '⌘' : 'Ctrl'}
