@@ -49,7 +49,7 @@ export function SearchInput({
   }, [handleSearch]);
 
   return (
-    <InputGroup className="bg-background">
+    <InputGroup>
       <label aria-hidden htmlFor={id}>
         <InputGroupAddon>
           <SearchIcon />

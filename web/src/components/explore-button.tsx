@@ -45,6 +45,7 @@ const macRegex = /Mac/;
 function AnimatedSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMac, setIsMac] = useState(false);
+  const [value, setValue] = useState('');
   const id = useId();
 
   const t = useTranslations('HomePage.hero');
@@ -104,7 +105,7 @@ function AnimatedSearch() {
           >
             <Form action="/explore">
               <Field>
-                <InputGroup className="bg-background">
+                <InputGroup>
                   <label aria-hidden htmlFor={id}>
                     <InputGroupAddon>
                       <SearchIcon />
@@ -115,11 +116,14 @@ function AnimatedSearch() {
                     autoComplete="off"
                     autoFocus
                     name="q"
+                    onChange={(e) => setValue(e.target.value)}
                     placeholder={t('search.placeholder')}
                     type="search"
+                    value={value}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
+                      disabled={!value.trim()}
                       size="xs"
                       type="submit"
                       variant="secondary"
@@ -128,10 +132,12 @@ function AnimatedSearch() {
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldDescription className="hidden text-center md:block">
-                  {t('search.press')} <Kbd>Enter</Kbd> {t('search.toSearch')}{' '}
-                  <Kbd>Esc</Kbd> {t('search.toClose')}
-                </FieldDescription>
+                {value.trim() && (
+                  <FieldDescription className="hidden text-center md:block">
+                    {t('search.press')} <Kbd>Enter</Kbd> {t('search.toSearch')}{' '}
+                    <Kbd>Esc</Kbd> {t('search.toClose')}
+                  </FieldDescription>
+                )}
               </Field>
             </Form>
           </motion.div>

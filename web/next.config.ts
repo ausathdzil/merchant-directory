@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: true,
     viewTransition: true,
   },
+  typedRoutes: true,
 };
 
 const withNextIntl = createNextIntlPlugin({
