@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Any, ClassVar
 
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel  # pyright: ignore[reportUnknownVariableType]
@@ -21,6 +22,8 @@ class UserUpdate(SQLModel):
 
 
 class User(UserBase, table=True):
+    __tablename__: ClassVar[Any] = "users"  # pyright: ignore[reportExplicitAny]
+
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

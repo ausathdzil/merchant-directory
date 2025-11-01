@@ -99,11 +99,12 @@
   },
   "ExplorePage": {
     "search": {
-      "searching": "Mencari \"{query}\"…"
+      "allResults": "Semua Hasil",
+      "searching": "Mencari “{query}“"
     },
     "empty": {
-      "title": "Mulai pencarian",
-      "description": "Masukkan nama atau kata kunci untuk mencari bisnis terdekat",
+      "title": "Hasil tidak ditemukan",
+      "description": "Kami tidak dapat menemukan pencarianmu",
       "button": "Butuh Bantuan?"
     }
   }

@@ -36,7 +36,7 @@ def authenticate_user(session: Session, user_in: UserLogin):
 
 def create_token(data: TokenPayload, expires_delta: timedelta):
     expire = datetime.now(timezone.utc) + expires_delta
-    to_encode = TokenPayload.model_validate(data, update={"exp": expire})
+    to_encode = data.model_copy(update={"exp": expire})
 
     encoded_jwt = jwt.encode(  # pyright: ignore[reportUnknownMemberType]
         to_encode.model_dump(),

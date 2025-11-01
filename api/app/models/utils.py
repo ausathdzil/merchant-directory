@@ -1,21 +1,30 @@
 from datetime import datetime
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class Message(SQLModel):
+class Message(BaseModel):
     message: str
 
 
-class Status(SQLModel):
+class Status(BaseModel):
     ok: bool
 
 
-class Token(SQLModel):
+class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-class TokenPayload(SQLModel):
+class TokenPayload(BaseModel):
     sub: str | None = None
     exp: datetime | None = None
+
+
+class PaginationMeta(BaseModel):
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    has_next: bool
+    has_previous: bool

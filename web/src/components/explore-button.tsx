@@ -115,7 +115,7 @@ function AnimatedSearch() {
                     aria-label="Search"
                     autoComplete="off"
                     autoFocus
-                    name="q"
+                    name="search"
                     onChange={(e) => setValue(e.target.value)}
                     placeholder={t('search.placeholder')}
                     type="search"

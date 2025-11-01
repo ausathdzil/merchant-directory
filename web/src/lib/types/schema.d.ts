@@ -72,6 +72,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/merchants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchants */
+        get: operations["read_merchants_api_v1_merchants_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -122,10 +139,48 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** MerchantListItem */
+        MerchantListItem: {
+            /** Id */
+            id: number;
+            /** Display Name */
+            display_name: string | null;
+            /** Name */
+            name: string;
+            /** Primary Type */
+            primary_type: string | null;
+            /** Short Address */
+            short_address: string | null;
+            /** Rating */
+            rating: number | null;
+            /** User Rating Count */
+            user_rating_count: number | null;
+        };
+        /** MerchantsPublic */
+        MerchantsPublic: {
+            /** Data */
+            data: components["schemas"]["MerchantListItem"][];
+            meta: components["schemas"]["PaginationMeta"];
+        };
         /** Message */
         Message: {
             /** Message */
             message: string;
+        };
+        /** PaginationMeta */
+        PaginationMeta: {
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Page Size */
+            page_size: number;
+            /** Total Pages */
+            total_pages: number;
+            /** Has Next */
+            has_next: boolean;
+            /** Has Previous */
+            has_previous: boolean;
         };
         /** Status */
         Status: {
@@ -293,6 +348,52 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserPublic"];
+                };
+            };
+        };
+    };
+    read_merchants_api_v1_merchants_get: {
+        parameters: {
+            query?: {
+                /** @description Page number (starts at 1) */
+                page?: number;
+                /** @description Items per page */
+                page_size?: number;
+                /** @description Search in name and address */
+                search?: string | null;
+                /** @description Filter by primary type */
+                primary_type?: string | null;
+                /** @description Filter by open/closed status */
+                is_open_now?: boolean | null;
+                /** @description Minimum rating */
+                min_rating?: number | null;
+                /** @description Sort field */
+                sort_by?: "name" | "rating" | "distance" | "created_at";
+                /** @description Sort order */
+                sort_order?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MerchantsPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

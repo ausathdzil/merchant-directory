@@ -99,11 +99,12 @@
   },
   "ExplorePage": {
     "search": {
-      "searching": "Searching for \"{query}\"…"
+      "allResults": "All Results",
+      "searching": "Searching for “{query}“"
     },
     "empty": {
-      "title": "Start searching",
-      "description": "Enter a name or keyword to find nearby merchants",
+      "title": "No results found",
+      "description": "We couldn't find what you're looking for",
       "button": "Need Help?"
     }
   }

@@ -101,7 +101,7 @@ export default async function Home() {
               {t('features.description')}
             </Text>
           </article>
-          <Features className="lg:max-w-4/5" />
+          <Features className="lg:max-w-6xl" />
         </motion.div>
         <div className="flex w-full flex-col items-center gap-8 px-8">
           <article className="text-center">
@@ -109,7 +109,7 @@ export default async function Home() {
             <Text className="text-sm sm:text-base">{t('faq.description')}</Text>
           </article>
           <FrequentlyAskedQuestions
-            className="w-full lg:max-w-4/5"
+            className="w-full lg:max-w-6xl"
             collapsible
             type="single"
           />
@@ -276,7 +276,7 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
   return (
     <footer
       className={cn(
-        'mx-auto flex w-full flex-wrap items-center justify-between gap-4 p-4 lg:max-w-4/5',
+        'mx-auto flex w-full flex-wrap items-center justify-between gap-4 p-4 lg:max-w-6xl',
         className
       )}
       {...props}
