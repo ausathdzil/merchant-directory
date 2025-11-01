@@ -106,6 +106,9 @@
       "title": "Hasil tidak ditemukan",
       "description": "Kami tidak dapat menemukan pencarianmu",
       "button": "Butuh Bantuan?"
+    },
+    "error": {
+      "tryAgain": "Coba lagi"
     }
   }
 }

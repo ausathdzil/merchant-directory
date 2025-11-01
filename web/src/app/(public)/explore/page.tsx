@@ -31,14 +31,21 @@ export default async function ExplorePage({
   searchParams,
 }: PageProps<'/explore'>) {
   const t = await getTranslations('ExplorePage');
-  const { page_size, search, sort_by } = await searchParams;
+  const { page, page_size, search, primary_type, sort_by, sort_order } =
+    await searchParams;
 
   const query: MerchantsQuery = {
-    page_size: page_size ? Number(page_size) : 18,
+    page: page ? Number(page) : 1,
+    page_size: page_size ? Number(page_size) : 15,
     search: typeof search === 'string' ? search : undefined,
+    primary_type: typeof primary_type === 'string' ? primary_type : undefined,
     sort_by:
       typeof sort_by === 'string'
         ? (sort_by as NonNullable<MerchantsQuery>['sort_by'])
+        : undefined,
+    sort_order:
+      typeof sort_order === 'string'
+        ? (sort_order as NonNullable<MerchantsQuery>['sort_order'])
         : undefined,
   };
 
@@ -91,7 +98,7 @@ function MerchantsGrid({ merchants }: { merchants: MerchantListItem[] }) {
               <ItemTitle className="line-clamp-1">
                 {merchant.display_name}
               </ItemTitle>
-              <ItemDescription>
+              <ItemDescription className="tabular-nums">
                 ⭐ {merchant.rating} ({merchant.user_rating_count})
               </ItemDescription>
             </ItemContent>

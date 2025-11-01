@@ -89,6 +89,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/merchants/{merchant_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant */
+        get: operations["read_merchant_api_v1_merchants__merchant_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -139,10 +156,39 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** MerchantDetail */
+        MerchantDetail: {
+            /** Id */
+            id: number;
+            /** Display Name */
+            display_name: string | null;
+            /** Name */
+            name: string;
+            /** Primary Type */
+            primary_type: string | null;
+            /** Formatted Address */
+            formatted_address: string | null;
+            /** Short Address */
+            short_address: string | null;
+            /** Phone National */
+            phone_national: string | null;
+            /** Phone International */
+            phone_international: string | null;
+            /** Website */
+            website: string | null;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /** Rating */
+            rating: number | null;
+            /** User Rating Count */
+            user_rating_count: number | null;
+        };
         /** MerchantListItem */
         MerchantListItem: {
             /** Id */
-            id: number;
+            id: number | null;
             /** Display Name */
             display_name: string | null;
             /** Name */
@@ -355,21 +401,11 @@ export interface operations {
     read_merchants_api_v1_merchants_get: {
         parameters: {
             query?: {
-                /** @description Page number (starts at 1) */
                 page?: number;
-                /** @description Items per page */
                 page_size?: number;
-                /** @description Search in name and address */
                 search?: string | null;
-                /** @description Filter by primary type */
                 primary_type?: string | null;
-                /** @description Filter by open/closed status */
-                is_open_now?: boolean | null;
-                /** @description Minimum rating */
-                min_rating?: number | null;
-                /** @description Sort field */
                 sort_by?: "name" | "rating" | "distance" | "created_at";
-                /** @description Sort order */
                 sort_order?: "asc" | "desc";
             };
             header?: never;
@@ -385,6 +421,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MerchantsPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_api_v1_merchants__merchant_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MerchantDetail"];
                 };
             };
             /** @description Validation Error */

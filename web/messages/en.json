@@ -106,6 +106,9 @@
       "title": "No results found",
       "description": "We couldn't find what you're looking for",
       "button": "Need Help?"
+    },
+    "error": {
+      "tryAgain": "Try Again"
     }
   }
 }
