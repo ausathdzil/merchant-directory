@@ -1,6 +1,6 @@
-# pyright: reportAny=false
 # pyright: reportUnknownParameterType=false
 # pyright: reportMissingTypeArgument=false
+# pyright: reportAny=false
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownArgumentType=false
@@ -124,10 +124,9 @@ def seed_merchant_types(session: Session, merchant: Merchant, types: list[str]) 
     """Seed merchant types"""
     count = 0
     for type_name in types:
-        if merchant.id is not None:
-            merchant_type = MerchantType(merchant_id=merchant.id, type_name=type_name)
-            session.add(merchant_type)
-            count += 1
+        merchant_type = MerchantType(merchant_id=merchant.id, type_name=type_name)
+        session.add(merchant_type)
+        count += 1
     return count
 
 
@@ -141,18 +140,17 @@ def seed_photos(session: Session, merchant: Merchant, photos: list[dict]) -> int
             if author_attrs and len(author_attrs) > 0:
                 author_name = author_attrs[0].get("displayName")
 
-            if merchant.id is not None:
-                photo = Photo(
-                    merchant_id=merchant.id,
-                    photo_reference=photo_data.get("name", ""),
-                    width=photo_data.get("widthPx"),
-                    height=photo_data.get("heightPx"),
-                    author_name=author_name,
-                    is_primary=(idx == 0),  # First photo is primary
-                    order=idx,
-                )
-                session.add(photo)
-                count += 1
+            photo = Photo(
+                merchant_id=merchant.id,
+                photo_reference=photo_data.get("name", ""),
+                width=photo_data.get("widthPx"),
+                height=photo_data.get("heightPx"),
+                author_name=author_name,
+                is_primary=(idx == 0),  # First photo is primary
+                order=idx,
+            )
+            session.add(photo)
+            count += 1
         except Exception as e:
             print(f"  WARNING: Error adding photo {idx}: {e}")
             continue
@@ -182,19 +180,18 @@ def seed_reviews(session: Session, merchant: Merchant, reviews: list[dict]) -> i
             review_text = review_data.get("text", {}).get("text")
             published_at = parse_datetime(review_data.get("publishTime"))
 
-            if merchant.id is not None:
-                review = Review(
-                    merchant_id=merchant.id,
-                    google_review_id=google_review_id,
-                    rating=review_data.get("rating", 0),
-                    text=review_text,
-                    author_name=author_name,
-                    author_photo_uri=author_photo,
-                    published_at=published_at,
-                    relative_time=review_data.get("relativePublishTimeDescription"),
-                )
-                session.add(review)
-                count += 1
+            review = Review(
+                merchant_id=merchant.id,
+                google_review_id=google_review_id,
+                rating=review_data.get("rating", 0),
+                text=review_text,
+                author_name=author_name,
+                author_photo_uri=author_photo,
+                published_at=published_at,
+                relative_time=review_data.get("relativePublishTimeDescription"),
+            )
+            session.add(review)
+            count += 1
         except Exception as e:
             print(f"  WARNING: Error adding review: {e}")
             continue
@@ -231,19 +228,18 @@ def seed_opening_hours(session: Session, merchant: Merchant, hours_data: dict) -
         if day_name in days:
             days[day_name] = hours
 
-    if merchant.id is not None:
-        opening_hours = OpeningHours(
-            merchant_id=merchant.id,
-            is_open_now=hours_data.get("openNow"),
-            monday=days["monday"],
-            tuesday=days["tuesday"],
-            wednesday=days["wednesday"],
-            thursday=days["thursday"],
-            friday=days["friday"],
-            saturday=days["saturday"],
-            sunday=days["sunday"],
-        )
-        session.add(opening_hours)
+    opening_hours = OpeningHours(
+        merchant_id=merchant.id,
+        is_open_now=hours_data.get("openNow"),
+        monday=days["monday"],
+        tuesday=days["tuesday"],
+        wednesday=days["wednesday"],
+        thursday=days["thursday"],
+        friday=days["friday"],
+        saturday=days["saturday"],
+        sunday=days["sunday"],
+    )
+    session.add(opening_hours)
 
 
 def seed_amenities(session: Session, merchant: Merchant, place_data: dict) -> None:
@@ -258,42 +254,41 @@ def seed_amenities(session: Session, merchant: Merchant, place_data: dict) -> No
     # Extract accessibility options
     accessibility_opts = place_data.get("accessibilityOptions", {})
 
-    if merchant.id is not None:
-        amenity = Amenity(
-            merchant_id=merchant.id,
-            # Service options
-            takeout=place_data.get("takeout"),
-            dine_in=place_data.get("dineIn"),
-            outdoor_seating=place_data.get("outdoorSeating"),
-            reservable=place_data.get("reservable"),
-            # Dining options
-            serves_breakfast=place_data.get("servesBreakfast"),
-            serves_lunch=place_data.get("servesLunch"),
-            serves_dinner=place_data.get("servesDinner"),
-            serves_brunch=place_data.get("servesBrunch"),
-            serves_beer=place_data.get("servesBeer"),
-            serves_wine=place_data.get("servesWine"),
-            serves_vegetarian_food=place_data.get("servesVegetarianFood"),
-            # Suitability
-            good_for_children=place_data.get("goodForChildren"),
-            good_for_groups=place_data.get("goodForGroups"),
-            # Payment options
-            accepts_credit_cards=payment_opts.get("acceptsCreditCards"),
-            accepts_debit_cards=payment_opts.get("acceptsDebitCards"),
-            accepts_cash_only=payment_opts.get("acceptsCashOnly"),
-            accepts_nfc=payment_opts.get("acceptsNfc"),
-            # Parking options
-            free_parking=parking_opts.get("freeParkingLot"),
-            paid_parking=parking_opts.get("paidParkingLot"),
-            valet_parking=parking_opts.get("valetParking"),
-            # Accessibility options
-            wheelchair_entrance=accessibility_opts.get("wheelchairAccessibleEntrance"),
-            wheelchair_restroom=accessibility_opts.get("wheelchairAccessibleRestroom"),
-            wheelchair_seating=accessibility_opts.get("wheelchairAccessibleSeating"),
-            # Other amenities
-            restroom=place_data.get("restroom"),
-        )
-        session.add(amenity)
+    amenity = Amenity(
+        merchant_id=merchant.id,
+        # Service options
+        takeout=place_data.get("takeout"),
+        dine_in=place_data.get("dineIn"),
+        outdoor_seating=place_data.get("outdoorSeating"),
+        reservable=place_data.get("reservable"),
+        # Dining options
+        serves_breakfast=place_data.get("servesBreakfast"),
+        serves_lunch=place_data.get("servesLunch"),
+        serves_dinner=place_data.get("servesDinner"),
+        serves_brunch=place_data.get("servesBrunch"),
+        serves_beer=place_data.get("servesBeer"),
+        serves_wine=place_data.get("servesWine"),
+        serves_vegetarian_food=place_data.get("servesVegetarianFood"),
+        # Suitability
+        good_for_children=place_data.get("goodForChildren"),
+        good_for_groups=place_data.get("goodForGroups"),
+        # Payment options
+        accepts_credit_cards=payment_opts.get("acceptsCreditCards"),
+        accepts_debit_cards=payment_opts.get("acceptsDebitCards"),
+        accepts_cash_only=payment_opts.get("acceptsCashOnly"),
+        accepts_nfc=payment_opts.get("acceptsNfc"),
+        # Parking options
+        free_parking=parking_opts.get("freeParkingLot"),
+        paid_parking=parking_opts.get("paidParkingLot"),
+        valet_parking=parking_opts.get("valetParking"),
+        # Accessibility options
+        wheelchair_entrance=accessibility_opts.get("wheelchairAccessibleEntrance"),
+        wheelchair_restroom=accessibility_opts.get("wheelchairAccessibleRestroom"),
+        wheelchair_seating=accessibility_opts.get("wheelchairAccessibleSeating"),
+        # Other amenities
+        restroom=place_data.get("restroom"),
+    )
+    session.add(amenity)
 
 
 def main():
@@ -301,7 +296,9 @@ def main():
     print("\nStarting database seed...\n")
 
     # Load data
-    data = load_data()
+    import sys
+    file_path = sys.argv[1] if len(sys.argv) > 1 else "data/pondok-labu.json"
+    data = load_data(file_path)
 
     # Create tables if they don't exist
     from app.database import engine

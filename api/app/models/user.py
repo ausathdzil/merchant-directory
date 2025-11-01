@@ -29,7 +29,6 @@ class User(Base):
     )
 
 
-# Pydantic models for validation
 class UserBase(BaseModel):
     name: str
     email: EmailStr

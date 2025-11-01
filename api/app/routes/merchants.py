@@ -1,29 +1,13 @@
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query
-from pydantic import BaseModel
 from sqlalchemy import or_
 
 from app.dependencies import SessionDep
-from app.models.merchant import Merchant
+from app.models.merchant import Merchant, MerchantListItem, MerchantsPublic
 from app.models.utils import PaginationMeta
 
 router = APIRouter(prefix="/merchants", tags=["merchants"])
-
-
-class MerchantListItem(BaseModel):
-    id: int | None
-    display_name: str | None
-    name: str
-    primary_type: str | None
-    short_address: str | None
-    rating: float | None
-    user_rating_count: int | None
-
-
-class MerchantsPublic(BaseModel):
-    data: list[MerchantListItem]
-    meta: PaginationMeta
 
 
 @router.get("", response_model=MerchantsPublic)

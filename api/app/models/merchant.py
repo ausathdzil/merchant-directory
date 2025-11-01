@@ -1,8 +1,7 @@
 # pyright: reportUnannotatedClassAttribute=false
-from __future__ import annotations
-
 from datetime import datetime, timezone
 
+from pydantic import BaseModel
 from sqlalchemy import (
     Boolean,
     DateTime,
@@ -14,7 +13,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.utils import Base
+from app.models.utils import Base, PaginationMeta
 
 
 class Merchant(Base):
@@ -209,3 +208,18 @@ class Amenity(Base):
     restroom: Mapped[bool | None] = mapped_column(Boolean)
 
     merchant: Mapped["Merchant"] = relationship(back_populates="amenity")
+
+
+class MerchantListItem(BaseModel):
+    id: int | None
+    display_name: str | None
+    name: str
+    primary_type: str | None
+    short_address: str | None
+    rating: float | None
+    user_rating_count: int | None
+
+
+class MerchantsPublic(BaseModel):
+    data: list[MerchantListItem]
+    meta: PaginationMeta
