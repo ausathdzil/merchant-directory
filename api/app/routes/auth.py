@@ -7,6 +7,7 @@ from fastapi._compat.v2 import ValidationError
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import EmailStr
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -20,7 +21,8 @@ pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 def get_user_by_email(session: Session, email: EmailStr):
-    user = session.query(User).filter(User.email == email).first()
+    stmt = select(User).where(User.email == email)
+    user = session.scalar(stmt)
     return user
 
 

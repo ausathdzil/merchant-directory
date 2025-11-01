@@ -223,3 +223,22 @@ class MerchantListItem(BaseModel):
 class MerchantsPublic(BaseModel):
     data: list[MerchantListItem]
     meta: PaginationMeta
+
+
+class MerchantDetail(BaseModel):
+    id: int
+    display_name: str | None
+    name: str
+    primary_type: str | None
+    formatted_address: str | None
+    short_address: str | None
+    phone_national: str | None
+    phone_international: str | None
+    website: str | None
+    latitude: float
+    longitude: float
+    rating: float | None
+    user_rating_count: int | None
+
+    class Config:
+        from_attributes = True

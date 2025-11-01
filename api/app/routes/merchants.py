@@ -1,13 +1,22 @@
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Query
-from sqlalchemy import or_
+from fastapi import APIRouter, HTTPException, Query
+from sqlalchemy import func, or_, select
 
 from app.dependencies import SessionDep
-from app.models.merchant import Merchant, MerchantListItem, MerchantsPublic
+from app.models.merchant import (
+    Merchant,
+    MerchantDetail,
+    MerchantListItem,
+    MerchantsPublic,
+)
 from app.models.utils import PaginationMeta
 
 router = APIRouter(prefix="/merchants", tags=["merchants"])
+
+
+def format_type_name(type_name: str) -> str:
+    return type_name.replace("_", " ").title()
 
 
 @router.get("", response_model=MerchantsPublic)
@@ -22,7 +31,7 @@ def read_merchants(
     ] = "created_at",
     sort_order: Annotated[Literal["asc", "desc"], Query()] = "desc",
 ):
-    query = session.query(Merchant)
+    stmt = select(Merchant)
 
     if search:
         search_filter = or_(
@@ -30,13 +39,15 @@ def read_merchants(
             Merchant.name.ilike(f"%{search}%"),
             Merchant.short_address.ilike(f"%{search}%"),
         )
-        query = query.filter(search_filter)
+        stmt = stmt.where(search_filter)
 
     if primary_type:
-        query = query.filter(Merchant.primary_type == primary_type)
+        stmt = stmt.where(Merchant.primary_type == primary_type)
 
-    total_count = query.count()
+    # Count total (default to 0 if None)
+    total_count = session.scalar(select(func.count()).select_from(stmt.subquery())) or 0
 
+    # Apply sorting
     if sort_by == "name":
         order_column = (
             Merchant.display_name.asc()
@@ -56,17 +67,21 @@ def read_merchants(
     else:
         order_column = Merchant.id.asc()
 
-    query = query.order_by(order_column)
+    stmt = stmt.order_by(order_column)
 
     offset = (page - 1) * page_size
-    merchants = query.offset(offset).limit(page_size).all()
+    stmt = stmt.offset(offset).limit(page_size)
+
+    merchants = session.scalars(stmt).all()
 
     merchant_items = [
         MerchantListItem(
             id=merchant.id,
             display_name=merchant.display_name,
             name=merchant.name,
-            primary_type=merchant.primary_type,
+            primary_type=format_type_name(merchant.primary_type)
+            if merchant.primary_type
+            else None,
             short_address=merchant.short_address,
             rating=merchant.rating,
             user_rating_count=merchant.user_rating_count,
@@ -88,4 +103,31 @@ def read_merchants(
             has_next=has_next,
             has_previous=has_previous,
         ),
+    )
+
+
+@router.get("/{merchant_id}", response_model=MerchantDetail)
+def read_merchant(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    return MerchantDetail(
+        id=merchant.id,
+        display_name=merchant.display_name,
+        name=merchant.name,
+        primary_type=format_type_name(merchant.primary_type)
+        if merchant.primary_type
+        else None,
+        formatted_address=merchant.formatted_address,
+        short_address=merchant.short_address,
+        phone_national=merchant.phone_national,
+        phone_international=merchant.phone_international,
+        website=merchant.website,
+        latitude=merchant.latitude,
+        longitude=merchant.longitude,
+        rating=merchant.rating,
+        user_rating_count=merchant.user_rating_count,
     )

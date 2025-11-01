@@ -11,6 +11,7 @@ Seed script to populate the database with merchant data from data.json
 import json
 from datetime import datetime
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
@@ -48,11 +49,8 @@ def seed_merchant(session: Session, place_data: dict) -> Merchant | None:
         return None
 
     # Check if merchant already exists
-    existing = (
-        session.query(Merchant)
-        .filter(Merchant.google_place_id == google_place_id)
-        .first()
-    )
+    stmt = select(Merchant).where(Merchant.google_place_id == google_place_id)
+    existing = session.scalar(stmt)
     if existing:
         print(f"SKIP: Existing merchant: {existing.display_name or existing.name}")
         return existing
@@ -167,11 +165,8 @@ def seed_reviews(session: Session, merchant: Merchant, reviews: list[dict]) -> i
                 continue
 
             # Check if review already exists
-            existing = (
-                session.query(Review)
-                .filter(Review.google_review_id == google_review_id)
-                .first()
-            )
+            stmt = select(Review).where(Review.google_review_id == google_review_id)
+            existing = session.scalar(stmt)
             if existing:
                 continue
 
