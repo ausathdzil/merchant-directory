@@ -405,6 +405,7 @@ export interface operations {
                 page_size?: number;
                 search?: string | null;
                 primary_type?: string | null;
+                search_lang?: "english" | "indonesian";
                 sort_by?: "name" | "rating" | "distance" | "created_at";
                 sort_order?: "asc" | "desc";
             };

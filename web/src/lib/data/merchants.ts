@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import type {
   MerchantError,
   MerchantPath,
@@ -11,12 +12,21 @@ import { API_URL } from '../utils';
 export async function getMerchants(query: MerchantsQuery) {
   const searchParams = new URLSearchParams();
 
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('locale')?.value;
+
   if (query) {
     for (const [key, value] of Object.entries(query)) {
       if (value !== undefined && value !== null) {
         searchParams.set(key, value.toString());
       }
     }
+  }
+
+  if (locale === 'id') {
+    searchParams.set('search_lang', 'indonesian');
+  } else {
+    searchParams.set('search_lang', 'english');
   }
 
   const res = await fetch(`${API_URL}/merchants?${searchParams.toString()}`, {

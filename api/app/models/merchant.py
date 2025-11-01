@@ -11,6 +11,7 @@ from sqlalchemy import (
     String,
     Text,
 )
+from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.utils import Base, PaginationMeta
@@ -55,6 +56,9 @@ class Merchant(Base):
         nullable=False,
         default=lambda: datetime.now(timezone.utc),
     )
+
+    search_vector_en: Mapped[TSVECTOR | None] = mapped_column(TSVECTOR, nullable=True)
+    search_vector_id: Mapped[TSVECTOR | None] = mapped_column(TSVECTOR, nullable=True)
 
     # Relationships
     types: Mapped[list["MerchantType"]] = relationship(

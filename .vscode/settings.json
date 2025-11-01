@@ -1,0 +1,8 @@
+{
+	"biome.configurationPath": "./web/biome.jsonc",
+	"biome.lsp.bin": "./web/node_modules/@biomejs/cli-win32-x64/biome.exe",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "always",
+		"source.organizeImports.biome": "always"
+	}
+}
