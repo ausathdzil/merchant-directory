@@ -34,6 +34,12 @@ def read_merchants(
 ):
     stmt = select(Merchant)
     rank_expr = None
+    similarity_expr = None
+
+    if search:
+        search = search.strip()
+    if not search:
+        search = None
 
     if search:
         ts_config = "english" if search_lang == "english" else "indonesian"
@@ -43,10 +49,31 @@ def read_merchants(
             else Merchant.search_vector_id
         )
         tsquery = func.plainto_tsquery(ts_config, search)
-        stmt = stmt.where(
-            search_vector_col.isnot(None), search_vector_col.op("@@")(tsquery)
+
+        fts_condition = search_vector_col.isnot(None) & search_vector_col.op("@@")(
+            tsquery
         )
-        rank_expr = func.ts_rank(search_vector_col, tsquery)
+
+        similarity_display = Merchant.display_name.isnot(
+            None
+        ) & Merchant.display_name.op("%")(search)
+        similarity_address = Merchant.short_address.isnot(
+            None
+        ) & Merchant.short_address.op("%")(search)
+        trigram_condition = similarity_display | similarity_address
+
+        stmt = stmt.where(fts_condition | trigram_condition)
+
+        rank_expr = func.ts_rank(
+            func.coalesce(search_vector_col, func.to_tsvector(ts_config, "")), tsquery
+        )
+
+        similarity_display_score = func.similarity(Merchant.display_name, search)
+        similarity_address_score = func.similarity(Merchant.short_address, search)
+        similarity_expr = func.greatest(
+            func.coalesce(similarity_display_score, 0),
+            func.coalesce(similarity_address_score, 0),
+        )
 
     if primary_type:
         stmt = stmt.where(Merchant.primary_type == primary_type)
@@ -54,7 +81,10 @@ def read_merchants(
     total_count = session.scalar(select(func.count()).select_from(stmt.subquery())) or 0
 
     if search and rank_expr is not None:
-        order_columns = [rank_expr.desc()]
+        combined_rank = (
+            func.coalesce(rank_expr, 0) * 0.7 + func.coalesce(similarity_expr, 0) * 0.3
+        )
+        order_columns = [combined_rank.desc()]
         if sort_by == "name":
             order_columns.append(
                 Merchant.display_name.asc()
