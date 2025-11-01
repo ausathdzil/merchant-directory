@@ -1,4 +1,7 @@
 import type {
+  MerchantError,
+  MerchantPath,
+  MerchantResponse,
   MerchantsError,
   MerchantsQuery,
   MerchantsResponse,
@@ -21,6 +24,7 @@ export async function getMerchants(query: MerchantsQuery) {
     headers: {
       accept: 'application/json',
     },
+    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -42,4 +46,34 @@ export async function getMerchants(query: MerchantsQuery) {
   const { data, meta } = (await res.json()) as MerchantsResponse;
 
   return { data, meta };
+}
+
+export async function getMerchant(path: MerchantPath) {
+  const res = await fetch(`${API_URL}/merchants/${path.merchant_id}`, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    const error = (await res.json()) as
+      | Partial<MerchantError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch orders.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantResponse;
+
+  return data;
 }

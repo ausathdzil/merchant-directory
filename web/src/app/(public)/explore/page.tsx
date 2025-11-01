@@ -2,7 +2,7 @@ import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-
+import { MerchantPagination } from '@/components/merchant-pagination';
 import { Subheading } from '@/components/typography';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -63,6 +63,10 @@ export default async function ExplorePage({
               <span className="tabular-nums">({merchants.meta.total})</span>
             </Subheading>
             <MerchantsGrid merchants={merchants.data} />
+            <MerchantPagination
+              className="mt-auto"
+              paginationMeta={merchants.meta}
+            />
           </>
         ) : (
           <Empty>
@@ -93,7 +97,7 @@ function MerchantsGrid({ merchants }: { merchants: MerchantListItem[] }) {
           key={merchant.name}
           variant="outline"
         >
-          <Link href="#">
+          <Link href={`/merchants/${merchant.id}`}>
             <ItemContent>
               <ItemTitle className="line-clamp-1">
                 {merchant.display_name}
