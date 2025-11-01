@@ -2,6 +2,7 @@ import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+
 import { MerchantPagination } from '@/components/merchant-pagination';
 import { Subheading } from '@/components/typography';
 import { Badge } from '@/components/ui/badge';
@@ -53,7 +54,7 @@ export default async function ExplorePage({
 
   return (
     <main className="flex flex-1 flex-col items-center">
-      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-8">
+      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
         {merchants.data.length > 0 ? (
           <>
             <Subheading>
@@ -89,7 +90,7 @@ export default async function ExplorePage({
 
 function MerchantsGrid({ merchants }: { merchants: MerchantListItem[] }) {
   return (
-    <ItemGroup className="grid grid-cols-3 gap-4">
+    <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {merchants.map((merchant) => (
         <Item
           asChild

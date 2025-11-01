@@ -1,4 +1,18 @@
+import type { Metadata } from 'next';
+
 import { getMerchant } from '@/lib/data/merchants';
+
+export async function generateMetadata({
+  params,
+}: PageProps<'/merchants/[merchant_id]'>): Promise<Metadata> {
+  const { merchant_id } = await params;
+
+  const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
+
+  return {
+    title: merchant.display_name,
+  };
+}
 
 export default async function MerchantPage({
   params,

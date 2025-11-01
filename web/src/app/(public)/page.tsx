@@ -38,15 +38,15 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col items-center gap-16 md:gap-32">
+      <main className="flex flex-1 flex-col items-center gap-16">
         <motion.div
           animate={{ opacity: 1 }}
-          className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-32"
+          className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-24"
           initial={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
           <article className="flex max-w-[80ch] flex-col items-center gap-4">
-            <HeroDecorations />
+            <HeroDecorations className="mb-4" />
             <motion.div
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
@@ -87,7 +87,7 @@ export default async function Home() {
         </motion.div>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center gap-8 px-8"
+          className="flex flex-col items-center gap-8 px-4 lg:px-8"
           initial={{ opacity: 0, y: 30 }}
           transition={{
             duration: 0.8,
@@ -103,7 +103,7 @@ export default async function Home() {
           </article>
           <Features className="lg:max-w-6xl" />
         </motion.div>
-        <div className="flex w-full flex-col items-center gap-8 px-8">
+        <div className="flex w-full flex-col items-center gap-8 px-4 lg:px-8">
           <article className="text-center">
             <Heading>{t('faq.heading')}</Heading>
             <Text className="text-sm sm:text-base">{t('faq.description')}</Text>

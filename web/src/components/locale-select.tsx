@@ -27,6 +27,7 @@ export function LocaleSelect({
       disabled={isPending}
       onChange={handleChange}
       {...props}
+      name="locale"
     >
       <NativeSelectOption value="id">Indonesian</NativeSelectOption>
       <NativeSelectOption value="en">English</NativeSelectOption>
