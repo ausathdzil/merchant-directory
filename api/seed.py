@@ -11,9 +11,9 @@ Seed script to populate the database with merchant data from data.json
 import json
 from datetime import datetime
 
-from sqlmodel import Session, select
+from sqlalchemy.orm import Session
 
-from app.database import engine
+from app.database import SessionLocal
 from app.models import Amenity, Merchant, MerchantType, OpeningHours, Photo, Review
 
 
@@ -48,9 +48,11 @@ def seed_merchant(session: Session, place_data: dict) -> Merchant | None:
         return None
 
     # Check if merchant already exists
-    existing = session.exec(
-        select(Merchant).where(Merchant.google_place_id == google_place_id)
-    ).first()
+    existing = (
+        session.query(Merchant)
+        .filter(Merchant.google_place_id == google_place_id)
+        .first()
+    )
     if existing:
         print(f"SKIP: Existing merchant: {existing.display_name or existing.name}")
         return existing
@@ -167,9 +169,11 @@ def seed_reviews(session: Session, merchant: Merchant, reviews: list[dict]) -> i
                 continue
 
             # Check if review already exists
-            existing = session.exec(
-                select(Review).where(Review.google_review_id == google_review_id)
-            ).first()
+            existing = (
+                session.query(Review)
+                .filter(Review.google_review_id == google_review_id)
+                .first()
+            )
             if existing:
                 continue
 
@@ -300,14 +304,13 @@ def main():
     data = load_data()
 
     # Create tables if they don't exist
-    from sqlmodel import SQLModel
+    from app.database import engine
+    from app.models.utils import Base
 
-    from app.models import merchant  # noqa: F401 # pyright: ignore[reportUnusedImport]
-
-    SQLModel.metadata.create_all(engine)
+    Base.metadata.create_all(engine)
 
     # Seed data
-    with Session(engine) as session:
+    with SessionLocal() as session:
         total_places = len(data.get("places", []))
         success_count = 0
 

@@ -5,18 +5,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
-from sqlmodel import Session, select
+from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.database import engine
+from app.database import get_session
 from app.models.user import User, UserPublic
 from app.models.utils import TokenPayload
-
-
-def get_session():
-    with Session(engine) as session:
-        yield session
-
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
@@ -40,8 +34,7 @@ def get_current_user(session: SessionDep, access_token: TokenDep):
     except (InvalidTokenError, ValidationError):
         raise credentials_exception
 
-    statement = select(User).where(User.email == token_payload.sub)
-    user = session.exec(statement).first()
+    user = session.query(User).filter(User.email == token_payload.sub).first()
 
     if user is None:
         raise credentials_exception

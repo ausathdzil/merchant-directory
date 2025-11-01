@@ -1,33 +1,54 @@
+# pyright: reportUnannotatedClassAttribute=false
 from datetime import datetime, timezone
-from typing import Any, ClassVar
 
-from pydantic import EmailStr
-from sqlmodel import Field, SQLModel  # pyright: ignore[reportUnknownVariableType]
+from pydantic import BaseModel, EmailStr
+from sqlalchemy import DateTime, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-class UserBase(SQLModel):
-    name: str = Field(max_length=255)
-    email: EmailStr = Field(unique=True, index=True, max_length=255)
+from app.models.utils import Base
 
 
-class UserCreate(UserBase):
-    password: str = Field(min_length=8, max_length=255)
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(255), unique=True, index=True, nullable=False
+    )
+    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
 
 
-class UserUpdate(SQLModel):
-    name: str | None = Field(default=None, max_length=255)
-    email: EmailStr | None = Field(default=None, max_length=255)
+# Pydantic models for validation
+class UserBase(BaseModel):
+    name: str
+    email: EmailStr
+
+    class Config:
+        from_attributes = True
+
+
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+
+class UserUpdate(BaseModel):
+    name: str | None = None
+    email: EmailStr | None = None
     current_password: str
-    new_password: str = Field(min_length=8, max_length=255)
-
-
-class User(UserBase, table=True):
-    __tablename__: ClassVar[Any] = "users"  # pyright: ignore[reportExplicitAny]
-
-    id: int | None = Field(default=None, primary_key=True)
-    hashed_password: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    new_password: str
 
 
 class UserPublic(UserBase):
@@ -36,6 +57,6 @@ class UserPublic(UserBase):
     updated_at: datetime
 
 
-class UserLogin(SQLModel):
+class UserLogin(BaseModel):
     email: EmailStr
     password: str

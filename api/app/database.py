@@ -1,31 +1,27 @@
+from collections.abc import Generator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from sqlmodel import SQLModel, create_engine
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.config import settings
+from app.models.utils import Base
 
 engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# def run_seed():
-#     """Run the seed script to populate the database"""
-#     try:
-#         from seed import main as seed_main
-#         print("\nRunning database seed...")
-#         seed_main()
-#         print("Seed completed!")
-#     except Exception as e:
-#         import traceback
-#         print(f"Seed script error: {e}")
-#         print("Full traceback:")
-#         traceback.print_exc()
-#         print("Skipping seed - continuing with app startup...")
+def get_session() -> Generator[Session, None, None]:
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    SQLModel.metadata.create_all(engine)
-    # run_seed()  # Commented out - data already seeded. Uncomment to re-seed on startup.
+    Base.metadata.create_all(engine)
     yield
     engine.dispose()

@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
-from sqlmodel import col, func, or_, select
+from sqlalchemy import or_
 
 from app.dependencies import SessionDep
 from app.models.merchant import Merchant
@@ -38,49 +38,44 @@ def read_merchants(
     ] = "created_at",
     sort_order: Annotated[Literal["asc", "desc"], Query()] = "desc",
 ):
-    statement = select(Merchant)
+    query = session.query(Merchant)
 
     if search:
         search_filter = or_(
-            col(Merchant.display_name).ilike(f"%{search}"),
-            col(Merchant.name).ilike(f"%{search}%"),
-            col(Merchant.short_address).ilike(f"%{search}%"),
+            Merchant.display_name.ilike(f"%{search}%"),
+            Merchant.name.ilike(f"%{search}%"),
+            Merchant.short_address.ilike(f"%{search}%"),
         )
-        statement = statement.where(search_filter)
+        query = query.filter(search_filter)
 
     if primary_type:
-        statement = statement.where(Merchant.primary_type == primary_type)
+        query = query.filter(Merchant.primary_type == primary_type)
 
-    count_statement = select(func.count()).select_from(statement.subquery())
-    total_count = session.exec(count_statement).one()
+    total_count = query.count()
 
     if sort_by == "name":
         order_column = (
-            col(Merchant.display_name).asc()
+            Merchant.display_name.asc()
             if sort_order == "asc"
-            else col(Merchant.display_name).desc()
+            else Merchant.display_name.desc()
         )
     elif sort_by == "rating":
         order_column = (
-            col(Merchant.rating).asc()
-            if sort_order == "asc"
-            else col(Merchant.rating).desc()
+            Merchant.rating.asc() if sort_order == "asc" else Merchant.rating.desc()
         )
     elif sort_by == "created_at":
         order_column = (
-            col(Merchant.created_at).asc()
+            Merchant.created_at.asc()
             if sort_order == "asc"
-            else col(Merchant.created_at).desc()
+            else Merchant.created_at.desc()
         )
     else:
-        order_column = col(Merchant.id).asc()
+        order_column = Merchant.id.asc()
 
-    statement = statement.order_by(order_column)
+    query = query.order_by(order_column)
 
     offset = (page - 1) * page_size
-    statement = statement.offset(offset).limit(page_size)
-
-    merchants = session.exec(statement).all()
+    merchants = query.offset(offset).limit(page_size).all()
 
     merchant_items = [
         MerchantListItem(

@@ -1,166 +1,211 @@
-# pyright: reportExplicitAny=false
-# pyright: reportAny=false
+# pyright: reportUnannotatedClassAttribute=false
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Any, ClassVar
 
-from sqlmodel import (
-    Field,  # pyright: ignore[reportUnknownVariableType]
-    Relationship,
-    SQLModel,
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
 )
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.models.utils import Base
 
 
-class Merchant(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "merchants"
+class Merchant(Base):
+    __tablename__ = "merchants"
 
-    id: int | None = Field(default=None, primary_key=True)
-    google_place_id: str = Field(unique=True, index=True, max_length=255)
-    name: str = Field(max_length=500)
-    display_name: str | None = Field(default=None, max_length=500)
-    primary_type: str | None = Field(default=None, max_length=100, index=True)
-
-    formatted_address: str | None = Field(default=None)
-    short_address: str | None = Field(default=None)
-
-    phone_national: str | None = Field(default=None, max_length=50)
-    phone_international: str | None = Field(default=None, max_length=50)
-    website: str | None = Field(default=None)
-
-    latitude: float = Field(index=True)
-    longitude: float = Field(index=True)
-    plus_code: str | None = Field(default=None, max_length=50)
-
-    rating: float | None = Field(default=None, index=True)
-    user_rating_count: int | None = Field(default=None)
-
-    business_status: str | None = Field(default=None, max_length=50)
-    google_maps_uri: str | None = Field(default=None)
-    is_open_now: bool | None = Field(default=None)
-
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-    types: list["MerchantType"] = Relationship(
-        back_populates="merchant", cascade_delete=True
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    google_place_id: Mapped[str] = mapped_column(
+        String(255), unique=True, index=True, nullable=False
     )
-    photos: list["Photo"] = Relationship(back_populates="merchant", cascade_delete=True)
-    reviews: list["Review"] = Relationship(
-        back_populates="merchant", cascade_delete=True
+    name: Mapped[str] = mapped_column(String(500), nullable=False)
+    display_name: Mapped[str | None] = mapped_column(String(500))
+    primary_type: Mapped[str | None] = mapped_column(String(100), index=True)
+
+    formatted_address: Mapped[str | None] = mapped_column(Text)
+    short_address: Mapped[str | None] = mapped_column(Text)
+
+    phone_national: Mapped[str | None] = mapped_column(String(50))
+    phone_international: Mapped[str | None] = mapped_column(String(50))
+    website: Mapped[str | None] = mapped_column(Text)
+
+    latitude: Mapped[float] = mapped_column(Float, index=True, nullable=False)
+    longitude: Mapped[float] = mapped_column(Float, index=True, nullable=False)
+    plus_code: Mapped[str | None] = mapped_column(String(50))
+
+    rating: Mapped[float | None] = mapped_column(Float, index=True)
+    user_rating_count: Mapped[int | None] = mapped_column(Integer)
+
+    business_status: Mapped[str | None] = mapped_column(String(50))
+    google_maps_uri: Mapped[str | None] = mapped_column(Text)
+    is_open_now: Mapped[bool | None] = mapped_column(Boolean)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
     )
-    opening_hours: OpeningHours | None = Relationship(
-        back_populates="merchant", cascade_delete=True
-    )
-    amenity: Amenity | None = Relationship(
-        back_populates="merchant", cascade_delete=True
-    )
-
-
-class MerchantType(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "merchant_types"
-
-    id: int | None = Field(default=None, primary_key=True)
-    merchant_id: int = Field(foreign_key="merchants.id", ondelete="CASCADE", index=True)
-    type_name: str = Field(max_length=100, index=True)
-
-    merchant: Merchant = Relationship(back_populates="types")
-
-
-class Photo(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "photos"
-
-    id: int | None = Field(default=None, primary_key=True)
-    merchant_id: int = Field(foreign_key="merchants.id", ondelete="CASCADE", index=True)
-
-    photo_reference: str = Field()
-    width: int | None = Field(default=None)
-    height: int | None = Field(default=None)
-    author_name: str | None = Field(default=None, max_length=255)
-
-    is_primary: bool = Field(default=False, index=True)
-    order: int = Field(default=0)
-
-    merchant: Merchant = Relationship(back_populates="photos")
-
-
-class Review(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "reviews"
-
-    id: int | None = Field(default=None, primary_key=True)
-    merchant_id: int = Field(foreign_key="merchants.id", ondelete="CASCADE", index=True)
-    google_review_id: str = Field(unique=True)
-
-    rating: int = Field(ge=1, le=5, index=True)
-    text: str | None = Field(default=None)
-
-    author_name: str | None = Field(default=None, max_length=255)
-    author_photo_uri: str | None = Field(default=None)
-
-    published_at: datetime | None = Field(default=None, index=True)
-    relative_time: str | None = Field(default=None, max_length=100)
-
-    merchant: Merchant = Relationship(back_populates="reviews")
-
-
-class OpeningHours(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "opening_hours"
-
-    id: int | None = Field(default=None, primary_key=True)
-    merchant_id: int = Field(
-        foreign_key="merchants.id", ondelete="CASCADE", unique=True, index=True
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
     )
 
-    is_open_now: bool | None = Field(default=None)
-
-    monday: str | None = Field(default=None, max_length=100)
-    tuesday: str | None = Field(default=None, max_length=100)
-    wednesday: str | None = Field(default=None, max_length=100)
-    thursday: str | None = Field(default=None, max_length=100)
-    friday: str | None = Field(default=None, max_length=100)
-    saturday: str | None = Field(default=None, max_length=100)
-    sunday: str | None = Field(default=None, max_length=100)
-
-    merchant: Merchant = Relationship(back_populates="opening_hours")
-
-
-class Amenity(SQLModel, table=True):
-    __tablename__: ClassVar[Any] = "amenities"
-
-    id: int | None = Field(default=None, primary_key=True)
-    merchant_id: int = Field(
-        foreign_key="merchants.id", ondelete="CASCADE", unique=True, index=True
+    # Relationships
+    types: Mapped[list["MerchantType"]] = relationship(
+        back_populates="merchant", cascade="all, delete-orphan"
+    )
+    photos: Mapped[list["Photo"]] = relationship(
+        back_populates="merchant", cascade="all, delete-orphan"
+    )
+    reviews: Mapped[list["Review"]] = relationship(
+        back_populates="merchant", cascade="all, delete-orphan"
+    )
+    opening_hours: Mapped["OpeningHours | None"] = relationship(
+        back_populates="merchant", cascade="all, delete-orphan", uselist=False
+    )
+    amenity: Mapped["Amenity | None"] = relationship(
+        back_populates="merchant", cascade="all, delete-orphan", uselist=False
     )
 
-    takeout: bool | None = Field(default=None)
-    dine_in: bool | None = Field(default=None)
-    outdoor_seating: bool | None = Field(default=None)
-    reservable: bool | None = Field(default=None)
 
-    serves_breakfast: bool | None = Field(default=None)
-    serves_lunch: bool | None = Field(default=None)
-    serves_dinner: bool | None = Field(default=None)
-    serves_brunch: bool | None = Field(default=None)
-    serves_beer: bool | None = Field(default=None)
-    serves_wine: bool | None = Field(default=None)
-    serves_vegetarian_food: bool | None = Field(default=None)
+class MerchantType(Base):
+    __tablename__ = "merchant_types"
 
-    good_for_children: bool | None = Field(default=None)
-    good_for_groups: bool | None = Field(default=None)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("merchants.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
+    type_name: Mapped[str] = mapped_column(String(100), index=True, nullable=False)
 
-    accepts_credit_cards: bool | None = Field(default=None)
-    accepts_debit_cards: bool | None = Field(default=None)
-    accepts_cash_only: bool | None = Field(default=None)
-    accepts_nfc: bool | None = Field(default=None)
+    merchant: Mapped["Merchant"] = relationship(back_populates="types")
 
-    free_parking: bool | None = Field(default=None)
-    paid_parking: bool | None = Field(default=None)
-    valet_parking: bool | None = Field(default=None)
 
-    wheelchair_entrance: bool | None = Field(default=None)
-    wheelchair_restroom: bool | None = Field(default=None)
-    wheelchair_seating: bool | None = Field(default=None)
+class Photo(Base):
+    __tablename__ = "photos"
 
-    restroom: bool | None = Field(default=None)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("merchants.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
 
-    merchant: Merchant = Relationship(back_populates="amenity")
+    photo_reference: Mapped[str] = mapped_column(Text, nullable=False)
+    width: Mapped[int | None] = mapped_column(Integer)
+    height: Mapped[int | None] = mapped_column(Integer)
+    author_name: Mapped[str | None] = mapped_column(String(255))
+
+    is_primary: Mapped[bool] = mapped_column(
+        Boolean, index=True, default=False, nullable=False
+    )
+    order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+
+    merchant: Mapped["Merchant"] = relationship(back_populates="photos")
+
+
+class Review(Base):
+    __tablename__ = "reviews"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("merchants.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
+    google_review_id: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+
+    rating: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    text: Mapped[str | None] = mapped_column(Text)
+
+    author_name: Mapped[str | None] = mapped_column(String(255))
+    author_photo_uri: Mapped[str | None] = mapped_column(Text)
+
+    published_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), index=True
+    )
+    relative_time: Mapped[str | None] = mapped_column(String(100))
+
+    merchant: Mapped["Merchant"] = relationship(back_populates="reviews")
+
+
+class OpeningHours(Base):
+    __tablename__ = "opening_hours"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("merchants.id", ondelete="CASCADE"),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+
+    is_open_now: Mapped[bool | None] = mapped_column(Boolean)
+
+    monday: Mapped[str | None] = mapped_column(String(100))
+    tuesday: Mapped[str | None] = mapped_column(String(100))
+    wednesday: Mapped[str | None] = mapped_column(String(100))
+    thursday: Mapped[str | None] = mapped_column(String(100))
+    friday: Mapped[str | None] = mapped_column(String(100))
+    saturday: Mapped[str | None] = mapped_column(String(100))
+    sunday: Mapped[str | None] = mapped_column(String(100))
+
+    merchant: Mapped["Merchant"] = relationship(back_populates="opening_hours")
+
+
+class Amenity(Base):
+    __tablename__ = "amenities"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("merchants.id", ondelete="CASCADE"),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+
+    takeout: Mapped[bool | None] = mapped_column(Boolean)
+    dine_in: Mapped[bool | None] = mapped_column(Boolean)
+    outdoor_seating: Mapped[bool | None] = mapped_column(Boolean)
+    reservable: Mapped[bool | None] = mapped_column(Boolean)
+
+    serves_breakfast: Mapped[bool | None] = mapped_column(Boolean)
+    serves_lunch: Mapped[bool | None] = mapped_column(Boolean)
+    serves_dinner: Mapped[bool | None] = mapped_column(Boolean)
+    serves_brunch: Mapped[bool | None] = mapped_column(Boolean)
+    serves_beer: Mapped[bool | None] = mapped_column(Boolean)
+    serves_wine: Mapped[bool | None] = mapped_column(Boolean)
+    serves_vegetarian_food: Mapped[bool | None] = mapped_column(Boolean)
+
+    good_for_children: Mapped[bool | None] = mapped_column(Boolean)
+    good_for_groups: Mapped[bool | None] = mapped_column(Boolean)
+
+    accepts_credit_cards: Mapped[bool | None] = mapped_column(Boolean)
+    accepts_debit_cards: Mapped[bool | None] = mapped_column(Boolean)
+    accepts_cash_only: Mapped[bool | None] = mapped_column(Boolean)
+    accepts_nfc: Mapped[bool | None] = mapped_column(Boolean)
+
+    free_parking: Mapped[bool | None] = mapped_column(Boolean)
+    paid_parking: Mapped[bool | None] = mapped_column(Boolean)
+    valet_parking: Mapped[bool | None] = mapped_column(Boolean)
+
+    wheelchair_entrance: Mapped[bool | None] = mapped_column(Boolean)
+    wheelchair_restroom: Mapped[bool | None] = mapped_column(Boolean)
+    wheelchair_seating: Mapped[bool | None] = mapped_column(Boolean)
+
+    restroom: Mapped[bool | None] = mapped_column(Boolean)
+
+    merchant: Mapped["Merchant"] = relationship(back_populates="amenity")
