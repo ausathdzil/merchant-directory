@@ -1,4 +1,4 @@
-import { ArrowUpRightIcon, HouseIcon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowUpRightIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,10 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function NotFoundPage() {
-  const t = useTranslations('NotFound.Layout');
+  const t = useTranslations('NotFound.MerchantPage');
 
   return (
-    <main className="grid h-screen place-items-center">
+    <main className="grid flex-1 place-items-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia>
@@ -43,8 +43,8 @@ export default function NotFoundPage() {
           <EmptyDescription>{t('description')}</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Link className={buttonVariants({ size: 'pill-lg' })} href="/">
-            <HouseIcon />
+          <Link className={buttonVariants({ size: 'pill-lg' })} href="/explore">
+            <ArrowLeftIcon />
             {t('button')}
           </Link>
         </EmptyContent>

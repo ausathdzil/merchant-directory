@@ -42,7 +42,7 @@ export async function getMerchants(query: MerchantsQuery) {
       | Partial<MerchantsError>
       | { detail?: unknown };
 
-    let message = 'Failed to fetch orders.';
+    let message = 'Failed to fetch merchants.';
 
     if (Array.isArray(error.detail)) {
       message = error.detail[0].msg;
@@ -68,11 +68,15 @@ export async function getMerchant(path: MerchantPath) {
   });
 
   if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
     const error = (await res.json()) as
       | Partial<MerchantError>
       | { detail?: unknown };
 
-    let message = 'Failed to fetch orders.';
+    let message = 'Failed to fetch merchant.';
 
     if (Array.isArray(error.detail)) {
       message = error.detail[0].msg;

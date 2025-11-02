@@ -6,13 +6,24 @@
     },
     "ExplorePage": {
       "title": "Explore"
+    },
+    "NotFoundPage": {
+      "title": "Page Not Found"
     }
   },
-  "NotFoundPage": {
-    "title": "Page Not Found",
-    "description": "The page you're looking for does not exist",
-    "button": "Go Back Home",
-    "logoBy": "Logo by"
+  "NotFound": {
+    "Layout": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for does not exist",
+      "button": "Go Back Home",
+      "logoBy": "Logo by"
+    },
+    "MerchantPage": {
+      "title": "Merchant Not Found",
+      "description": "The merchant you're looking for does not exist",
+      "button": "Go Back to Explore",
+      "logoBy": "Logo by"
+    }
   },
   "Header": {
     "title": "Merchant Directory",

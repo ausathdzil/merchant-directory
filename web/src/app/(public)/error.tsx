@@ -30,7 +30,7 @@ export default function ErrorPage({
             <EmptyMedia variant="icon">
               <CloudAlertIcon />
             </EmptyMedia>
-            <EmptyTitle>Error: {error.digest}</EmptyTitle>
+            <EmptyTitle>Error: {error.message}</EmptyTitle>
           </EmptyHeader>
           <EmptyContent>
             <Button onClick={() => reset()}>{t('error.tryAgain')}</Button>

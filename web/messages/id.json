@@ -6,13 +6,24 @@
     },
     "ExplorePage": {
       "title": "Jelajahi"
+    },
+    "NotFoundPage": {
+      "title": "Halaman Tidak Ditemukan"
     }
   },
   "NotFoundPage": {
-    "title": "Halaman Tidak Ditemukan",
-    "description": "Halaman yang kamu cari tidak ada",
-    "button": "Kembali ke Beranda",
-    "logoBy": "Logo oleh"
+    "Layout": {
+      "title": "Halaman Tidak Ditemukan",
+      "description": "Halaman yang kamu cari tidak ada",
+      "button": "Kembali ke Beranda",
+      "logoBy": "Logo oleh"
+    },
+    "MerchantPage": {
+      "title": "Bisnis Tidak Ditemukan",
+      "description": "Bisnis yang kamu cari tidak ada",
+      "button": "Kembali ke Jelajahi",
+      "logoBy": "Logo oleh"
+    }
   },
   "Header": {
     "title": "Direktori UMKM",
