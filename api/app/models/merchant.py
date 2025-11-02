@@ -247,3 +247,84 @@ class MerchantDetail(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PhotoPublic(BaseModel):
+    id: int
+    photo_reference: str
+    width: int | None
+    height: int | None
+    author_name: str | None
+    is_primary: bool
+    order: int
+
+    class Config:
+        from_attributes = True
+
+
+class ReviewPublic(BaseModel):
+    id: int
+    google_review_id: str
+    rating: int
+    text: str | None
+    author_name: str | None
+    author_photo_uri: str | None
+    published_at: datetime | None
+    relative_time: str | None
+
+    class Config:
+        from_attributes = True
+
+
+class MerchantTypePublic(BaseModel):
+    id: int
+    type_name: str
+
+    class Config:
+        from_attributes = True
+
+
+class OpeningHoursPublic(BaseModel):
+    id: int
+    is_open_now: bool | None
+    monday: str | None
+    tuesday: str | None
+    wednesday: str | None
+    thursday: str | None
+    friday: str | None
+    saturday: str | None
+    sunday: str | None
+
+    class Config:
+        from_attributes = True
+
+
+class AmenityPublic(BaseModel):
+    id: int
+    takeout: bool | None
+    dine_in: bool | None
+    outdoor_seating: bool | None
+    reservable: bool | None
+    serves_breakfast: bool | None
+    serves_lunch: bool | None
+    serves_dinner: bool | None
+    serves_brunch: bool | None
+    serves_beer: bool | None
+    serves_wine: bool | None
+    serves_vegetarian_food: bool | None
+    good_for_children: bool | None
+    good_for_groups: bool | None
+    accepts_credit_cards: bool | None
+    accepts_debit_cards: bool | None
+    accepts_cash_only: bool | None
+    accepts_nfc: bool | None
+    free_parking: bool | None
+    paid_parking: bool | None
+    valet_parking: bool | None
+    wheelchair_entrance: bool | None
+    wheelchair_restroom: bool | None
+    wheelchair_seating: bool | None
+    restroom: bool | None
+
+    class Config:
+        from_attributes = True

@@ -5,11 +5,20 @@ from sqlalchemy import func, select
 
 from app.dependencies import SessionDep
 from app.models.merchant import (
+    Amenity,
+    AmenityPublic,
     Merchant,
     MerchantDetail,
     MerchantListItem,
     MerchantsPublic,
     MerchantType,
+    MerchantTypePublic,
+    OpeningHours,
+    OpeningHoursPublic,
+    Photo,
+    PhotoPublic,
+    Review,
+    ReviewPublic,
 )
 from app.models.utils import PaginationMeta
 
@@ -200,4 +209,157 @@ def read_merchant(merchant_id: int, session: SessionDep):
         longitude=merchant.longitude,
         rating=merchant.rating,
         user_rating_count=merchant.user_rating_count,
+    )
+
+
+@router.get("/{merchant_id}/photos", response_model=list[PhotoPublic])
+def read_merchant_photos(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    stmt = (
+        select(Photo)
+        .where(Photo.merchant_id == merchant_id)
+        .order_by(Photo.is_primary.desc(), Photo.order.asc())
+    )
+    photos = session.scalars(stmt).all()
+
+    return [
+        PhotoPublic(
+            id=photo.id,
+            photo_reference=photo.photo_reference,
+            width=photo.width,
+            height=photo.height,
+            author_name=photo.author_name,
+            is_primary=photo.is_primary,
+            order=photo.order,
+        )
+        for photo in photos
+    ]
+
+
+@router.get("/{merchant_id}/reviews", response_model=list[ReviewPublic])
+def read_merchant_reviews(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    stmt = (
+        select(Review)
+        .where(Review.merchant_id == merchant_id)
+        .order_by(Review.published_at.desc())
+    )
+    reviews = session.scalars(stmt).all()
+
+    return [
+        ReviewPublic(
+            id=review.id,
+            google_review_id=review.google_review_id,
+            rating=review.rating,
+            text=review.text,
+            author_name=review.author_name,
+            author_photo_uri=review.author_photo_uri,
+            published_at=review.published_at,
+            relative_time=review.relative_time,
+        )
+        for review in reviews
+    ]
+
+
+@router.get("/{merchant_id}/types", response_model=list[MerchantTypePublic])
+def read_merchant_types_detail(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    stmt = select(MerchantType).where(MerchantType.merchant_id == merchant_id)
+    types = session.scalars(stmt).all()
+
+    return [
+        MerchantTypePublic(
+            id=type_obj.id,
+            type_name=format_type_name(type_obj.type_name),
+        )
+        for type_obj in types
+    ]
+
+
+@router.get("/{merchant_id}/opening-hours", response_model=OpeningHoursPublic)
+def read_merchant_opening_hours(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    stmt = select(OpeningHours).where(OpeningHours.merchant_id == merchant_id)
+    opening_hours = session.scalar(stmt)
+
+    if not opening_hours:
+        raise HTTPException(
+            status_code=404, detail="Opening hours not found for this merchant"
+        )
+
+    return OpeningHoursPublic(
+        id=opening_hours.id,
+        is_open_now=opening_hours.is_open_now,
+        monday=opening_hours.monday,
+        tuesday=opening_hours.tuesday,
+        wednesday=opening_hours.wednesday,
+        thursday=opening_hours.thursday,
+        friday=opening_hours.friday,
+        saturday=opening_hours.saturday,
+        sunday=opening_hours.sunday,
+    )
+
+
+@router.get("/{merchant_id}/amenities", response_model=AmenityPublic)
+def read_merchant_amenities(merchant_id: int, session: SessionDep):
+    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    merchant = session.scalar(stmt)
+
+    if not merchant:
+        raise HTTPException(status_code=404, detail="Merchant not found")
+
+    stmt = select(Amenity).where(Amenity.merchant_id == merchant_id)
+    amenity = session.scalar(stmt)
+
+    if not amenity:
+        raise HTTPException(
+            status_code=404, detail="Amenities not found for this merchant"
+        )
+
+    return AmenityPublic(
+        id=amenity.id,
+        takeout=amenity.takeout,
+        dine_in=amenity.dine_in,
+        outdoor_seating=amenity.outdoor_seating,
+        reservable=amenity.reservable,
+        serves_breakfast=amenity.serves_breakfast,
+        serves_lunch=amenity.serves_lunch,
+        serves_dinner=amenity.serves_dinner,
+        serves_brunch=amenity.serves_brunch,
+        serves_beer=amenity.serves_beer,
+        serves_wine=amenity.serves_wine,
+        serves_vegetarian_food=amenity.serves_vegetarian_food,
+        good_for_children=amenity.good_for_children,
+        good_for_groups=amenity.good_for_groups,
+        accepts_credit_cards=amenity.accepts_credit_cards,
+        accepts_debit_cards=amenity.accepts_debit_cards,
+        accepts_cash_only=amenity.accepts_cash_only,
+        accepts_nfc=amenity.accepts_nfc,
+        free_parking=amenity.free_parking,
+        paid_parking=amenity.paid_parking,
+        valet_parking=amenity.valet_parking,
+        wheelchair_entrance=amenity.wheelchair_entrance,
+        wheelchair_restroom=amenity.wheelchair_restroom,
+        wheelchair_seating=amenity.wheelchair_seating,
+        restroom=amenity.restroom,
     )
