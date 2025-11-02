@@ -132,31 +132,28 @@ function MerchantsGrid({
       )}
     >
       {merchants.map((merchant) => (
-        <Item
-          asChild
-          className="items-start"
-          key={merchant.name}
-          variant="outline"
-        >
-          <Link href={`/merchants/${merchant.id}`}>
-            <ItemContent>
-              <ItemTitle className="line-clamp-1">
-                {merchant.display_name}
-              </ItemTitle>
-              <ItemDescription className="tabular-nums">
-                ⭐ {merchant.rating} ({merchant.user_rating_count})
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              {merchant.primary_type && (
-                <Badge variant="secondary">{merchant.primary_type}</Badge>
-              )}
-              {merchant.type_count > 1 && (
-                <Badge variant="outline">+{merchant.type_count - 1}</Badge>
-              )}
-            </ItemActions>
-          </Link>
-        </Item>
+        <li className="list-none" key={merchant.id}>
+          <Item asChild className="items-start" variant="outline">
+            <Link href={`/merchants/${merchant.id}`}>
+              <ItemContent>
+                <ItemTitle className="line-clamp-1">
+                  {merchant.display_name}
+                </ItemTitle>
+                <ItemDescription className="tabular-nums">
+                  ⭐ {merchant.rating} ({merchant.user_rating_count})
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                {merchant.primary_type && (
+                  <Badge variant="secondary">{merchant.primary_type}</Badge>
+                )}
+                {merchant.type_count > 1 && (
+                  <Badge variant="outline">+{merchant.type_count - 1}</Badge>
+                )}
+              </ItemActions>
+            </Link>
+          </Item>
+        </li>
       ))}
     </ItemGroup>
   );

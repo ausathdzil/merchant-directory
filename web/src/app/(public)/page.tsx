@@ -165,9 +165,9 @@ function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
     },
     {
       icon: StoreIcon,
-      iconColor: 'stroke-emerald-500',
+      iconColor: 'stroke-emerald-700',
       label: t('information.label'),
-      labelColor: 'text-emerald-500',
+      labelColor: 'text-emerald-700',
       title: t('information.title'),
       description: t('information.description'),
       benefits: [
@@ -196,34 +196,35 @@ function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
   return (
     <ItemGroup className={cn('gap-4', className)} {...props}>
       {features.map((feature, index) => (
-        <Item
-          className="flex-col gap-4 p-8 md:flex-row"
-          key={feature.label}
-          variant={index % 2 === 0 ? 'default' : 'muted'}
-        >
-          <ItemMedia className="self-center! size-48 md:size-64 lg:size-96">
-            <feature.icon className={cn('size-1/2', feature.iconColor)} />
-          </ItemMedia>
-          <ItemContent className="gap-4">
-            <Small className={cn('font-alt uppercase', feature.labelColor)}>
-              {feature.label}
-            </Small>
-            <ItemTitle className="font-alt lg:text-2xl">
-              {feature.title}
-            </ItemTitle>
-            <ItemDescription className="line-clamp-none lg:text-base">
-              {feature.description}
-            </ItemDescription>
+        <li className="list-none" key={feature.label}>
+          <Item
+            className="flex-col gap-4 p-8 md:flex-row"
+            variant={index % 2 === 0 ? 'default' : 'muted'}
+          >
+            <ItemMedia className="self-center! size-48 md:size-64 lg:size-96">
+              <feature.icon className={cn('size-1/2', feature.iconColor)} />
+            </ItemMedia>
             <ItemContent className="gap-4">
-              {feature.benefits.map((benefit) => (
-                <ItemTitle key={benefit}>
-                  <CheckCircleIcon className={feature.iconColor} />
-                  {benefit}
-                </ItemTitle>
-              ))}
+              <Small className={cn('font-alt uppercase', feature.labelColor)}>
+                {feature.label}
+              </Small>
+              <ItemTitle className="font-alt lg:text-2xl">
+                {feature.title}
+              </ItemTitle>
+              <ItemDescription className="line-clamp-none lg:text-base">
+                {feature.description}
+              </ItemDescription>
+              <ItemContent className="gap-4">
+                {feature.benefits.map((benefit) => (
+                  <ItemTitle key={benefit}>
+                    <CheckCircleIcon className={feature.iconColor} />
+                    {benefit}
+                  </ItemTitle>
+                ))}
+              </ItemContent>
             </ItemContent>
-          </ItemContent>
-        </Item>
+          </Item>
+        </li>
       ))}
     </ItemGroup>
   );

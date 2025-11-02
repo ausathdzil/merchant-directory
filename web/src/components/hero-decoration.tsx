@@ -49,7 +49,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <ShoppingBagIcon className="float-down size-12 stroke-emerald-500" />
+        <ShoppingBagIcon className="float-down size-12 stroke-emerald-700" />
       </motion.div>
       <motion.div
         animate={{

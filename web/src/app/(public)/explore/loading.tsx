@@ -8,7 +8,7 @@ export default function Loading() {
 
   return (
     <main className="flex flex-1 flex-col items-center">
-      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-8">
+      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
         <Subheading>{t('search.allResults')}</Subheading>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 15 }).map((_, i) => (

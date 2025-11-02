@@ -88,6 +88,7 @@ export function MobileNav({
       <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger asChild>
           <Button
+            aria-label="Menu"
             className={cn('relative, overflow-hidden', className)}
             size="icon"
             variant="ghost"

@@ -35,7 +35,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {
   viewportFit: 'cover',
-  userScalable: false,
 };
 
 export default function RootLayout({

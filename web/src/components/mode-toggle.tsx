@@ -58,6 +58,7 @@ export function ModeToggle({
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
+          aria-label={t('modeToggle')}
           className={cn('relative', className)}
           onClick={toggleTheme}
           size="icon"
