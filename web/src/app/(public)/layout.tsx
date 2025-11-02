@@ -28,12 +28,12 @@ function Header({ className, ...props }: ComponentProps<'header'>) {
       )}
       {...props}
     >
-      <div className="flex w-1/3 p-4">
+      <div className="flex w-1/3 p-4 lg:px-8">
         <MobileNav />
         <Wordmark className="hidden lg:flex" href="/" />
       </div>
       <DesktopNav />
-      <div className="flex items-center justify-end gap-4 p-4 lg:w-1/3">
+      <div className="flex items-center justify-end gap-4 p-4 lg:w-1/3 lg:px-8">
         <LocaleSelect />
         <ModeToggle />
       </div>

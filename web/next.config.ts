@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: true,
     viewTransition: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.mapbox.com',
+        port: '',
+        pathname: '/styles/v1/mapbox/**',
+      },
+    ],
+  },
   typedRoutes: true,
 };
 

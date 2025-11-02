@@ -123,6 +123,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/merchants/{merchant_id}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Photos */
+        get: operations["read_merchant_photos_api_v1_merchants__merchant_id__photos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/merchants/{merchant_id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Reviews */
+        get: operations["read_merchant_reviews_api_v1_merchants__merchant_id__reviews_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/merchants/{merchant_id}/types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Types Detail */
+        get: operations["read_merchant_types_detail_api_v1_merchants__merchant_id__types_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/merchants/{merchant_id}/opening-hours": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Opening Hours */
+        get: operations["read_merchant_opening_hours_api_v1_merchants__merchant_id__opening_hours_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/merchants/{merchant_id}/amenities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Amenities */
+        get: operations["read_merchant_amenities_api_v1_merchants__merchant_id__amenities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -144,6 +229,59 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AmenityPublic */
+        AmenityPublic: {
+            /** Id */
+            id: number;
+            /** Takeout */
+            takeout: boolean | null;
+            /** Dine In */
+            dine_in: boolean | null;
+            /** Outdoor Seating */
+            outdoor_seating: boolean | null;
+            /** Reservable */
+            reservable: boolean | null;
+            /** Serves Breakfast */
+            serves_breakfast: boolean | null;
+            /** Serves Lunch */
+            serves_lunch: boolean | null;
+            /** Serves Dinner */
+            serves_dinner: boolean | null;
+            /** Serves Brunch */
+            serves_brunch: boolean | null;
+            /** Serves Beer */
+            serves_beer: boolean | null;
+            /** Serves Wine */
+            serves_wine: boolean | null;
+            /** Serves Vegetarian Food */
+            serves_vegetarian_food: boolean | null;
+            /** Good For Children */
+            good_for_children: boolean | null;
+            /** Good For Groups */
+            good_for_groups: boolean | null;
+            /** Accepts Credit Cards */
+            accepts_credit_cards: boolean | null;
+            /** Accepts Debit Cards */
+            accepts_debit_cards: boolean | null;
+            /** Accepts Cash Only */
+            accepts_cash_only: boolean | null;
+            /** Accepts Nfc */
+            accepts_nfc: boolean | null;
+            /** Free Parking */
+            free_parking: boolean | null;
+            /** Paid Parking */
+            paid_parking: boolean | null;
+            /** Valet Parking */
+            valet_parking: boolean | null;
+            /** Wheelchair Entrance */
+            wheelchair_entrance: boolean | null;
+            /** Wheelchair Restroom */
+            wheelchair_restroom: boolean | null;
+            /** Wheelchair Seating */
+            wheelchair_seating: boolean | null;
+            /** Restroom */
+            restroom: boolean | null;
+        };
         /** Body_login_user_api_v1_auth_login_post */
         Body_login_user_api_v1_auth_login_post: {
             /** Grant Type */
@@ -221,6 +359,13 @@ export interface components {
             /** Type Count */
             type_count: number;
         };
+        /** MerchantTypePublic */
+        MerchantTypePublic: {
+            /** Id */
+            id: number;
+            /** Type Name */
+            type_name: string;
+        };
         /** MerchantsPublic */
         MerchantsPublic: {
             /** Data */
@@ -231,6 +376,27 @@ export interface components {
         Message: {
             /** Message */
             message: string;
+        };
+        /** OpeningHoursPublic */
+        OpeningHoursPublic: {
+            /** Id */
+            id: number;
+            /** Is Open Now */
+            is_open_now: boolean | null;
+            /** Monday */
+            monday: string | null;
+            /** Tuesday */
+            tuesday: string | null;
+            /** Wednesday */
+            wednesday: string | null;
+            /** Thursday */
+            thursday: string | null;
+            /** Friday */
+            friday: string | null;
+            /** Saturday */
+            saturday: string | null;
+            /** Sunday */
+            sunday: string | null;
         };
         /** PaginationMeta */
         PaginationMeta: {
@@ -246,6 +412,42 @@ export interface components {
             has_next: boolean;
             /** Has Previous */
             has_previous: boolean;
+        };
+        /** PhotoPublic */
+        PhotoPublic: {
+            /** Id */
+            id: number;
+            /** Photo Reference */
+            photo_reference: string;
+            /** Width */
+            width: number | null;
+            /** Height */
+            height: number | null;
+            /** Author Name */
+            author_name: string | null;
+            /** Is Primary */
+            is_primary: boolean;
+            /** Order */
+            order: number;
+        };
+        /** ReviewPublic */
+        ReviewPublic: {
+            /** Id */
+            id: number;
+            /** Google Review Id */
+            google_review_id: string;
+            /** Rating */
+            rating: number;
+            /** Text */
+            text: string | null;
+            /** Author Name */
+            author_name: string | null;
+            /** Author Photo Uri */
+            author_photo_uri: string | null;
+            /** Published At */
+            published_at: string | null;
+            /** Relative Time */
+            relative_time: string | null;
         };
         /** Status */
         Status: {
@@ -492,6 +694,161 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MerchantDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_photos_api_v1_merchants__merchant_id__photos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PhotoPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_reviews_api_v1_merchants__merchant_id__reviews_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_types_detail_api_v1_merchants__merchant_id__types_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MerchantTypePublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_opening_hours_api_v1_merchants__merchant_id__opening_hours_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpeningHoursPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_amenities_api_v1_merchants__merchant_id__amenities_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                merchant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AmenityPublic"];
                 };
             };
             /** @description Validation Error */
