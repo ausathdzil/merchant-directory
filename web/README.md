@@ -1,4 +1,4 @@
-# Merchant Directory Web
+# Veteran Market Web
 
 ## Getting Started
 

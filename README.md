@@ -1,4 +1,4 @@
-# Merchant Directory
+# Veteran Market
 
 ## Authors
 

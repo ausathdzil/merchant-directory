@@ -9,6 +9,10 @@ export async function generateMetadata({
   const { merchant_id } = await params;
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 
+  if (!merchant) {
+    notFound();
+  }
+
   return {
     title: merchant.display_name,
   };

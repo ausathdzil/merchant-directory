@@ -37,7 +37,7 @@ class Settings(BaseSettings):
             self.FRONTEND_HOST
         ]
 
-    PROJECT_NAME: str = "Merchant Directory"
+    PROJECT_NAME: str = "Veteran Market API"
 
 
 settings = Settings()

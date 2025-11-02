@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function NotFoundPage() {
+export default function NotFound() {
   const t = useTranslations('NotFound.MerchantPage');
 
   return (

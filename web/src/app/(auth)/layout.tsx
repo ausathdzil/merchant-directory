@@ -38,7 +38,7 @@ export default function AuthLayout({
             src="/globe.svg"
             width={16}
           />
-          Merchant Directory
+          Veteran Market
         </Link>
         <ViewTransition name="form">
           <div className="w-full max-w-xs px-8 sm:px-0">{children}</div>

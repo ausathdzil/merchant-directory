@@ -1,8 +1,8 @@
 {
   "Metadata": {
     "Layout": {
-      "title": "Merchant Directory",
-      "description": "Discover local businesses in South Jakarta."
+      "title": "Veteran Market",
+      "description": "Discover local businesses near UPN Veteran Jakarta campuses: Limo, Depok and Pondok Labu, South Jakarta."
     },
     "ExplorePage": {
       "title": "Explore"
@@ -26,7 +26,7 @@
     }
   },
   "Header": {
-    "title": "Merchant Directory",
+    "title": "Veteran Market",
     "navigation": {
       "home": "Home",
       "explore": "Explore",
@@ -39,8 +39,8 @@
   },
   "HomePage": {
     "hero": {
-      "title": "Discover local businesses in South Jakarta.",
-      "description": "Connect with the best small and medium enterprises in South Jakarta. Find trusted merchants, explore local services, and support your community.",
+      "title": "Discover local businesses near UPN Veteran Jakarta.",
+      "description": "Connect with the best small and medium enterprises near our Limo and Pondok Labu campuses. Find trusted merchants, explore local services, and support your community.",
       "button": "Explore Directory",
       "search": {
         "placeholder": "Search for a merchant name…",
@@ -57,7 +57,7 @@
         "discovery": {
           "label": "Discovery",
           "title": "Find Local Businesses",
-          "description": "Explore our comprehensive directory of small and medium enterprises across South Jakarta. From restaurants to retail, services to suppliers - discover trusted local businesses in your neighborhood.",
+          "description": "Explore our comprehensive directory of small and medium enterprises near UPN Veteran Jakarta campuses in Limo, Depok and Pondok Labu, South Jakarta. From restaurants to retail, services to suppliers - discover trusted local businesses in your neighborhood.",
           "benefits": {
             "curatedDirectory": "Curated Directory",
             "categoryFilters": "Category Filters",
@@ -79,7 +79,7 @@
         "connection": {
           "label": "Connection",
           "title": "Support Local Economy",
-          "description": "Connect directly with business owners and contribute to your local community. Every interaction helps small businesses thrive and strengthens the South Jakarta economy.",
+          "description": "Connect directly with business owners and contribute to your local community. Every interaction helps small businesses thrive and strengthens the economy around our Limo and Pondok Labu campuses.",
           "benefits": {
             "directContact": "Direct Contact",
             "communityImpact": "Community Impact",
@@ -91,29 +91,29 @@
     },
     "faq": {
       "heading": "Frequently Asked Questions",
-      "description": "Everything you need to know about Merchant Directory",
+      "description": "Everything you need to know about Veteran Market",
       "questions": {
         "whatIsMerchantDirectory": {
-          "question": "What is Merchant Directory?",
-          "answer": "Merchant Directory is a comprehensive platform that connects customers with verified small and medium enterprises in Jakarta Selatan. We help you discover local businesses, from restaurants and cafes to retail stores and service providers."
+          "question": "What is Veteran Market?",
+          "answer": "Veteran Market is a comprehensive platform that connects customers with verified small and medium enterprises near UPN Veteran Jakarta campuses in Limo, Depok and Pondok Labu, South Jakarta. We help you discover local businesses, from restaurants and cafes to retail stores and service providers."
         },
         "isItFree": {
           "question": "Is it free to browse the directory?",
-          "answer": "Yes! Browsing the Merchant Directory is completely free. You can search, filter, and explore all listed businesses without any charges."
+          "answer": "Yes! Browsing the Veteran Market is completely free. You can search, filter, and explore all listed businesses without any charges."
         },
         "doIHaveToRegister": {
           "question": "Do I have to register to use the directory?",
-          "answer": "No, you don't need to register to use the Merchant Directory. You can browse the directory and search for businesses without creating an account."
+          "answer": "No, you don't need to register to use the Veteran Market. You can browse the directory and search for businesses without creating an account."
         },
         "whatTypeOfBusinessCanIDiscover": {
           "question": "What type of businesses can I discover?",
-          "answer": "We list all types of small and medium enterprises operating in Jakarta Selatan, including restaurants, cafes, retail stores, service providers, healthcare facilities, educational institutions, and more."
+          "answer": "We list all types of small and medium enterprises operating near UPN Veteran Jakarta campuses in Limo, Depok and Pondok Labu, South Jakarta, including restaurants, cafes, retail stores, service providers, healthcare facilities, educational institutions, and more."
         }
       }
     },
     "cta": {
       "heading": "What are you waiting for?",
-      "description": "Start exploring hundreds of verified merchants in Jakarta Selatan today. Find the perfect business for your needs.",
+      "description": "Start exploring hundreds of verified merchants near UPN Veteran Jakarta campuses today. Find the perfect business for your needs.",
       "button": "Explore Directory"
     }
   },

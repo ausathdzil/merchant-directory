@@ -1,8 +1,8 @@
 {
   "Metadata": {
     "Layout": {
-      "title": "Direktori UMKM",
-      "description": "Temukan bisnis lokal di Jakarta Selatan."
+      "title": "Veteran Market",
+      "description": "Temukan bisnis lokal dekat kampus UPN Veteran Jakarta: Limo, Depok dan Pondok Labu, Jakarta Selatan."
     },
     "ExplorePage": {
       "title": "Jelajahi"
@@ -26,7 +26,7 @@
     }
   },
   "Header": {
-    "title": "Direktori UMKM",
+    "title": "Veteran Market",
     "navigation": {
       "home": "Beranda",
       "explore": "Jelajahi",
@@ -39,8 +39,8 @@
   },
   "HomePage": {
     "hero": {
-      "title": "Temukan bisnis lokal di Jakarta Selatan.",
-      "description": "Temukan bisnis UMKM terpercaya, jelajahi layanan lokal, dan dukung komunitasmu.",
+      "title": "Temukan bisnis lokal dekat kampus UPN Veteran Jakarta.",
+      "description": "Temukan bisnis UMKM terpercaya di dekat kampus Limo dan Pondok Labu kami, jelajahi layanan lokal, dan dukung komunitasmu.",
       "button": "Jelajahi Direktori",
       "search": {
         "placeholder": "Cari nama atau kata kunci bisnis…",
@@ -57,7 +57,7 @@
         "discovery": {
           "label": "Penemuan",
           "title": "Temukan Bisnis Lokal",
-          "description": "Jelajahi direktori komprehensif kami yang berisi usaha kecil dan menengah di seluruh Jakarta Selatan. Dari restoran hingga ritel, layanan hingga pemasok - temukan bisnis lokal terpercaya di lingkunganmu.",
+          "description": "Jelajahi direktori komprehensif kami yang berisi usaha kecil dan menengah dekat kampus UPN Veteran Jakarta di Limo, Depok dan Pondok Labu, Jakarta Selatan. Dari restoran hingga ritel, layanan hingga pemasok - temukan bisnis lokal terpercaya di lingkunganmu.",
           "benefits": {
             "curatedDirectory": "Direktori Terkurasi",
             "categoryFilters": "Filter Kategori",
@@ -79,7 +79,7 @@
         "connection": {
           "label": "Koneksi",
           "title": "Dukung Ekonomi Lokal",
-          "description": "Hubungi langsung dengan pemilik bisnis dan berkontribusi pada komunitas lokalmu. Setiap interaksi membantu usaha kecil berkembang dan memperkuat ekonomi Jakarta Selatan.",
+          "description": "Hubungi langsung dengan pemilik bisnis dan berkontribusi pada komunitas lokalmu. Setiap interaksi membantu usaha kecil berkembang dan memperkuat ekonomi di sekitar kampus Limo dan Pondok Labu kami.",
           "benefits": {
             "directContact": "Kontak Langsung",
             "communityImpact": "Dampak Komunitas",
@@ -91,29 +91,29 @@
     },
     "faq": {
       "heading": "Pertanyaan yang sering diajukan",
-      "description": "Semua yang perlu kamu ketahui tentang Direktori UMKM",
+      "description": "Semua yang perlu kamu ketahui tentang Veteran Market",
       "questions": {
         "whatIsMerchantDirectory": {
-          "question": "Apa itu Direktori UMKM?",
-          "answer": "Direktori UMKM adalah platform komprehensif yang menghubungkan pelanggan dengan usaha kecil dan menengah terverifikasi di Jakarta Selatan. Kami membantumu menemukan bisnis lokal, mulai dari restoran dan kafe hingga toko ritel dan penyedia layanan."
+          "question": "Apa itu Veteran Market?",
+          "answer": "Veteran Market adalah platform komprehensif yang menghubungkan pelanggan dengan usaha kecil dan menengah terverifikasi dekat kampus UPN Veteran Jakarta di Limo, Depok dan Pondok Labu, Jakarta Selatan. Kami membantumu menemukan bisnis lokal, mulai dari restoran dan kafe hingga toko ritel dan penyedia layanan."
         },
         "isItFree": {
           "question": "Apakah gratis untuk menjelajahi direktori?",
-          "answer": "Ya! Menjelajahi Direktori UMKM sepenuhnya gratis. Kamu dapat mencari, memfilter, dan menjelajahi semua bisnis yang terdaftar tanpa biaya apa pun."
+          "answer": "Ya! Menjelajahi Veteran Market sepenuhnya gratis. Kamu dapat mencari, memfilter, dan menjelajahi semua bisnis yang terdaftar tanpa biaya apa pun."
         },
         "doIHaveToRegister": {
           "question": "Apakah saya harus mendaftar untuk menggunakan direktori?",
-          "answer": "Tidak, kamu tidak perlu mendaftar untuk menggunakan Direktori UMKM. Kamu dapat menjelajahi direktori dan mencari bisnis tanpa membuat akun."
+          "answer": "Tidak, kamu tidak perlu mendaftar untuk menggunakan Veteran Market. Kamu dapat menjelajahi direktori dan mencari bisnis tanpa membuat akun."
         },
         "whatTypeOfBusinessCanIDiscover": {
           "question": "Apa jenis bisnis yang dapat saya temukan?",
-          "answer": "Kami daftarkan semua jenis usaha kecil dan menengah yang beroperasi di Jakarta Selatan, termasuk restoran, kafe, toko ritel, penyedia layanan, fasilitas kesehatan, institusi pendidikan, dan lainnya."
+          "answer": "Kami daftarkan semua jenis usaha kecil dan menengah yang beroperasi dekat kampus UPN Veteran Jakarta di Limo, Depok dan Pondok Labu, Jakarta Selatan, termasuk restoran, kafe, toko ritel, penyedia layanan, fasilitas kesehatan, institusi pendidikan, dan lainnya."
         }
       }
     },
     "cta": {
       "heading": "Apa yang kamu tunggu lagi?",
-      "description": "Mulai menjelajahi ratusan bisnis UMKM terverifikasi di Jakarta Selatan hari ini. Temukan bisnis yang tepat untuk kebutuhanmu.",
+      "description": "Mulai menjelajahi ratusan bisnis UMKM terverifikasi dekat kampus UPN Veteran Jakarta hari ini. Temukan bisnis yang tepat untuk kebutuhanmu.",
       "button": "Jelajahi Direktori"
     }
   },

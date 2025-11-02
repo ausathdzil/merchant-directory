@@ -1,4 +1,4 @@
-# Merchant Directory API
+# Veteran Market API
 
 ## Getting Started
 
