@@ -83,7 +83,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <UtensilsIcon className="float-down size-12 stroke-rose-500" />
+        <UtensilsIcon className="float-down size-12 stroke-rose-700" />
       </motion.div>
     </div>
   );

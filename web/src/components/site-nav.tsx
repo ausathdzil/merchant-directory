@@ -30,13 +30,13 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
   ];
 
   return pathname.startsWith('/explore') ? (
-    <div className="order-1 flex w-full border-t p-4 md:order-0 md:border-none md:p-0">
+    <div className="order-1 flex w-full border-t p-4 lg:order-0 lg:border-none lg:p-0">
       <SearchInput placeholder={t('search.placeholder')} />
     </div>
   ) : (
     !isMobile && (
       <nav
-        className={cn('hidden items-center gap-4 md:flex', className)}
+        className={cn('hidden items-center gap-4 lg:flex', className)}
         {...props}
       >
         {navItems.map((item) => (

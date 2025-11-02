@@ -179,9 +179,9 @@ function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
     },
     {
       icon: HeartPlusIcon,
-      iconColor: 'stroke-rose-500',
+      iconColor: 'stroke-rose-700',
       label: t('connection.label'),
-      labelColor: 'text-rose-500',
+      labelColor: 'text-rose-700',
       title: t('connection.title'),
       description: t('connection.description'),
       benefits: [

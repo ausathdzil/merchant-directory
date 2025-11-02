@@ -2,6 +2,7 @@ import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+
 import { FilterSelect } from '@/components/filter-select';
 import { MerchantPagination } from '@/components/merchant-pagination';
 import { Subheading } from '@/components/typography';
@@ -74,6 +75,7 @@ export default async function ExplorePage({
               <div className="flex items-center gap-4">
                 <ViewToggle className="hidden md:flex" />
                 <MerchantTypesFilter />
+                <MerchantSortByFilter />
               </div>
             </div>
             <MerchantsGrid
@@ -107,7 +109,7 @@ export default async function ExplorePage({
 async function MerchantTypesFilter() {
   const merchantTypes = await getMerchantTypes();
   const opts = [
-    { label: 'Type', value: '', isDisabled: true },
+    { label: 'Merchant Type', value: '', isDisabled: true },
     ...merchantTypes.map((type) => ({
       label: type,
       value: type.toLocaleLowerCase().replace(/\s+/g, '_'),
@@ -115,6 +117,16 @@ async function MerchantTypesFilter() {
   ];
 
   return <FilterSelect name="type" opts={opts} />;
+}
+
+function MerchantSortByFilter() {
+  const opts = [
+    { label: 'Sort By', value: '', isDisabled: true },
+    { label: 'Name', value: 'name' },
+    { label: 'Rating', value: 'rating' },
+  ];
+
+  return <FilterSelect name="sort_by" opts={opts} />;
 }
 
 function MerchantsGrid({

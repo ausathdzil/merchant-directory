@@ -3,6 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   experimental: {
+    inlineCss: true,
     turbopackFileSystemCacheForDev: true,
     viewTransition: true,
   },
