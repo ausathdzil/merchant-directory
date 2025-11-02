@@ -21,8 +21,10 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item';
+import { ViewToggle } from '@/components/view-toggle';
 import { getMerchants } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
+import { cn } from '@/lib/utils';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Metadata.ExplorePage');
@@ -37,7 +39,7 @@ export default async function ExplorePage({
 }: PageProps<'/explore'>) {
   const t = await getTranslations('ExplorePage');
 
-  const { page, page_size, search, primary_type, sort_by, sort_order } =
+  const { page, page_size, search, primary_type, sort_by, sort_order, view } =
     await searchParams;
 
   const query: MerchantsQuery = {
@@ -62,13 +64,19 @@ export default async function ExplorePage({
       <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
         {merchants.data.length > 0 ? (
           <>
-            <Subheading>
-              {query?.search
-                ? t('search.searching', { query: query.search })
-                : t('search.allResults')}{' '}
-              <span className="tabular-nums">({merchants.meta.total})</span>
-            </Subheading>
-            <MerchantsGrid merchants={merchants.data} />
+            <div className="flex flex-wrap justify-between gap-4">
+              <Subheading>
+                {query?.search
+                  ? t('search.searching', { query: query.search })
+                  : t('search.allResults')}{' '}
+                <span className="tabular-nums">({merchants.meta.total})</span>
+              </Subheading>
+              <ViewToggle className="hidden md:flex" />
+            </div>
+            <MerchantsGrid
+              merchants={merchants.data}
+              view={view as 'grid' | 'list'}
+            />
             <MerchantPagination
               className="mt-auto"
               paginationMeta={merchants.meta}
@@ -93,9 +101,20 @@ export default async function ExplorePage({
   );
 }
 
-function MerchantsGrid({ merchants }: { merchants: MerchantListItem[] }) {
+function MerchantsGrid({
+  merchants,
+  view,
+}: {
+  merchants: MerchantListItem[];
+  view: 'grid' | 'list';
+}) {
   return (
-    <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <ItemGroup
+      className={cn(
+        'grid gap-4',
+        view === 'list' ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'
+      )}
+    >
       {merchants.map((merchant) => (
         <Item
           asChild

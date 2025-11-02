@@ -16,7 +16,6 @@ export default function Loading() {
             <Skeleton className="h-[78px]" key={i} />
           ))}
         </div>
-        <Skeleton className="mt-auto h-9" />
       </div>
     </main>
   );
