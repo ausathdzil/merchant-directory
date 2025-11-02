@@ -30,7 +30,7 @@ export function Wordmark({
       {prevIcon ? (
         <ArrowLeftIcon className="stroke-primary" />
       ) : (
-        <Image alt="Logo" aria-hidden height={16} src="/globe.svg" width={16} />
+        <Image alt="Logo" aria-hidden height={24} src="/logo.png" width={24} />
       )}
       {t('title')}
     </Link>

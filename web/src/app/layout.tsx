@@ -6,6 +6,7 @@ import { getTranslations } from 'next-intl/server';
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import type { Viewport } from 'next';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -26,8 +27,16 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${t('title')}`,
     },
     description: t('description'),
+    appleWebApp: {
+      statusBarStyle: 'black-translucent',
+    },
   };
 }
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  userScalable: false,
+};
 
 export default function RootLayout({
   children,
@@ -39,7 +48,11 @@ export default function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={cn(inter.variable, dmSans.variable, 'font-sans antialiased')}
+        className={cn(
+          inter.variable,
+          dmSans.variable,
+          'font-sans dark:antialiased'
+        )}
       >
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
