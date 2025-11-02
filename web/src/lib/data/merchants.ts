@@ -1,11 +1,26 @@
 import { cookies } from 'next/headers';
+
 import type {
+  MerchantAmenitiesError,
+  MerchantAmenitiesPath,
+  MerchantAmenitiesResponse,
   MerchantError,
+  MerchantOpeningHoursError,
+  MerchantOpeningHoursPath,
+  MerchantOpeningHoursResponse,
   MerchantPath,
+  MerchantPhotoPath,
+  MerchantPhotosError,
+  MerchantPhotosResponse,
   MerchantResponse,
+  MerchantReviewsError,
+  MerchantReviewsPath,
+  MerchantReviewsResponse,
   MerchantsError,
   MerchantsQuery,
   MerchantsResponse,
+  MerchantTypesError,
+  MerchantTypesPath,
   MerchantTypesResponse,
 } from '../types/merchant';
 import { API_URL } from '../utils';
@@ -59,24 +74,6 @@ export async function getMerchants(query: MerchantsQuery) {
   return { data, meta };
 }
 
-export async function getMerchantTypes() {
-  const res = await fetch(`${API_URL}/merchants/types`, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-    cache: 'force-cache',
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch merchant types.');
-  }
-
-  const data = (await res.json()) as MerchantTypesResponse;
-
-  return data;
-}
-
 export async function getMerchant(path: MerchantPath) {
   const res = await fetch(`${API_URL}/merchants/${path.merchant_id}`, {
     method: 'GET',
@@ -107,6 +104,182 @@ export async function getMerchant(path: MerchantPath) {
   }
 
   const data = (await res.json()) as MerchantResponse;
+
+  return data;
+}
+
+export async function getMerchantPhotos(path: MerchantPhotoPath) {
+  const res = await fetch(`${API_URL}/merchants/${path.merchant_id}/photos`, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
+    const error = (await res.json()) as
+      | Partial<MerchantPhotosError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch merchant photos.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantPhotosResponse;
+
+  return data;
+}
+
+export async function getMerchantReviews(path: MerchantReviewsPath) {
+  const res = await fetch(`${API_URL}/merchants/${path.merchant_id}/reviews`, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
+    const error = (await res.json()) as
+      | Partial<MerchantReviewsError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch merchant reviews.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantReviewsResponse;
+
+  return data;
+}
+
+export async function getMerchantTypes(path: MerchantTypesPath) {
+  const res = await fetch(`${API_URL}/merchants/${path.merchant_id}/types`, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
+    const error = (await res.json()) as
+      | Partial<MerchantTypesError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch merchant types.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantTypesResponse;
+
+  return data;
+}
+
+export async function getMerchantOpeningHours(path: MerchantOpeningHoursPath) {
+  const res = await fetch(
+    `${API_URL}/merchants/${path.merchant_id}/opening-hours`,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+      cache: 'force-cache',
+    }
+  );
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
+    const error = (await res.json()) as
+      | Partial<MerchantOpeningHoursError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch merchant opening hours.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantOpeningHoursResponse;
+
+  return data;
+}
+
+export async function getMerchantAmenities(path: MerchantAmenitiesPath) {
+  const res = await fetch(
+    `${API_URL}/merchants/${path.merchant_id}/amenities`,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+      cache: 'force-cache',
+    }
+  );
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return null;
+    }
+
+    const error = (await res.json()) as
+      | Partial<MerchantAmenitiesError>
+      | { detail?: unknown };
+
+    let message = 'Failed to fetch merchant amenities.';
+
+    if (Array.isArray(error.detail)) {
+      message = error.detail[0].msg;
+    } else if (typeof error.detail === 'string') {
+      message = error.detail;
+    }
+
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as MerchantAmenitiesResponse;
 
   return data;
 }

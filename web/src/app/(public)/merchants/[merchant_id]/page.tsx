@@ -8,7 +8,7 @@ import {
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-
+import { Subheading } from '@/components/typography';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -27,7 +27,21 @@ import {
   ItemTitle,
 } from '@/components/ui/item';
 import { Separator } from '@/components/ui/separator';
-import { getMerchant } from '@/lib/data/merchants';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  getMerchant,
+  getMerchantAmenities,
+  getMerchantOpeningHours,
+  getMerchantReviews,
+  getMerchantTypes,
+} from '@/lib/data/merchants';
 import type { MerchantDetail } from '@/lib/types/merchant';
 import { MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
 
@@ -58,10 +72,17 @@ export default async function MerchantPage({
 
   const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},18/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
+  const [_reviews, types, opening_hours, _amenities] = await Promise.all([
+    getMerchantReviews({ merchant_id: Number(merchant_id) }),
+    getMerchantTypes({ merchant_id: Number(merchant_id) }),
+    getMerchantOpeningHours({ merchant_id: Number(merchant_id) }),
+    getMerchantAmenities({ merchant_id: Number(merchant_id) }),
+  ]);
+
   return (
     <main className="flex flex-1 flex-col items-center">
       <div className="grid gap-8 p-4 lg:grid-cols-3 lg:p-8">
-        <div className="grid gap-4 lg:col-span-2">
+        <div className="grid gap-8 lg:col-span-2">
           <div className="relative aspect-video w-full rounded-lg bg-muted">
             <Image
               alt={merchant.display_name ?? 'Map of the business'}
@@ -92,6 +113,45 @@ export default async function MerchantPage({
             </ItemActions>
           </Item>
           <Separator />
+          {types && types.length > 0 && (
+            <div className="grid gap-4">
+              <Subheading>Additional Types</Subheading>
+              <div className="flex flex-wrap gap-2">
+                {types.map((type) => (
+                  <Badge key={type.id} variant="secondary">
+                    {type.type_name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {opening_hours && Object.keys(opening_hours).length > 0 && (
+            <div className="grid gap-4">
+              <Subheading>Opening Hours</Subheading>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {Object.entries(opening_hours)
+                      .slice(2)
+                      .map(([day]) => (
+                        <TableHead className="capitalize" key={day}>
+                          {day}
+                        </TableHead>
+                      ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    {Object.entries(opening_hours)
+                      .slice(2)
+                      .map(([day, hours]) => (
+                        <TableCell key={`${day}-hours`}>{hours}</TableCell>
+                      ))}
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </div>
         <div className="lg:col-span-1">
           <Card className="sticky top-24">

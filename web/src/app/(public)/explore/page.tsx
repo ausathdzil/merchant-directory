@@ -23,7 +23,8 @@ import {
   ItemTitle,
 } from '@/components/ui/item';
 import { ViewToggle } from '@/components/view-toggle';
-import { getMerchants, getMerchantTypes } from '@/lib/data/merchants';
+import { getMerchantTypesList } from '@/lib/data/merchant-types';
+import { getMerchants } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
 import { cn } from '@/lib/utils';
 
@@ -107,7 +108,7 @@ export default async function ExplorePage({
 }
 
 async function MerchantTypesFilter() {
-  const merchantTypes = await getMerchantTypes();
+  const merchantTypes = await getMerchantTypesList();
   const opts = [
     { label: 'Merchant Type', value: '', isDisabled: true },
     ...merchantTypes.map((type) => ({
