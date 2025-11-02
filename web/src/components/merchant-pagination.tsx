@@ -54,7 +54,7 @@ export function MerchantPagination({
   const allPages = generatePagination(currentPage, paginationMeta.total_pages);
 
   const createPageUrl = (pageNumber: number | string) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     params.set('page', pageNumber.toString());
     return `${pathname}?${params.toString()}` as Route;
   };

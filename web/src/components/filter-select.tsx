@@ -24,7 +24,7 @@ export function FilterSelect({ name, opts, ...props }: FilterSelectProps) {
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     params.set('page', '1');
     if (e.target.value) {
       params.set(name, e.target.value);
