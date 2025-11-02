@@ -1,4 +1,13 @@
 {
+  "Metadata": {
+    "Layout": {
+      "title": "Merchant Directory",
+      "description": "Discover local businesses in South Jakarta."
+    },
+    "ExplorePage": {
+      "title": "Explore"
+    }
+  },
   "NotFoundPage": {
     "title": "Page Not Found",
     "description": "The page you're looking for does not exist",

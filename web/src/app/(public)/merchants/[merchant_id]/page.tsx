@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { getMerchant } from '@/lib/data/merchants';
 
@@ -6,7 +7,6 @@ export async function generateMetadata({
   params,
 }: PageProps<'/merchants/[merchant_id]'>): Promise<Metadata> {
   const { merchant_id } = await params;
-
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 
   return {
@@ -18,8 +18,11 @@ export default async function MerchantPage({
   params,
 }: PageProps<'/merchants/[merchant_id]'>) {
   const { merchant_id } = await params;
-
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
+
+  if (!merchant) {
+    notFound();
+  }
 
   return (
     <main className="flex flex-1 flex-col items-center">

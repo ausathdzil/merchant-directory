@@ -1,4 +1,13 @@
 {
+  "Metadata": {
+    "Layout": {
+      "title": "Direktori UMKM",
+      "description": "Temukan bisnis lokal di Jakarta Selatan."
+    },
+    "ExplorePage": {
+      "title": "Jelajahi"
+    }
+  },
   "NotFoundPage": {
     "title": "Halaman Tidak Ditemukan",
     "description": "Halaman yang kamu cari tidak ada",

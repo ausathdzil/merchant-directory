@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Inter } from 'next/font/google';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
-import { getLocale } from 'next-intl/server';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -17,20 +17,24 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Merchant Directory',
-    template: '%s | Merchant Directory',
-  },
-  description: 'Discover local businesses in South Jakarta.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Metadata.Layout');
 
-export default async function RootLayout({
+  return {
+    title: {
+      default: t('title'),
+      template: `%s | ${t('title')}`,
+    },
+    description: t('description'),
+  };
+}
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
+  const locale = useLocale();
 
   return (
     <html lang={locale} suppressHydrationWarning>

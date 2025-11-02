@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import type { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -11,12 +11,12 @@ type WordmarkProps = {
   prevIcon?: boolean;
 };
 
-export async function Wordmark({
+export function Wordmark({
   className,
   prevIcon,
   ...props
 }: WordmarkProps & ComponentProps<typeof Link>) {
-  const t = await getTranslations('Header');
+  const t = useTranslations('Header');
 
   return (
     <Link

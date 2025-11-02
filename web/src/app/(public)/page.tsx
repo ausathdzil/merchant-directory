@@ -10,7 +10,7 @@ import {
 import * as motion from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import type { ComponentProps } from 'react';
 
 import { ExploreButton } from '@/components/explore-button';
@@ -33,8 +33,8 @@ import {
 } from '@/components/ui/item';
 import { cn } from '@/lib/utils';
 
-export default async function Home() {
-  const t = await getTranslations('HomePage');
+export default function Home() {
+  const t = useTranslations('HomePage');
 
   return (
     <>
@@ -145,11 +145,8 @@ export default async function Home() {
   );
 }
 
-async function Features({
-  className,
-  ...props
-}: ComponentProps<typeof ItemGroup>) {
-  const t = await getTranslations('HomePage.features.steps');
+function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
+  const t = useTranslations('HomePage.features.steps');
 
   const features = [
     {
@@ -232,10 +229,10 @@ async function Features({
   );
 }
 
-async function FrequentlyAskedQuestions({
+function FrequentlyAskedQuestions({
   ...props
 }: ComponentProps<typeof Accordion>) {
-  const t = await getTranslations('HomePage.faq.questions');
+  const t = useTranslations('HomePage.faq.questions');
 
   const questions = [
     {

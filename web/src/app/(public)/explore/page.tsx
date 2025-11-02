@@ -24,14 +24,19 @@ import {
 import { getMerchants } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
 
-export const metadata: Metadata = {
-  title: 'Explore',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Metadata.ExplorePage');
+
+  return {
+    title: t('title'),
+  };
+}
 
 export default async function ExplorePage({
   searchParams,
 }: PageProps<'/explore'>) {
   const t = await getTranslations('ExplorePage');
+
   const { page, page_size, search, primary_type, sort_by, sort_order } =
     await searchParams;
 
