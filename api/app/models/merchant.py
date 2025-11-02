@@ -222,6 +222,7 @@ class MerchantListItem(BaseModel):
     short_address: str | None
     rating: float | None
     user_rating_count: int | None
+    type_count: int
 
 
 class MerchantsPublic(BaseModel):

@@ -9,6 +9,7 @@ from app.models.merchant import (
     MerchantDetail,
     MerchantListItem,
     MerchantsPublic,
+    MerchantType,
 )
 from app.models.utils import PaginationMeta
 
@@ -25,7 +26,7 @@ def read_merchants(
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 10,
     search: Annotated[str | None, Query()] = None,
-    primary_type: Annotated[str | None, Query()] = None,
+    type: Annotated[str | None, Query()] = None,
     search_lang: Annotated[Literal["english", "indonesian"], Query()] = "english",
     sort_by: Annotated[
         Literal["name", "rating", "distance", "created_at"], Query()
@@ -75,8 +76,8 @@ def read_merchants(
             func.coalesce(similarity_address_score, 0),
         )
 
-    if primary_type:
-        stmt = stmt.where(Merchant.primary_type == primary_type)
+    if type:
+        stmt = stmt.join(Merchant.types).where(MerchantType.type_name == type)
 
     total_count = session.scalar(select(func.count()).select_from(stmt.subquery())) or 0
 
@@ -145,6 +146,7 @@ def read_merchants(
             short_address=merchant.short_address,
             rating=merchant.rating,
             user_rating_count=merchant.user_rating_count,
+            type_count=len(merchant.types),
         )
         for merchant in merchants
     ]
@@ -164,6 +166,14 @@ def read_merchants(
             has_previous=has_previous,
         ),
     )
+
+
+@router.get("/types", response_model=list[str])
+def read_merchant_types(session: SessionDep):
+    stmt = select(MerchantType.type_name).distinct()
+    types = session.scalars(stmt).all()
+
+    return [format_type_name(type_name) for type_name in sorted(types)]
 
 
 @router.get("/{merchant_id}", response_model=MerchantDetail)

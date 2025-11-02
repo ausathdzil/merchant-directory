@@ -6,6 +6,7 @@ import type {
   MerchantsError,
   MerchantsQuery,
   MerchantsResponse,
+  MerchantTypesResponse,
 } from '../types/merchant';
 import { API_URL } from '../utils';
 
@@ -56,6 +57,24 @@ export async function getMerchants(query: MerchantsQuery) {
   const { data, meta } = (await res.json()) as MerchantsResponse;
 
   return { data, meta };
+}
+
+export async function getMerchantTypes() {
+  const res = await fetch(`${API_URL}/merchants/types`, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch merchant types.');
+  }
+
+  const data = (await res.json()) as MerchantTypesResponse;
+
+  return data;
 }
 
 export async function getMerchant(path: MerchantPath) {

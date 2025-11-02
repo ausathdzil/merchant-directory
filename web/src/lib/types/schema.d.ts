@@ -38,7 +38,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/utils/": {
+    "/api/v1/utils": {
         parameters: {
             query?: never;
             header?: never;
@@ -46,7 +46,7 @@ export interface paths {
             cookie?: never;
         };
         /** Health Check */
-        get: operations["health_check_api_v1_utils__get"];
+        get: operations["health_check_api_v1_utils_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -81,6 +81,23 @@ export interface paths {
         };
         /** Read Merchants */
         get: operations["read_merchants_api_v1_merchants_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/merchants/types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Merchant Types */
+        get: operations["read_merchant_types_api_v1_merchants_types_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -201,6 +218,8 @@ export interface components {
             rating: number | null;
             /** User Rating Count */
             user_rating_count: number | null;
+            /** Type Count */
+            type_count: number;
         };
         /** MerchantsPublic */
         MerchantsPublic: {
@@ -358,7 +377,7 @@ export interface operations {
             };
         };
     };
-    health_check_api_v1_utils__get: {
+    health_check_api_v1_utils_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -404,7 +423,7 @@ export interface operations {
                 page?: number;
                 page_size?: number;
                 search?: string | null;
-                primary_type?: string | null;
+                type?: string | null;
                 search_lang?: "english" | "indonesian";
                 sort_by?: "name" | "rating" | "distance" | "created_at";
                 sort_order?: "asc" | "desc";
@@ -431,6 +450,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_merchant_types_api_v1_merchants_types_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string[];
                 };
             };
         };

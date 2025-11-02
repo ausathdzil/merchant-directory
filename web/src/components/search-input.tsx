@@ -39,6 +39,7 @@ export function SearchInput({
       params.delete('page');
       params.delete('search');
     }
+
     startTransition(() => {
       router.replace(`${pathname as Route}?${params.toString()}`, {
         scroll: false,

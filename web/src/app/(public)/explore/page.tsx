@@ -2,7 +2,7 @@ import { SearchIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-
+import { FilterSelect } from '@/components/filter-select';
 import { MerchantPagination } from '@/components/merchant-pagination';
 import { Subheading } from '@/components/typography';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item';
 import { ViewToggle } from '@/components/view-toggle';
-import { getMerchants } from '@/lib/data/merchants';
+import { getMerchants, getMerchantTypes } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
 import { cn } from '@/lib/utils';
 
@@ -39,14 +39,14 @@ export default async function ExplorePage({
 }: PageProps<'/explore'>) {
   const t = await getTranslations('ExplorePage');
 
-  const { page, page_size, search, primary_type, sort_by, sort_order, view } =
+  const { page, page_size, search, type, sort_by, sort_order, view } =
     await searchParams;
 
   const query: MerchantsQuery = {
     page: page ? Number(page) : 1,
     page_size: page_size ? Number(page_size) : 15,
     search: typeof search === 'string' ? search : undefined,
-    primary_type: typeof primary_type === 'string' ? primary_type : undefined,
+    type: typeof type === 'string' ? type : undefined,
     sort_by:
       typeof sort_by === 'string'
         ? (sort_by as NonNullable<MerchantsQuery>['sort_by'])
@@ -71,7 +71,10 @@ export default async function ExplorePage({
                   : t('search.allResults')}{' '}
                 <span className="tabular-nums">({merchants.meta.total})</span>
               </Subheading>
-              <ViewToggle className="hidden md:flex" />
+              <div className="flex items-center gap-4">
+                <ViewToggle className="hidden md:flex" />
+                <MerchantTypesFilter />
+              </div>
             </div>
             <MerchantsGrid
               merchants={merchants.data}
@@ -99,6 +102,19 @@ export default async function ExplorePage({
       </div>
     </main>
   );
+}
+
+async function MerchantTypesFilter() {
+  const merchantTypes = await getMerchantTypes();
+  const opts = [
+    { label: 'Type', value: '', isDisabled: true },
+    ...merchantTypes.map((type) => ({
+      label: type,
+      value: type.toLocaleLowerCase().replace(/\s+/g, '_'),
+    })),
+  ];
+
+  return <FilterSelect name="type" opts={opts} />;
 }
 
 function MerchantsGrid({
@@ -131,11 +147,14 @@ function MerchantsGrid({
                 ⭐ {merchant.rating} ({merchant.user_rating_count})
               </ItemDescription>
             </ItemContent>
-            {merchant.primary_type && (
-              <ItemActions>
+            <ItemActions>
+              {merchant.primary_type && (
                 <Badge variant="secondary">{merchant.primary_type}</Badge>
-              </ItemActions>
-            )}
+              )}
+              {merchant.type_count > 1 && (
+                <Badge variant="outline">+{merchant.type_count - 1}</Badge>
+              )}
+            </ItemActions>
           </Link>
         </Item>
       ))}
