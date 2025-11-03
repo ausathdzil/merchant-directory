@@ -1,4 +1,4 @@
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, StarIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
@@ -152,9 +152,12 @@ function MerchantsGrid({
                 <ItemTitle className="line-clamp-1">
                   {merchant.display_name}
                 </ItemTitle>
-                <ItemDescription className="tabular-nums">
-                  ⭐ {merchant.rating} ({merchant.user_rating_count})
-                </ItemDescription>
+                <div className="flex items-center gap-1">
+                  <StarIcon className="size-4 fill-yellow-500 stroke-yellow-500" />
+                  <ItemDescription className="tabular-nums leading-none">
+                    {merchant.rating} ({merchant.user_rating_count})
+                  </ItemDescription>
+                </div>
               </ItemContent>
               <ItemActions>
                 {merchant.primary_type && (

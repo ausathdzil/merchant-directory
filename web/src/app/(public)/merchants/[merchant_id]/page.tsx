@@ -1,14 +1,18 @@
+import { format, isAfter, subMonths } from 'date-fns';
 import {
   GlobeIcon,
   MapPinIcon,
   NavigationIcon,
   PhoneIcon,
   Share2Icon,
+  StarIcon,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Subheading } from '@/components/typography';
+import { ReviewText } from '@/components/review-description';
+import { Subheading, Text } from '@/components/typography';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -23,6 +27,7 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
@@ -42,8 +47,11 @@ import {
   getMerchantReviews,
   getMerchantTypes,
 } from '@/lib/data/merchants';
-import type { MerchantDetail } from '@/lib/types/merchant';
-import { MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
+import type {
+  MerchantDetail,
+  MerchantReviewsResponse,
+} from '@/lib/types/merchant';
+import { cn, MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
 
 export async function generateMetadata({
   params,
@@ -72,7 +80,7 @@ export default async function MerchantPage({
 
   const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},18/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
-  const [_reviews, types, opening_hours, _amenities] = await Promise.all([
+  const [reviews, types, opening_hours, _amenities] = await Promise.all([
     getMerchantReviews({ merchant_id: Number(merchant_id) }),
     getMerchantTypes({ merchant_id: Number(merchant_id) }),
     getMerchantOpeningHours({ merchant_id: Number(merchant_id) }),
@@ -94,13 +102,18 @@ export default async function MerchantPage({
           </div>
           <Item className="p-0">
             <ItemContent className="gap-2">
-              <ItemTitle className="text-balance text-xl lg:text-3xl">
-                {merchant.display_name}
-              </ItemTitle>
+              {merchant.display_name && (
+                <ItemTitle className="text-balance text-xl lg:text-3xl">
+                  {merchant.display_name}
+                </ItemTitle>
+              )}
               <div className="flex items-center gap-2">
-                <ItemDescription className="tabular-nums">
-                  ⭐ {merchant.rating} ({merchant.user_rating_count})
-                </ItemDescription>
+                <div className="flex items-center gap-1">
+                  <StarIcon className="size-4 fill-yellow-500 stroke-yellow-500" />
+                  <ItemDescription className="tabular-nums leading-none">
+                    {merchant.rating} ({merchant.user_rating_count})
+                  </ItemDescription>
+                </div>
                 {merchant.primary_type && (
                   <Badge variant="secondary">{merchant.primary_type}</Badge>
                 )}
@@ -152,6 +165,14 @@ export default async function MerchantPage({
               </Table>
             </div>
           )}
+          <div className="grid gap-4">
+            <Subheading>Reviews</Subheading>
+            {reviews && reviews.length > 0 ? (
+              <ReviewCards reviews={reviews} />
+            ) : (
+              <Text>No reviews yet.</Text>
+            )}
+          </div>
         </div>
         <div className="lg:col-span-1">
           <Card className="sticky top-24">
@@ -181,6 +202,57 @@ export default async function MerchantPage({
         </div>
       </div>
     </main>
+  );
+}
+
+function ReviewCards({ reviews }: { reviews: MerchantReviewsResponse }) {
+  return (
+    <ItemGroup className="list-none gap-4">
+      {reviews.map((review) => (
+        <li key={review.id}>
+          <Item variant="outline">
+            {review.author_name && (
+              <ItemMedia>
+                <Avatar className="size-10">
+                  <AvatarFallback>
+                    {review.author_name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </ItemMedia>
+            )}
+            <ItemContent>
+              <div className="flex items-center gap-2">
+                <ItemTitle>{review.author_name}</ItemTitle>
+                <ItemDescription className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon
+                      className={cn(
+                        'stroke-yellow-500',
+                        i < review.rating ? 'fill-yellow-500' : ''
+                      )}
+                      // biome-ignore lint/suspicious/noArrayIndexKey: Rating
+                      key={i}
+                      size={14}
+                    />
+                  ))}
+                </ItemDescription>
+              </div>
+              <ReviewText text={review.text} />
+            </ItemContent>
+            {review.published_at && (
+              <ItemActions className="self-start">
+                {isAfter(
+                  new Date(review.published_at),
+                  subMonths(new Date(), 6)
+                )
+                  ? review.relative_time
+                  : format(new Date(review.published_at), 'd MMM yyyy')}
+              </ItemActions>
+            )}
+          </Item>
+        </li>
+      ))}
+    </ItemGroup>
   );
 }
 
