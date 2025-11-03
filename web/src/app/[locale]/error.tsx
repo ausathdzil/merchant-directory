@@ -1,9 +1,7 @@
 'use client';
 
 import { CloudAlertIcon } from 'lucide-react';
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+
 import {
   Empty,
   EmptyContent,
@@ -12,16 +10,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { Link } from '@/i18n/navigation';
 
 export default function ErrorPage({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
-  const t = useTranslations('ExplorePage');
-
   return (
     <main className="flex flex-1 flex-col items-center">
       <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-8">
@@ -31,13 +26,13 @@ export default function ErrorPage({
               <CloudAlertIcon />
             </EmptyMedia>
             <EmptyTitle>Error: {error.message}</EmptyTitle>
+            <EmptyDescription>Digest: {error.digest}</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button onClick={() => reset()}>{t('error.tryAgain')}</Button>
+            <EmptyDescription>
+              <Link href="/">Home</Link>
+            </EmptyDescription>
           </EmptyContent>
-          <EmptyDescription>
-            <Link href="/">{t('empty.button')}</Link>
-          </EmptyDescription>
         </Empty>
       </div>
     </main>

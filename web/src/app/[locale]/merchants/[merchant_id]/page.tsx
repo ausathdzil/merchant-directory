@@ -56,8 +56,9 @@ import { cn, MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
 
 export async function generateMetadata({
   params,
-}: PageProps<'/merchants/[merchant_id]'>): Promise<Metadata> {
+}: PageProps<'/[locale]/merchants/[merchant_id]'>): Promise<Metadata> {
   const { merchant_id } = await params;
+
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 
   if (!merchant) {
@@ -71,7 +72,7 @@ export async function generateMetadata({
 
 export default async function MerchantPage({
   params,
-}: PageProps<'/merchants/[merchant_id]'>) {
+}: PageProps<'/[locale]/merchants/[merchant_id]'>) {
   const { merchant_id } = await params;
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 

@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 import type {
   MerchantAmenitiesError,
   MerchantAmenitiesPath,
@@ -25,11 +23,8 @@ import type {
 } from '../types/merchant';
 import { API_URL } from '../utils';
 
-export async function getMerchants(query: MerchantsQuery) {
+export async function getMerchants(query: MerchantsQuery, locale?: string) {
   const searchParams = new URLSearchParams();
-
-  const cookieStore = await cookies();
-  const locale = cookieStore.get('locale')?.value;
 
   if (query) {
     for (const [key, value] of Object.entries(query)) {
@@ -39,7 +34,7 @@ export async function getMerchants(query: MerchantsQuery) {
     }
   }
 
-  if (locale === 'id') {
+  if (locale && locale === 'id') {
     searchParams.set('search_lang', 'indonesian');
   } else {
     searchParams.set('search_lang', 'english');

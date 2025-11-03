@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { ItemDescription } from './ui/item';
 
 export function ReviewText({ text }: { text: string | null }) {

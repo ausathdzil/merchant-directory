@@ -3,8 +3,8 @@
 import { useLocale } from 'next-intl';
 import { type ComponentProps, useTransition } from 'react';
 
-import type { locales } from '@/i18n/request';
-import { setLocale } from '@/lib/actions/locale';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import type { routing } from '@/i18n/routing';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
 export function LocaleSelect({
@@ -12,11 +12,17 @@ export function LocaleSelect({
   ...props
 }: ComponentProps<typeof NativeSelect>) {
   const [isPending, startTransition] = useTransition();
+
   const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    startTransition(async () => {
-      await setLocale(e.target.value as (typeof locales)[number]);
+    startTransition(() => {
+      router.replace(
+        { pathname },
+        { locale: e.target.value as (typeof routing.locales)[number] }
+      );
     });
   };
 

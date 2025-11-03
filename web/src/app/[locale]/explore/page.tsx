@@ -1,7 +1,7 @@
 import { SearchIcon, StarIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { FilterSelect } from '@/components/filter-select';
 import { MerchantPagination } from '@/components/merchant-pagination';
@@ -28,8 +28,14 @@ import { getMerchants } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
 import { cn } from '@/lib/utils';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Metadata.ExplorePage');
+export async function generateMetadata({
+  params,
+}: PageProps<'/[locale]/explore'>): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({
+    locale,
+    namespace: 'Metadata.ExplorePage',
+  });
 
   return {
     title: t('title'),
@@ -37,9 +43,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ExplorePage({
+  params,
   searchParams,
-}: PageProps<'/explore'>) {
-  const t = await getTranslations('ExplorePage');
+}: PageProps<'/[locale]/explore'>) {
+  const { locale } = await params;
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale, namespace: 'ExplorePage' });
 
   const { page, page_size, search, type, sort_by, sort_order, view } =
     await searchParams;

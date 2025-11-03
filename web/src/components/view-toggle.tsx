@@ -1,10 +1,10 @@
 'use client';
 
 import { GridIcon, ListIcon } from 'lucide-react';
-import type { Route } from 'next';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
+import { useSearchParams } from 'next/navigation';
 import type { ComponentProps } from 'react';
+
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { Button } from './ui/button';
 import { ButtonGroup } from './ui/button-group';
 
@@ -20,7 +20,7 @@ export function ViewToggle({ ...props }: ComponentProps<typeof ButtonGroup>) {
     } else {
       params.delete('view');
     }
-    router.push(`${pathname as Route}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (

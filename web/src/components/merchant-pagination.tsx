@@ -1,9 +1,9 @@
 'use client';
 
-import type { Route } from 'next';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import type { ComponentProps } from 'react';
 
+import { usePathname } from '@/i18n/navigation';
 import type { PaginationMeta } from '@/lib/types/merchant';
 import {
   Pagination,
@@ -56,7 +56,7 @@ export function MerchantPagination({
   const createPageUrl = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', pageNumber.toString());
-    return `${pathname}?${params.toString()}` as Route;
+    return `${pathname}?${params.toString()}`;
   };
 
   return (

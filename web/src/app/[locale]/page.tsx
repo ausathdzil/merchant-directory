@@ -2,6 +2,7 @@ import {
   ArrowRightIcon,
   CheckCircleIcon,
   HeartPlusIcon,
+  type LucideIcon,
   SearchIcon,
   StoreIcon,
   TelescopeIcon,
@@ -10,7 +11,7 @@ import {
 import * as motion from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ComponentProps } from 'react';
 
 import { ExploreButton } from '@/components/explore-button';
@@ -31,10 +32,82 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
+import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
-export default function Home() {
-  const t = useTranslations('HomePage');
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function Home({ params }: PageProps<'/[locale]'>) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
+  const features = [
+    {
+      icon: SearchIcon,
+      iconColor: 'stroke-primary',
+      label: t('features.steps.discovery.label'),
+      labelColor: 'text-primary',
+      title: t('features.steps.discovery.title'),
+      description: t('features.steps.discovery.description'),
+      benefits: [
+        t('features.steps.discovery.benefits.curatedDirectory'),
+        t('features.steps.discovery.benefits.categoryFilters'),
+        t('features.steps.discovery.benefits.locationBasedSearch'),
+        t('features.steps.discovery.benefits.verifiedListings'),
+      ],
+    },
+    {
+      icon: StoreIcon,
+      iconColor: 'stroke-emerald-700',
+      label: t('features.steps.information.label'),
+      labelColor: 'text-emerald-700',
+      title: t('features.steps.information.title'),
+      description: t('features.steps.information.description'),
+      benefits: [
+        t('features.steps.information.benefits.completeDetails'),
+        t('features.steps.information.benefits.customerReviews'),
+        t('features.steps.information.benefits.operatingHours'),
+        t('features.steps.information.benefits.contactInformation'),
+      ],
+    },
+    {
+      icon: HeartPlusIcon,
+      iconColor: 'stroke-rose-700',
+      label: t('features.steps.connection.label'),
+      labelColor: 'text-rose-700',
+      title: t('features.steps.connection.title'),
+      description: t('features.steps.connection.description'),
+      benefits: [
+        t('features.steps.connection.benefits.directContact'),
+        t('features.steps.connection.benefits.communityImpact'),
+        t('features.steps.connection.benefits.localSupport'),
+        t('features.steps.connection.benefits.easyCommunication'),
+      ],
+    },
+  ];
+
+  const questions = [
+    {
+      question: t('faq.questions.whatIsMerchantDirectory.question'),
+      answer: t('faq.questions.whatIsMerchantDirectory.answer'),
+    },
+    {
+      question: t('faq.questions.isItFree.question'),
+      answer: t('faq.questions.isItFree.answer'),
+    },
+    {
+      question: t('faq.questions.doIHaveToRegister.question'),
+      answer: t('faq.questions.doIHaveToRegister.answer'),
+    },
+    {
+      question: t('faq.questions.whatTypeOfBusinessCanIDiscover.question'),
+      answer: t('faq.questions.whatTypeOfBusinessCanIDiscover.answer'),
+    },
+  ];
 
   return (
     <>
@@ -101,7 +174,7 @@ export default function Home() {
               {t('features.description')}
             </Text>
           </article>
-          <Features className="lg:max-w-6xl" />
+          <Features className="lg:max-w-6xl" features={features} />
         </motion.div>
         <div className="flex w-full flex-col items-center gap-8 px-4 lg:px-8">
           <article className="text-center">
@@ -111,6 +184,7 @@ export default function Home() {
           <FrequentlyAskedQuestions
             className="w-full lg:max-w-6xl"
             collapsible
+            questions={questions}
             type="single"
           />
         </div>
@@ -145,54 +219,19 @@ export default function Home() {
   );
 }
 
-function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
-  const t = useTranslations('HomePage.features.steps');
+type FeatureProps = {
+  features: {
+    icon: LucideIcon;
+    iconColor: string;
+    label: string;
+    labelColor: string;
+    title: string;
+    description: string;
+    benefits: string[];
+  }[];
+} & ComponentProps<typeof ItemGroup>;
 
-  const features = [
-    {
-      icon: SearchIcon,
-      iconColor: 'stroke-primary',
-      label: t('discovery.label'),
-      labelColor: 'text-primary',
-      title: t('discovery.title'),
-      description: t('discovery.description'),
-      benefits: [
-        t('discovery.benefits.curatedDirectory'),
-        t('discovery.benefits.categoryFilters'),
-        t('discovery.benefits.locationBasedSearch'),
-        t('discovery.benefits.verifiedListings'),
-      ],
-    },
-    {
-      icon: StoreIcon,
-      iconColor: 'stroke-emerald-700',
-      label: t('information.label'),
-      labelColor: 'text-emerald-700',
-      title: t('information.title'),
-      description: t('information.description'),
-      benefits: [
-        t('information.benefits.completeDetails'),
-        t('information.benefits.customerReviews'),
-        t('information.benefits.operatingHours'),
-        t('information.benefits.contactInformation'),
-      ],
-    },
-    {
-      icon: HeartPlusIcon,
-      iconColor: 'stroke-rose-700',
-      label: t('connection.label'),
-      labelColor: 'text-rose-700',
-      title: t('connection.title'),
-      description: t('connection.description'),
-      benefits: [
-        t('connection.benefits.directContact'),
-        t('connection.benefits.communityImpact'),
-        t('connection.benefits.localSupport'),
-        t('connection.benefits.easyCommunication'),
-      ],
-    },
-  ];
-
+function Features({ features, className, ...props }: FeatureProps) {
   return (
     <ItemGroup className={cn('gap-4', className)} {...props}>
       {features.map((feature, index) => (
@@ -231,29 +270,11 @@ function Features({ className, ...props }: ComponentProps<typeof ItemGroup>) {
 }
 
 function FrequentlyAskedQuestions({
+  questions,
   ...props
-}: ComponentProps<typeof Accordion>) {
-  const t = useTranslations('HomePage.faq.questions');
-
-  const questions = [
-    {
-      question: t('whatIsMerchantDirectory.question'),
-      answer: t('whatIsMerchantDirectory.answer'),
-    },
-    {
-      question: t('isItFree.question'),
-      answer: t('isItFree.answer'),
-    },
-    {
-      question: t('doIHaveToRegister.question'),
-      answer: t('doIHaveToRegister.answer'),
-    },
-    {
-      question: t('whatTypeOfBusinessCanIDiscover.question'),
-      answer: t('whatTypeOfBusinessCanIDiscover.answer'),
-    },
-  ];
-
+}: {
+  questions: { question: string; answer: string }[];
+} & ComponentProps<typeof Accordion>) {
   return (
     <Accordion {...props}>
       {questions.map((question) => (

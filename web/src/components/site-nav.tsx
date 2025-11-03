@@ -1,37 +1,40 @@
 'use client';
 
 import { MenuIcon, XIcon } from 'lucide-react';
-import type { Route } from 'next';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { type ComponentProps, useEffect, useState } from 'react';
+import { type ComponentProps, Suspense, useEffect, useState } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { SearchInput } from './search-input';
 import { Button, buttonVariants } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Skeleton } from './ui/skeleton';
 
 type NavItem<T extends string = string> = {
   href: T;
   label: string;
 };
 
-export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
-  const t = useTranslations('Header');
+type DesktopNavProps = {
+  navItems: NavItem[];
+  searchPlaceholder: string;
+} & ComponentProps<'nav'>;
 
+export function DesktopNav({
+  navItems,
+  searchPlaceholder,
+  className,
+  ...props
+}: DesktopNavProps) {
   const pathname = usePathname();
   const isMobile = useIsMobile();
 
-  const navItems: NavItem<Route>[] = [
-    { label: t('navigation.explore'), href: '/explore' },
-    { label: t('navigation.about'), href: '#' },
-  ];
-
   return pathname.startsWith('/explore') ? (
     <div className="order-1 flex w-full border-t p-4 lg:order-0 lg:border-none lg:p-0">
-      <SearchInput placeholder={t('search.placeholder')} />
+      <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+        <SearchInput placeholder={searchPlaceholder} />
+      </Suspense>
     </div>
   ) : (
     !isMobile && (
@@ -56,20 +59,21 @@ export function DesktopNav({ className, ...props }: ComponentProps<'nav'>) {
   );
 }
 
+type MobileNavProps = {
+  navItems: NavItem[];
+  homeLabel: string;
+} & ComponentProps<typeof Button>;
+
 export function MobileNav({
+  navItems,
+  homeLabel,
   className,
   ...props
-}: ComponentProps<typeof Button>) {
-  const t = useTranslations('Header');
+}: MobileNavProps) {
   const isMobile = useIsMobile();
 
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
-  const navItems: NavItem<Route>[] = [
-    { label: t('navigation.explore'), href: '/explore' },
-    { label: t('navigation.about'), href: '#' },
-  ];
 
   useEffect(() => {
     if (open) {
@@ -130,7 +134,7 @@ export function MobileNav({
                   router.push('/');
                 }}
               >
-                {t('navigation.home')}
+                {homeLabel}
               </Link>
               {navItems.map((item) => (
                 <Link

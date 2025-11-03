@@ -1,8 +1,10 @@
 'use client';
 
 import type { Route } from 'next';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { type ComponentProps, useTransition } from 'react';
+
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
 type Option = {

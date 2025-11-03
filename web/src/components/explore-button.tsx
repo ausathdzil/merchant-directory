@@ -3,11 +3,11 @@
 import { SearchIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Form from 'next/form';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useEffect, useId, useState } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link } from '@/i18n/navigation';
 import { Button, buttonVariants } from './ui/button';
 import { Field, FieldDescription } from './ui/field';
 import {

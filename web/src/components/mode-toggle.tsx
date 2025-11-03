@@ -1,20 +1,22 @@
 'use client';
 
 import { MoonIcon, SunIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { type ComponentProps, useCallback } from 'react';
 
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+
+type ModeToggleProps = {
+  modeToggleLabel: string;
+} & ComponentProps<typeof Button>;
 
 export function ModeToggle({
+  modeToggleLabel,
   className,
   ...props
-}: ComponentProps<typeof Button>) {
+}: ModeToggleProps) {
   const { setTheme, resolvedTheme } = useTheme();
-  const t = useTranslations('Header');
 
   const toggleTheme = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -55,21 +57,16 @@ export function ModeToggle({
   );
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          aria-label={t('modeToggle')}
-          className={cn('relative', className)}
-          onClick={toggleTheme}
-          size="icon"
-          variant="secondary"
-          {...props}
-        >
-          <SunIcon className="dark:-rotate-90 rotate-0 scale-100 transition-all dark:scale-0" />
-          <MoonIcon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>{t('modeToggle')}</TooltipContent>
-    </Tooltip>
+    <Button
+      aria-label={modeToggleLabel}
+      className={cn('relative', className)}
+      onClick={toggleTheme}
+      size="icon"
+      variant="secondary"
+      {...props}
+    >
+      <SunIcon className="dark:-rotate-90 rotate-0 scale-100 transition-all dark:scale-0" />
+      <MoonIcon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    </Button>
   );
 }

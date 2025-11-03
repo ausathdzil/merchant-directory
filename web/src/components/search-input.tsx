@@ -1,8 +1,7 @@
 'use client';
 
 import { SearchIcon } from 'lucide-react';
-import type { Route } from 'next';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import {
   type ComponentProps,
   useEffect,
@@ -12,6 +11,7 @@ import {
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
 import { Kbd } from './ui/kbd';
 import { Spinner } from './ui/spinner';
@@ -41,7 +41,7 @@ export function SearchInput({
     }
 
     startTransition(() => {
-      router.replace(`${pathname as Route}?${params.toString()}`, {
+      router.replace(`${pathname}?${params.toString()}`, {
         scroll: false,
       });
     });

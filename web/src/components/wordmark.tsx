@@ -1,23 +1,22 @@
 import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import type { ComponentProps } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from './ui/button';
 
 type WordmarkProps = {
   prevIcon?: boolean;
+  title: string;
 };
 
 export function Wordmark({
-  className,
   prevIcon,
+  title,
+  className,
   ...props
 }: WordmarkProps & ComponentProps<typeof Link>) {
-  const t = useTranslations('Header');
-
   return (
     <Link
       className={cn(
@@ -32,7 +31,7 @@ export function Wordmark({
       ) : (
         <Image alt="Logo" aria-hidden height={24} src="/logo.png" width={24} />
       )}
-      {t('title')}
+      {title}
     </Link>
   );
 }

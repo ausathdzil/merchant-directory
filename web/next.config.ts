@@ -4,6 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const nextConfig: NextConfig = {
   experimental: {
     inlineCss: true,
+    globalNotFound: true,
     turbopackFileSystemCacheForDev: true,
     viewTransition: true,
   },
@@ -17,7 +18,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  typedRoutes: true,
 };
 
 const withNextIntl = createNextIntlPlugin({
@@ -25,4 +25,5 @@ const withNextIntl = createNextIntlPlugin({
     createMessagesDeclaration: './messages/en.json',
   },
 });
+
 export default withNextIntl(nextConfig);

@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, ArrowUpRightIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
@@ -15,6 +14,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { Link } from '@/i18n/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Metadata.NotFoundPage');
