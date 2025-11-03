@@ -10,6 +10,7 @@ import {
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+
 import { ReviewText } from '@/components/review-description';
 import { Subheading, Text } from '@/components/typography';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -80,12 +81,15 @@ export default async function MerchantPage({
 
   const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},18/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
-  const [reviews, types, opening_hours, _amenities] = await Promise.all([
+  const [reviews, types, opening_hours, amenities] = await Promise.all([
     getMerchantReviews({ merchant_id: Number(merchant_id) }),
     getMerchantTypes({ merchant_id: Number(merchant_id) }),
     getMerchantOpeningHours({ merchant_id: Number(merchant_id) }),
     getMerchantAmenities({ merchant_id: Number(merchant_id) }),
   ]);
+
+  const hasAmenities =
+    amenities && Object.values(amenities).some((v) => v === true);
 
   return (
     <main className="flex flex-1 flex-col items-center">
@@ -135,6 +139,22 @@ export default async function MerchantPage({
                     {type.type_name}
                   </Badge>
                 ))}
+              </div>
+            </div>
+          )}
+          {hasAmenities && (
+            <div className="grid gap-4">
+              <Subheading>Amenities</Subheading>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(amenities)
+                  .filter(([_key, value]) => value === true)
+                  .map(([key]) => (
+                    <Badge key={key} variant="secondary">
+                      {key
+                        .replace(/_/g, ' ')
+                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    </Badge>
+                  ))}
               </div>
             </div>
           )}
