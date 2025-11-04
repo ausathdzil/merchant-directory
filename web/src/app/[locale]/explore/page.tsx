@@ -1,7 +1,9 @@
 import { SearchIcon, StarIcon } from 'lucide-react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import { FilterSelect } from '@/components/filter-select';
 import { MerchantPagination } from '@/components/merchant-pagination';
@@ -22,7 +24,10 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ViewToggle } from '@/components/view-toggle';
+import { Link } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
 import { getMerchantTypesList } from '@/lib/data/merchant-types';
 import { getMerchants } from '@/lib/data/merchants';
 import type { MerchantListItem, MerchantsQuery } from '@/lib/types/merchant';
@@ -32,6 +37,13 @@ export async function generateMetadata({
   params,
 }: PageProps<'/[locale]/explore'>): Promise<Metadata> {
   const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  setRequestLocale(locale);
+
   const t = await getTranslations({
     locale,
     namespace: 'Metadata.ExplorePage',
@@ -48,9 +60,79 @@ export default async function ExplorePage({
 }: PageProps<'/[locale]/explore'>) {
   const { locale } = await params;
 
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   setRequestLocale(locale);
 
-  const t = await getTranslations({ locale, namespace: 'ExplorePage' });
+  return (
+    <main className="flex flex-1 flex-col items-center">
+      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
+        <div className="flex flex-wrap justify-between gap-4">
+          <Suspense fallback={<Subheading>All Results</Subheading>}>
+            <ResultText searchParams={searchParams} />
+          </Suspense>
+          <Suspense fallback={<div className="h-9" />}>
+            <div className="flex items-center gap-4">
+              <ViewToggle className="hidden md:flex" />
+              <MerchantTypesFilter />
+              <MerchantSortByFilter />
+            </div>
+          </Suspense>
+        </div>
+        <Suspense fallback={<MerchantsGridSkeleton />}>
+          <MerchantsResult searchParams={searchParams} />
+        </Suspense>
+      </div>
+    </main>
+  );
+}
+
+async function ResultText({
+  searchParams,
+}: Omit<PageProps<'/[locale]/explore'>, 'params'>) {
+  const { search } = await searchParams;
+
+  const t = await getTranslations('ExplorePage');
+
+  return (
+    <Subheading>
+      {search && typeof search === 'string'
+        ? t('search.searching', { query: search })
+        : t('search.allResults')}{' '}
+    </Subheading>
+  );
+}
+
+async function MerchantTypesFilter() {
+  const merchantTypes = await getMerchantTypesList();
+
+  const opts = [
+    { label: 'Merchant Type', value: '', isDisabled: true },
+    ...merchantTypes.map((type) => ({
+      label: type,
+      value: type.toLocaleLowerCase().replace(/\s+/g, '_'),
+    })),
+  ];
+
+  return <FilterSelect name="type" opts={opts} />;
+}
+
+function MerchantSortByFilter() {
+  const opts = [
+    { label: 'Sort By', value: '', isDisabled: true },
+    { label: 'Name', value: 'name' },
+    { label: 'Rating', value: 'rating' },
+  ];
+
+  return <FilterSelect name="sort_by" opts={opts} />;
+}
+
+async function MerchantsResult({
+  searchParams,
+}: Omit<PageProps<'/[locale]/explore'>, 'params'>) {
+  const t = await getTranslations('ExplorePage');
 
   const { page, page_size, search, type, sort_by, sort_order, view } =
     await searchParams;
@@ -72,73 +154,32 @@ export default async function ExplorePage({
 
   const merchants = await getMerchants(query);
 
+  if (merchants.data.length === 0) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <SearchIcon />
+          </EmptyMedia>
+          <EmptyTitle>{t('empty.title')}</EmptyTitle>
+          <EmptyDescription>{t('empty.description')}</EmptyDescription>
+        </EmptyHeader>
+        <EmptyDescription>
+          <Link href="/">{t('empty.button')}</Link>
+        </EmptyDescription>
+      </Empty>
+    );
+  }
+
   return (
-    <main className="flex flex-1 flex-col items-center">
-      <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
-        {merchants.data.length > 0 ? (
-          <>
-            <div className="flex flex-wrap justify-between gap-4">
-              <Subheading>
-                {query?.search
-                  ? t('search.searching', { query: query.search })
-                  : t('search.allResults')}{' '}
-                <span className="tabular-nums">({merchants.meta.total})</span>
-              </Subheading>
-              <div className="flex items-center gap-4">
-                <ViewToggle className="hidden md:flex" />
-                <MerchantTypesFilter />
-                <MerchantSortByFilter />
-              </div>
-            </div>
-            <MerchantsGrid
-              merchants={merchants.data}
-              view={view as 'grid' | 'list'}
-            />
-            <MerchantPagination
-              className="mt-auto"
-              paginationMeta={merchants.meta}
-            />
-          </>
-        ) : (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <SearchIcon />
-              </EmptyMedia>
-              <EmptyTitle>{t('empty.title')}</EmptyTitle>
-              <EmptyDescription>{t('empty.description')}</EmptyDescription>
-            </EmptyHeader>
-            <EmptyDescription>
-              <Link href="/">{t('empty.button')}</Link>
-            </EmptyDescription>
-          </Empty>
-        )}
-      </div>
-    </main>
+    <>
+      <MerchantsGrid
+        merchants={merchants.data}
+        view={view as 'grid' | 'list'}
+      />
+      <MerchantPagination className="mt-auto" paginationMeta={merchants.meta} />
+    </>
   );
-}
-
-async function MerchantTypesFilter() {
-  const merchantTypes = await getMerchantTypesList();
-  const opts = [
-    { label: 'Merchant Type', value: '', isDisabled: true },
-    ...merchantTypes.map((type) => ({
-      label: type,
-      value: type.toLocaleLowerCase().replace(/\s+/g, '_'),
-    })),
-  ];
-
-  return <FilterSelect name="type" opts={opts} />;
-}
-
-function MerchantSortByFilter() {
-  const opts = [
-    { label: 'Sort By', value: '', isDisabled: true },
-    { label: 'Name', value: 'name' },
-    { label: 'Rating', value: 'rating' },
-  ];
-
-  return <FilterSelect name="sort_by" opts={opts} />;
 }
 
 function MerchantsGrid({
@@ -183,5 +224,16 @@ function MerchantsGrid({
         </li>
       ))}
     </ItemGroup>
+  );
+}
+
+function MerchantsGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 15 }).map((_, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton
+        <Skeleton className="h-[78px]" key={i} />
+      ))}
+    </div>
   );
 }

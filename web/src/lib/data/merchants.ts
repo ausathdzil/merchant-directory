@@ -45,7 +45,6 @@ export async function getMerchants(query: MerchantsQuery, locale?: string) {
     headers: {
       accept: 'application/json',
     },
-    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -75,7 +74,6 @@ export async function getMerchant(path: MerchantPath) {
     headers: {
       accept: 'application/json',
     },
-    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -109,7 +107,6 @@ export async function getMerchantPhotos(path: MerchantPhotoPath) {
     headers: {
       accept: 'application/json',
     },
-    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -143,7 +140,6 @@ export async function getMerchantReviews(path: MerchantReviewsPath) {
     headers: {
       accept: 'application/json',
     },
-    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -177,7 +173,6 @@ export async function getMerchantTypes(path: MerchantTypesPath) {
     headers: {
       accept: 'application/json',
     },
-    cache: 'force-cache',
   });
 
   if (!res.ok) {
@@ -213,7 +208,6 @@ export async function getMerchantOpeningHours(path: MerchantOpeningHoursPath) {
       headers: {
         accept: 'application/json',
       },
-      cache: 'force-cache',
     }
   );
 
@@ -250,7 +244,6 @@ export async function getMerchantAmenities(path: MerchantAmenitiesPath) {
       headers: {
         accept: 'application/json',
       },
-      cache: 'force-cache',
     }
   );
 

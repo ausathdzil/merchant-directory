@@ -10,6 +10,7 @@ import {
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { ReviewText } from '@/components/review-description';
 import { Subheading, Text } from '@/components/typography';
@@ -49,7 +50,7 @@ import {
   getMerchantTypes,
 } from '@/lib/data/merchants';
 import type {
-  MerchantDetail,
+  MerchantDetail as MerchantDetailType,
   MerchantReviewsResponse,
 } from '@/lib/types/merchant';
 import { cn, MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
@@ -70,10 +71,23 @@ export async function generateMetadata({
   };
 }
 
-export default async function MerchantPage({
+export default function MerchantPage({
   params,
 }: PageProps<'/[locale]/merchants/[merchant_id]'>) {
+  return (
+    <main className="flex flex-1 flex-col items-center">
+      <Suspense fallback={null}>
+        <MerchantDetail params={params} />
+      </Suspense>
+    </main>
+  );
+}
+
+async function MerchantDetail({
+  params,
+}: Omit<PageProps<'/[locale]/merchants/[merchant_id]'>, 'searchParams'>) {
   const { merchant_id } = await params;
+
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 
   if (!merchant) {
@@ -93,136 +107,134 @@ export default async function MerchantPage({
     amenities && Object.values(amenities).some((v) => v === true);
 
   return (
-    <main className="flex flex-1 flex-col items-center">
-      <div className="grid gap-8 p-4 lg:grid-cols-3 lg:p-8">
-        <div className="grid gap-8 lg:col-span-2">
-          <div className="relative aspect-video w-full rounded-lg bg-muted">
-            <Image
-              alt={merchant.display_name ?? 'Map of the business'}
-              className="rounded-lg object-cover"
-              fill
-              loading="eager"
-              src={mapUrl}
-            />
-          </div>
-          <Item className="p-0">
-            <ItemContent className="gap-2">
-              {merchant.display_name && (
-                <ItemTitle className="text-balance text-xl lg:text-3xl">
-                  {merchant.display_name}
-                </ItemTitle>
-              )}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <StarIcon className="size-4 fill-yellow-500 stroke-yellow-500" />
-                  <ItemDescription className="tabular-nums leading-none">
-                    {merchant.rating} ({merchant.user_rating_count})
-                  </ItemDescription>
-                </div>
-                {merchant.primary_type && (
-                  <Badge variant="secondary">{merchant.primary_type}</Badge>
-                )}
+    <div className="grid gap-8 p-4 lg:grid-cols-3 lg:p-8">
+      <div className="grid gap-8 lg:col-span-2">
+        <div className="relative aspect-video w-full rounded-lg bg-muted">
+          <Image
+            alt={merchant.display_name ?? 'Map of the business'}
+            className="rounded-lg object-cover"
+            fill
+            loading="eager"
+            src={mapUrl}
+          />
+        </div>
+        <Item className="p-0">
+          <ItemContent className="gap-2">
+            {merchant.display_name && (
+              <ItemTitle className="text-balance text-xl lg:text-3xl">
+                {merchant.display_name}
+              </ItemTitle>
+            )}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <StarIcon className="size-4 fill-yellow-500 stroke-yellow-500" />
+                <ItemDescription className="tabular-nums leading-none">
+                  {merchant.rating} ({merchant.user_rating_count})
+                </ItemDescription>
               </div>
-            </ItemContent>
-            <ItemActions className="self-start">
-              <Button size="icon-lg" variant="outline">
-                <Share2Icon />
-              </Button>
-            </ItemActions>
-          </Item>
-          <Separator />
-          {types && types.length > 0 && (
-            <div className="grid gap-4">
-              <Subheading>Additional Types</Subheading>
-              <div className="flex flex-wrap gap-2">
-                {types.map((type) => (
-                  <Badge key={type.id} variant="secondary">
-                    {type.type_name}
+              {merchant.primary_type && (
+                <Badge variant="secondary">{merchant.primary_type}</Badge>
+              )}
+            </div>
+          </ItemContent>
+          <ItemActions className="self-start">
+            <Button size="icon-lg" variant="outline">
+              <Share2Icon />
+            </Button>
+          </ItemActions>
+        </Item>
+        <Separator />
+        {types && types.length > 0 && (
+          <div className="grid gap-4">
+            <Subheading>Additional Types</Subheading>
+            <div className="flex flex-wrap gap-2">
+              {types.map((type) => (
+                <Badge key={type.id} variant="secondary">
+                  {type.type_name}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+        {hasAmenities && (
+          <div className="grid gap-4">
+            <Subheading>Amenities</Subheading>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(amenities)
+                .filter(([_key, value]) => value === true)
+                .map(([key]) => (
+                  <Badge key={key} variant="secondary">
+                    {key
+                      .replace(/_/g, ' ')
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
                   </Badge>
                 ))}
-              </div>
             </div>
-          )}
-          {hasAmenities && (
-            <div className="grid gap-4">
-              <Subheading>Amenities</Subheading>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(amenities)
-                  .filter(([_key, value]) => value === true)
-                  .map(([key]) => (
-                    <Badge key={key} variant="secondary">
-                      {key
-                        .replace(/_/g, ' ')
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                    </Badge>
-                  ))}
-              </div>
-            </div>
-          )}
-          {opening_hours && Object.keys(opening_hours).length > 0 && (
-            <div className="grid gap-4">
-              <Subheading>Opening Hours</Subheading>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    {Object.entries(opening_hours)
-                      .slice(2)
-                      .map(([day]) => (
-                        <TableHead className="capitalize" key={day}>
-                          {day}
-                        </TableHead>
-                      ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    {Object.entries(opening_hours)
-                      .slice(2)
-                      .map(([day, hours]) => (
-                        <TableCell key={`${day}-hours`}>{hours}</TableCell>
-                      ))}
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
-          )}
-          <div className="grid gap-4">
-            <Subheading>Reviews</Subheading>
-            {reviews && reviews.length > 0 ? (
-              <ReviewCards reviews={reviews} />
-            ) : (
-              <Text>No reviews yet.</Text>
-            )}
           </div>
-        </div>
-        <div className="lg:col-span-1">
-          <Card className="sticky top-24">
-            <CardHeader className="border-b">
-              <CardTitle>Contact Information</CardTitle>
-            </CardHeader>
-            <MerchantContact merchant={merchant} />
-            <CardFooter className="grid gap-2 border-t">
-              <a
-                className={buttonVariants({ size: 'lg' })}
-                href={`https://www.google.com/maps/dir/?api=1&destination=${merchant.latitude},${merchant.longitude}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <NavigationIcon />
-                Get Directions
-              </a>
-              <a
-                className={buttonVariants({ size: 'lg', variant: 'secondary' })}
-                href={`tel:${merchant.phone_international}`}
-              >
-                <PhoneIcon />
-                Contact Business
-              </a>
-            </CardFooter>
-          </Card>
+        )}
+        {opening_hours && Object.keys(opening_hours).length > 0 && (
+          <div className="grid gap-4">
+            <Subheading>Opening Hours</Subheading>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {Object.entries(opening_hours)
+                    .slice(2)
+                    .map(([day]) => (
+                      <TableHead className="capitalize" key={day}>
+                        {day}
+                      </TableHead>
+                    ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  {Object.entries(opening_hours)
+                    .slice(2)
+                    .map(([day, hours]) => (
+                      <TableCell key={`${day}-hours`}>{hours}</TableCell>
+                    ))}
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        )}
+        <div className="grid gap-4">
+          <Subheading>Reviews</Subheading>
+          {reviews && reviews.length > 0 ? (
+            <ReviewCards reviews={reviews} />
+          ) : (
+            <Text>No reviews yet.</Text>
+          )}
         </div>
       </div>
-    </main>
+      <div className="lg:col-span-1">
+        <Card className="sticky top-24">
+          <CardHeader className="border-b">
+            <CardTitle>Contact Information</CardTitle>
+          </CardHeader>
+          <MerchantContact merchant={merchant} />
+          <CardFooter className="grid gap-2 border-t">
+            <a
+              className={buttonVariants({ size: 'lg' })}
+              href={`https://www.google.com/maps/dir/?api=1&destination=${merchant.latitude},${merchant.longitude}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <NavigationIcon />
+              Get Directions
+            </a>
+            <a
+              className={buttonVariants({ size: 'lg', variant: 'secondary' })}
+              href={`tel:${merchant.phone_international}`}
+            >
+              <PhoneIcon />
+              Contact Business
+            </a>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 }
 
@@ -277,7 +289,7 @@ function ReviewCards({ reviews }: { reviews: MerchantReviewsResponse }) {
   );
 }
 
-function MerchantContact({ merchant }: { merchant: MerchantDetail }) {
+function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
   return (
     <CardContent className="space-y-4 **:p-0">
       <Item>

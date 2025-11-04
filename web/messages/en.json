@@ -8,7 +8,8 @@
       "title": "Explore"
     },
     "NotFoundPage": {
-      "title": "Page Not Found"
+      "title": "Page Not Found",
+      "description": "The page you're looking for does not exist"
     }
   },
   "NotFound": {

@@ -1,8 +1,8 @@
 import { ArrowUpRightIcon, HouseIcon } from 'lucide-react';
 import type { Metadata, Viewport } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { Muted } from '@/components/typography';
 import { buttonVariants } from '@/components/ui/button';
@@ -14,19 +14,16 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import { routing } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Metadata.NotFoundPage');
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
 }
-
-export const metadata: Metadata = {
-  title: '404 Not Found',
-  description: 'The page you are looking for does not exist.',
-  appleWebApp: {
-    statusBarStyle: 'black-translucent',
-  },
-};
 
 export const viewport: Viewport = {
   viewportFit: 'cover',

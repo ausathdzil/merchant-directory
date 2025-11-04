@@ -8,8 +8,8 @@
     "includes": [
       "**",
       "!messages/*.d.json.ts",
+      "!global.ts",
       "!src/components/ui",
-      "!src/i18n/*.d.ts",
       "!src/lib/types/*.d.ts"
     ]
   },

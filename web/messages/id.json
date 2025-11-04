@@ -8,7 +8,8 @@
       "title": "Jelajahi"
     },
     "NotFoundPage": {
-      "title": "Halaman Tidak Ditemukan"
+      "title": "Halaman Tidak Ditemukan",
+      "description": "Halaman yang kamu cari tidak ada"
     }
   },
   "NotFound": {

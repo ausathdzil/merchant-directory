@@ -2,7 +2,6 @@ import {
   ArrowRightIcon,
   CheckCircleIcon,
   HeartPlusIcon,
-  type LucideIcon,
   SearchIcon,
   StoreIcon,
   TelescopeIcon,
@@ -10,7 +9,8 @@ import {
 // biome-ignore lint/performance/noNamespaceImport: Motion for React Server Components
 import * as motion from 'motion/react-client';
 import Image from 'next/image';
-import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ComponentProps } from 'react';
 
@@ -32,82 +32,20 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
+import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
 export default async function Home({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: 'HomePage' });
-
-  const features = [
-    {
-      icon: SearchIcon,
-      iconColor: 'stroke-primary',
-      label: t('features.steps.discovery.label'),
-      labelColor: 'text-primary',
-      title: t('features.steps.discovery.title'),
-      description: t('features.steps.discovery.description'),
-      benefits: [
-        t('features.steps.discovery.benefits.curatedDirectory'),
-        t('features.steps.discovery.benefits.categoryFilters'),
-        t('features.steps.discovery.benefits.locationBasedSearch'),
-        t('features.steps.discovery.benefits.verifiedListings'),
-      ],
-    },
-    {
-      icon: StoreIcon,
-      iconColor: 'stroke-emerald-700',
-      label: t('features.steps.information.label'),
-      labelColor: 'text-emerald-700',
-      title: t('features.steps.information.title'),
-      description: t('features.steps.information.description'),
-      benefits: [
-        t('features.steps.information.benefits.completeDetails'),
-        t('features.steps.information.benefits.customerReviews'),
-        t('features.steps.information.benefits.operatingHours'),
-        t('features.steps.information.benefits.contactInformation'),
-      ],
-    },
-    {
-      icon: HeartPlusIcon,
-      iconColor: 'stroke-rose-700',
-      label: t('features.steps.connection.label'),
-      labelColor: 'text-rose-700',
-      title: t('features.steps.connection.title'),
-      description: t('features.steps.connection.description'),
-      benefits: [
-        t('features.steps.connection.benefits.directContact'),
-        t('features.steps.connection.benefits.communityImpact'),
-        t('features.steps.connection.benefits.localSupport'),
-        t('features.steps.connection.benefits.easyCommunication'),
-      ],
-    },
-  ];
-
-  const questions = [
-    {
-      question: t('faq.questions.whatIsMerchantDirectory.question'),
-      answer: t('faq.questions.whatIsMerchantDirectory.answer'),
-    },
-    {
-      question: t('faq.questions.isItFree.question'),
-      answer: t('faq.questions.isItFree.answer'),
-    },
-    {
-      question: t('faq.questions.doIHaveToRegister.question'),
-      answer: t('faq.questions.doIHaveToRegister.answer'),
-    },
-    {
-      question: t('faq.questions.whatTypeOfBusinessCanIDiscover.question'),
-      answer: t('faq.questions.whatTypeOfBusinessCanIDiscover.answer'),
-    },
-  ];
 
   return (
     <>
@@ -174,7 +112,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
               {t('features.description')}
             </Text>
           </article>
-          <Features className="lg:max-w-6xl" features={features} />
+          <Features className="lg:max-w-6xl" locale={locale} />
         </motion.div>
         <div className="flex w-full flex-col items-center gap-8 px-4 lg:px-8">
           <article className="text-center">
@@ -184,7 +122,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
           <FrequentlyAskedQuestions
             className="w-full lg:max-w-6xl"
             collapsible
-            questions={questions}
+            locale={locale}
             type="single"
           />
         </div>
@@ -220,18 +158,59 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
 }
 
 type FeatureProps = {
-  features: {
-    icon: LucideIcon;
-    iconColor: string;
-    label: string;
-    labelColor: string;
-    title: string;
-    description: string;
-    benefits: string[];
-  }[];
+  locale: Locale;
 } & ComponentProps<typeof ItemGroup>;
 
-function Features({ features, className, ...props }: FeatureProps) {
+async function Features({ locale, className, ...props }: FeatureProps) {
+  'use cache';
+
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
+  const features = [
+    {
+      icon: SearchIcon,
+      iconColor: 'stroke-primary',
+      label: t('features.steps.discovery.label'),
+      labelColor: 'text-primary',
+      title: t('features.steps.discovery.title'),
+      description: t('features.steps.discovery.description'),
+      benefits: [
+        t('features.steps.discovery.benefits.curatedDirectory'),
+        t('features.steps.discovery.benefits.categoryFilters'),
+        t('features.steps.discovery.benefits.locationBasedSearch'),
+        t('features.steps.discovery.benefits.verifiedListings'),
+      ],
+    },
+    {
+      icon: StoreIcon,
+      iconColor: 'stroke-emerald-700',
+      label: t('features.steps.information.label'),
+      labelColor: 'text-emerald-700',
+      title: t('features.steps.information.title'),
+      description: t('features.steps.information.description'),
+      benefits: [
+        t('features.steps.information.benefits.completeDetails'),
+        t('features.steps.information.benefits.customerReviews'),
+        t('features.steps.information.benefits.operatingHours'),
+        t('features.steps.information.benefits.contactInformation'),
+      ],
+    },
+    {
+      icon: HeartPlusIcon,
+      iconColor: 'stroke-rose-700',
+      label: t('features.steps.connection.label'),
+      labelColor: 'text-rose-700',
+      title: t('features.steps.connection.title'),
+      description: t('features.steps.connection.description'),
+      benefits: [
+        t('features.steps.connection.benefits.directContact'),
+        t('features.steps.connection.benefits.communityImpact'),
+        t('features.steps.connection.benefits.localSupport'),
+        t('features.steps.connection.benefits.easyCommunication'),
+      ],
+    },
+  ];
+
   return (
     <ItemGroup className={cn('gap-4', className)} {...props}>
       {features.map((feature, index) => (
@@ -269,12 +248,37 @@ function Features({ features, className, ...props }: FeatureProps) {
   );
 }
 
-function FrequentlyAskedQuestions({
-  questions,
+type FrequentlyAskedQuestionsProps = {
+  locale: Locale;
+} & ComponentProps<typeof Accordion>;
+
+async function FrequentlyAskedQuestions({
+  locale,
   ...props
-}: {
-  questions: { question: string; answer: string }[];
-} & ComponentProps<typeof Accordion>) {
+}: FrequentlyAskedQuestionsProps) {
+  'use cache';
+
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
+  const questions = [
+    {
+      question: t('faq.questions.whatIsMerchantDirectory.question'),
+      answer: t('faq.questions.whatIsMerchantDirectory.answer'),
+    },
+    {
+      question: t('faq.questions.isItFree.question'),
+      answer: t('faq.questions.isItFree.answer'),
+    },
+    {
+      question: t('faq.questions.doIHaveToRegister.question'),
+      answer: t('faq.questions.doIHaveToRegister.answer'),
+    },
+    {
+      question: t('faq.questions.whatTypeOfBusinessCanIDiscover.question'),
+      answer: t('faq.questions.whatTypeOfBusinessCanIDiscover.answer'),
+    },
+  ];
+
   return (
     <Accordion {...props}>
       {questions.map((question) => (
