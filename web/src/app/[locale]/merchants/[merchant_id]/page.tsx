@@ -56,6 +56,8 @@ import type {
 } from '@/lib/types/merchant';
 import { cn, MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const merchants = await getMerchants({ page_size: 27 });
 

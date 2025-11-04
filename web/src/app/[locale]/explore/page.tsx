@@ -74,7 +74,7 @@ export default async function ExplorePage({
             <ResultText searchParams={searchParams} />
           </Suspense>
           <Suspense fallback={<Skeleton className="h-9 w-[488px]" />}>
-            <div className="flex items-center gap-4">
+            <div className="grid w-full grid-cols-2 items-center gap-4 md:flex md:w-fit [&_div]:w-full md:[&_div]:w-fit">
               <ViewToggle className="hidden md:flex" />
               <MerchantTypesFilter />
               <MerchantSortByFilter />
@@ -199,7 +199,7 @@ function MerchantsGrid({
       {merchants.map((merchant) => (
         <li className="list-none" key={merchant.id}>
           <Item asChild className="items-start" variant="outline">
-            <Link href={`/merchants/${merchant.id}`}>
+            <Link href={`/merchants/${merchant.id}`} prefetch>
               <ItemContent>
                 <ItemTitle className="line-clamp-1">
                   {merchant.display_name}

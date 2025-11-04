@@ -30,7 +30,7 @@ export default function ErrorPage({
           </EmptyHeader>
           <EmptyContent>
             <EmptyDescription>
-              <Link href="/">Home</Link>
+              <Link href="/">Need Help?</Link>
             </EmptyDescription>
           </EmptyContent>
         </Empty>
