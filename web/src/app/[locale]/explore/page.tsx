@@ -73,7 +73,7 @@ export default async function ExplorePage({
           <Suspense fallback={<Subheading>All Results</Subheading>}>
             <ResultText searchParams={searchParams} />
           </Suspense>
-          <Suspense fallback={<div className="h-9" />}>
+          <Suspense fallback={<Skeleton className="h-9 w-[488px]" />}>
             <div className="flex items-center gap-4">
               <ViewToggle className="hidden md:flex" />
               <MerchantTypesFilter />

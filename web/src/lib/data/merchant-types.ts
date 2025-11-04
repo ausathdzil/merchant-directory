@@ -7,6 +7,7 @@ export async function getMerchantTypesList() {
     headers: {
       accept: 'application/json',
     },
+    cache: 'force-cache',
   });
 
   if (!res.ok) {

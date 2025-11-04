@@ -10,7 +10,6 @@ import {
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 import { ReviewText } from '@/components/review-description';
 import { Subheading, Text } from '@/components/typography';
@@ -34,7 +33,6 @@ import {
   ItemTitle,
 } from '@/components/ui/item';
 import { Separator } from '@/components/ui/separator';
-import { Spinner } from '@/components/ui/spinner';
 import {
   Table,
   TableBody,
@@ -43,11 +41,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { locales } from '@/i18n/routing';
 import {
   getMerchant,
   getMerchantAmenities,
   getMerchantOpeningHours,
   getMerchantReviews,
+  getMerchants,
   getMerchantTypes,
 } from '@/lib/data/merchants';
 import type {
@@ -55,6 +55,19 @@ import type {
   MerchantReviewsResponse,
 } from '@/lib/types/merchant';
 import { cn, MAPBOX_ACCESS_TOKEN } from '@/lib/utils';
+
+export async function generateStaticParams() {
+  const merchants = await getMerchants({ page_size: 27 });
+
+  return locales.flatMap((locale) =>
+    merchants.data
+      .filter((m) => m.id)
+      .map((merchant) => ({
+        locale,
+        merchant_id: String(merchant.id),
+      }))
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -77,9 +90,7 @@ export default function MerchantPage({
 }: PageProps<'/[locale]/merchants/[merchant_id]'>) {
   return (
     <main className="flex flex-1 flex-col items-center justify-center">
-      <Suspense fallback={<Spinner />}>
-        <MerchantDetail params={params} />
-      </Suspense>
+      <MerchantDetail params={params} />
     </main>
   );
 }
