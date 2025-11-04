@@ -71,6 +71,7 @@ export function MerchantPagination({
                 : 'pointer-events-none opacity-50'
             }
             href={createPageUrl(currentPage - 1)}
+            prefetch
             tabIndex={paginationMeta.has_previous ? undefined : -1}
           />
         </PaginationItem>
@@ -84,6 +85,7 @@ export function MerchantPagination({
               <PaginationLink
                 href={createPageUrl(page)}
                 isActive={currentPage === page}
+                prefetch
               >
                 {page}
               </PaginationLink>
@@ -97,6 +99,7 @@ export function MerchantPagination({
               paginationMeta.has_next ? '' : 'pointer-events-none opacity-50'
             }
             href={createPageUrl(currentPage + 1)}
+            prefetch
             tabIndex={paginationMeta.has_next ? undefined : -1}
           />
         </PaginationItem>

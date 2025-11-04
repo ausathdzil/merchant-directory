@@ -50,6 +50,7 @@ export function DesktopNav({
             )}
             href={item.href}
             key={item.label}
+            prefetch
           >
             {item.label}
           </Link>
@@ -133,6 +134,7 @@ export function MobileNav({
                   setOpen(false);
                   router.push('/');
                 }}
+                prefetch
               >
                 {homeLabel}
               </Link>
@@ -145,6 +147,7 @@ export function MobileNav({
                     setOpen(false);
                     router.push(item.href);
                   }}
+                  prefetch
                 >
                   {item.label}
                 </Link>

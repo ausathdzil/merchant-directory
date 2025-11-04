@@ -41,9 +41,7 @@ export function SearchInput({
     }
 
     startTransition(() => {
-      router.replace(`${pathname}?${params.toString()}`, {
-        scroll: false,
-      });
+      router.replace(`${pathname}?${params.toString()}`);
     });
   }, DEBOUNCE_MS);
 

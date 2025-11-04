@@ -25,6 +25,7 @@ export function Wordmark({
         className
       )}
       {...props}
+      prefetch
     >
       {prevIcon ? (
         <ArrowLeftIcon className="stroke-primary" />
