@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
 import { Kbd } from './ui/kbd';
@@ -29,6 +30,8 @@ export function SearchInput({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
+  const isMobile = useIsMobile();
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
@@ -69,7 +72,7 @@ export function SearchInput({
         {...props}
         aria-label="Search"
         autoComplete="off"
-        autoFocus
+        autoFocus={!isMobile}
         defaultValue={searchParams.get('search')?.toString()}
         id={id}
         name="search"
@@ -77,6 +80,7 @@ export function SearchInput({
           handleSearch(e.target.value);
         }}
         ref={inputRef}
+        spellCheck={false}
         type="search"
       />
       {(inputRef.current?.value || searchParams.get('search')) && (
