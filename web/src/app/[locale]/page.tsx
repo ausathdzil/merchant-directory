@@ -162,8 +162,6 @@ type FeatureProps = {
 } & ComponentProps<typeof ItemGroup>;
 
 async function Features({ locale, className, ...props }: FeatureProps) {
-  'use cache';
-
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   const features = [
@@ -256,8 +254,6 @@ async function FrequentlyAskedQuestions({
   locale,
   ...props
 }: FrequentlyAskedQuestionsProps) {
-  'use cache';
-
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   const questions = [

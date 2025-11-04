@@ -3,7 +3,6 @@ import { DM_Sans, Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Suspense } from 'react';
 
 import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -85,9 +84,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="flex min-h-screen flex-col">
-              <Suspense fallback={null}>
-                <Header locale={locale} />
-              </Suspense>
+              <Header locale={locale} />
               {children}
             </div>
           </ThemeProvider>
