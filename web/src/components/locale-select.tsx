@@ -19,10 +19,9 @@ export function LocaleSelect({
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     startTransition(() => {
-      router.replace(
-        { pathname },
-        { locale: e.target.value as (typeof routing.locales)[number] }
-      );
+      router.replace(pathname, {
+        locale: e.target.value as (typeof routing.locales)[number],
+      });
     });
   };
 

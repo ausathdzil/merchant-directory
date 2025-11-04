@@ -1,6 +1,5 @@
 'use client';
 
-import type { Route } from 'next';
 import { useSearchParams } from 'next/navigation';
 import { type ComponentProps, useTransition } from 'react';
 
@@ -36,9 +35,7 @@ export function FilterSelect({ name, opts, ...props }: FilterSelectProps) {
     }
 
     startTransition(() => {
-      router.replace(`${pathname as Route}?${params.toString()}`, {
-        scroll: false,
-      });
+      router.replace(`${pathname}?${params.toString()}`);
     });
   };
 

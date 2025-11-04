@@ -34,6 +34,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import {
   Table,
   TableBody,
@@ -75,8 +76,8 @@ export default function MerchantPage({
   params,
 }: PageProps<'/[locale]/merchants/[merchant_id]'>) {
   return (
-    <main className="flex flex-1 flex-col items-center">
-      <Suspense fallback={null}>
+    <main className="flex flex-1 flex-col items-center justify-center">
+      <Suspense fallback={<Spinner />}>
         <MerchantDetail params={params} />
       </Suspense>
     </main>
