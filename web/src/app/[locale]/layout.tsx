@@ -3,11 +3,12 @@ import { Atkinson_Hyperlegible_Next } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-
+import { Suspense } from 'react';
 import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Wordmark } from '@/components/wordmark';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
@@ -15,6 +16,7 @@ import { cn } from '@/lib/utils';
 const atkinsonHyperlegibleNext = Atkinson_Hyperlegible_Next({
   variable: '--font-atkinson-hyperlegible-next',
   subsets: ['latin'],
+  adjustFontFallback: false,
 });
 
 export function generateStaticParams() {
@@ -107,7 +109,9 @@ async function Header({ locale }: { locale: Locale }) {
         searchPlaceholder={t('search.placeholder')}
       />
       <div className="flex items-center justify-end gap-4 p-4 lg:w-1/3 lg:px-8">
-        <LocaleSelect />
+        <Suspense fallback={<Skeleton className="h-9 w-28" />}>
+          <LocaleSelect />
+        </Suspense>
         <ModeToggle modeToggleLabel={t('modeToggle')} />
       </div>
     </header>
