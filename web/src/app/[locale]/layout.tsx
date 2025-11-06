@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { DM_Sans, Inter } from 'next/font/google';
+import { Atkinson_Hyperlegible_Next } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -12,13 +12,8 @@ import { Wordmark } from '@/components/wordmark';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-});
-
-const dmSans = DM_Sans({
-  variable: '--font-dm-sans',
+const atkinsonHyperlegibleNext = Atkinson_Hyperlegible_Next({
+  variable: '--font-atkinson-hyperlegible-next',
   subsets: ['latin'],
 });
 
@@ -76,8 +71,7 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
-          inter.variable,
-          dmSans.variable,
+          atkinsonHyperlegibleNext.variable,
           'font-sans dark:antialiased'
         )}
       >
@@ -103,7 +97,7 @@ async function Header({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background lg:flex-nowrap">
+    <header className="sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background pt-safe-top lg:flex-nowrap">
       <div className="flex w-1/3 p-4 lg:px-8">
         <MobileNav homeLabel={t('navigation.home')} navItems={navItems} />
         <Wordmark className="hidden lg:flex" href="/" title={t('title')} />

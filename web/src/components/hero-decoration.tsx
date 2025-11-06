@@ -32,7 +32,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <StoreIcon className="float-down size-12 stroke-primary" />
+        <StoreIcon className="size-12 animate-animate-float-down stroke-primary" />
       </motion.div>
       <motion.div
         animate={{
@@ -49,7 +49,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <ShoppingBagIcon className="float-down size-12 stroke-emerald-700" />
+        <ShoppingBagIcon className="size-12 animate-float-down stroke-emerald-700" />
       </motion.div>
       <motion.div
         animate={{
@@ -66,7 +66,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <CoffeeIcon className="float-down size-12 stroke-yellow-500" />
+        <CoffeeIcon className="size-12 animate-float-down stroke-yellow-500" />
       </motion.div>
       <motion.div
         animate={{
@@ -83,7 +83,7 @@ export function HeroDecorations({
           },
         }}
       >
-        <UtensilsIcon className="float-down size-12 stroke-rose-700" />
+        <UtensilsIcon className="size-12 animate-float-down stroke-rose-700" />
       </motion.div>
     </div>
   );
