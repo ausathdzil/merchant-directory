@@ -60,6 +60,15 @@ export function SearchInput({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [handleSearch]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!isMobile) {
+        inputRef.current?.focus();
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [isMobile]);
+
   return (
     <InputGroup>
       <label aria-hidden htmlFor={id}>
@@ -71,14 +80,12 @@ export function SearchInput({
         className={className}
         {...props}
         aria-label="Search"
+        autoCapitalize="off"
         autoComplete="off"
-        autoFocus={!isMobile}
         defaultValue={searchParams.get('search')?.toString()}
         id={id}
         name="search"
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
+        onChange={(e) => handleSearch(e.target.value)}
         ref={inputRef}
         spellCheck={false}
         type="search"

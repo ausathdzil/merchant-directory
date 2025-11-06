@@ -4,7 +4,7 @@ import { SearchIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Form from 'next/form';
 import { useTranslations } from 'next-intl';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link } from '@/i18n/navigation';
@@ -46,6 +46,7 @@ function AnimatedSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMac, setIsMac] = useState(false);
   const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
 
   const t = useTranslations('HomePage.hero');
@@ -98,6 +99,9 @@ function AnimatedSearch() {
             exit={{ opacity: 0, scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.95 }}
             key="input-group"
+            onAnimationComplete={() => {
+              setTimeout(() => inputRef.current?.focus(), 100);
+            }}
             transition={{
               duration: 0.15,
               ease: [0.25, 0.46, 0.45, 0.94],
@@ -113,12 +117,14 @@ function AnimatedSearch() {
                   </label>
                   <InputGroupInput
                     aria-label="Search"
+                    autoCapitalize="off"
                     autoComplete="off"
-                    autoFocus
                     id={id}
                     name="search"
                     onChange={(e) => setValue(e.target.value)}
                     placeholder={t('search.placeholder')}
+                    ref={inputRef}
+                    spellCheck={false}
                     type="search"
                     value={value}
                   />
