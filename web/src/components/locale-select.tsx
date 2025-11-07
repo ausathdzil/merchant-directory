@@ -2,32 +2,29 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { type ComponentProps, useTransition } from 'react';
-import { usePathname, useRouter } from '@/i18n/navigation';
-import type { routing } from '@/i18n/routing';
+import { type ComponentProps, useState } from 'react';
+
+import { usePathname } from '@/i18n/navigation';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
 export function LocaleSelect({
   className,
   ...props
 }: ComponentProps<typeof NativeSelect>) {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const locale = useLocale();
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = e.target.value;
     const query = searchParams.toString();
-    const target = query ? `${pathname}?${query}` : pathname;
+    const path = query ? `${pathname}?${query}` : pathname;
 
-    startTransition(() => {
-      router.replace(target, {
-        locale: e.target.value as (typeof routing.locales)[number],
-      });
-    });
+    setIsPending(true);
+    window.location.href = `/${newLocale}${path}`;
   };
 
   return (

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
+
 import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';

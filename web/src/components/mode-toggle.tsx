@@ -16,11 +16,11 @@ export function ModeToggle({
   className,
   ...props
 }: ModeToggleProps) {
-  const { setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const toggleTheme = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
-      const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
 
       if (!document.startViewTransition) {
         setTheme(newTheme);
@@ -53,7 +53,7 @@ export function ModeToggle({
         }
       );
     },
-    [resolvedTheme, setTheme]
+    [theme, setTheme]
   );
 
   return (
