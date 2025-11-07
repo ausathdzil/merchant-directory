@@ -36,6 +36,7 @@
     "search": {
       "placeholder": "Search merchant name or keywords…"
     },
+    "fontToggle": "Toggle font",
     "modeToggle": "Toggle theme"
   },
   "HomePage": {

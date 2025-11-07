@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Atkinson_Hyperlegible_Next } from 'next/font/google';
+import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { FontToggle } from '@/components/font-toggle';
 import { LocaleSelect } from '@/components/locale-select';
 import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
@@ -17,7 +19,32 @@ import { cn } from '@/lib/utils';
 const atkinsonHyperlegibleNext = Atkinson_Hyperlegible_Next({
   variable: '--font-atkinson-hyperlegible-next',
   subsets: ['latin'],
-  adjustFontFallback: false,
+});
+
+const openDyslexic = localFont({
+  variable: '--font-open-dyslexic',
+  src: [
+    {
+      path: '../fonts/OpenDyslexic-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/OpenDyslexic-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../fonts/OpenDyslexic-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/OpenDyslexic-Bold-Italic.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
 });
 
 export function generateStaticParams() {
@@ -71,13 +98,16 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body
-        className={cn(
-          atkinsonHyperlegibleNext.variable,
-          'font-sans dark:antialiased'
-        )}
-      >
+    <html
+      className={cn(
+        atkinsonHyperlegibleNext.variable,
+        openDyslexic.variable,
+        'font-sans'
+      )}
+      lang={locale}
+      suppressHydrationWarning
+    >
+      <body className="dark:antialiased">
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="flex min-h-screen flex-col">
@@ -113,6 +143,7 @@ async function Header({ locale }: { locale: Locale }) {
         <Suspense fallback={<Skeleton className="h-9 w-28" />}>
           <LocaleSelect />
         </Suspense>
+        <FontToggle fontToggleLabel={t('fontToggle')} />
         <ModeToggle modeToggleLabel={t('modeToggle')} />
       </div>
     </header>
