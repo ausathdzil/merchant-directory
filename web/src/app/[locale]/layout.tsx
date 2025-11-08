@@ -107,7 +107,12 @@ export default async function LocaleLayout({
     >
       <body className="dark:antialiased">
         <NextIntlClientProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            disableTransitionOnChange
+            enableSystem
+          >
             <div className="flex min-h-screen flex-col">
               <Header locale={locale} />
               {children}
