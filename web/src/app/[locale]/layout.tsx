@@ -6,10 +6,8 @@ import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
-import { FontToggle } from '@/components/font-toggle';
-import { LocaleSelect } from '@/components/locale-select';
-import { ModeToggle } from '@/components/mode-toggle';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
+import { SiteSettings } from '@/components/site-settings';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Wordmark } from '@/components/wordmark';
@@ -132,7 +130,9 @@ async function Header({ locale }: { locale: Locale }) {
   return (
     <header className="sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background pt-safe-top lg:flex-nowrap">
       <div className="flex w-1/3 p-4 lg:px-8">
-        <MobileNav homeLabel={t('navigation.home')} navItems={navItems} />
+        <div className="h-9">
+          <MobileNav homeLabel={t('navigation.home')} navItems={navItems} />
+        </div>
         <Wordmark className="hidden lg:flex" href="/" title={t('title')} />
       </div>
       <DesktopNav
@@ -140,11 +140,9 @@ async function Header({ locale }: { locale: Locale }) {
         searchPlaceholder={t('search.placeholder')}
       />
       <div className="flex items-center justify-end gap-4 p-4 lg:w-1/3 lg:px-8">
-        <Suspense fallback={<Skeleton className="h-9 w-28" />}>
-          <LocaleSelect />
+        <Suspense fallback={<Skeleton className="h-8 w-[94px]" />}>
+          <SiteSettings />
         </Suspense>
-        <FontToggle fontToggleLabel={t('fontToggle')} />
-        <ModeToggle modeToggleLabel={t('modeToggle')} />
       </div>
     </header>
   );

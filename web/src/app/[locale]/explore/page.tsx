@@ -139,7 +139,7 @@ async function MerchantsResult({
 
   const query: MerchantsQuery = {
     page: page ? Number(page) : 1,
-    page_size: page_size ? Number(page_size) : 15,
+    page_size: page_size ? Number(page_size) : 18,
     search: typeof search === 'string' ? search : undefined,
     type: typeof type === 'string' ? type : undefined,
     sort_by:
@@ -230,9 +230,9 @@ function MerchantsGrid({
 function MerchantsGridSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 15 }).map((_, i) => (
+      {Array.from({ length: 21 }).map((_, i) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton
-        <Skeleton className="h-[78px]" key={i} />
+        <Skeleton className="h-[73px]" key={i} />
       ))}
     </div>
   );
