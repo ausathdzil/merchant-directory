@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next';
+
 import { locales } from '@/i18n/routing';
 import { getMerchants } from '@/lib/data/merchants';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const BASE_URL = process.env.BASE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const arr: MetadataRoute.Sitemap = [];
