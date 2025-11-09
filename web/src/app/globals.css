@@ -129,10 +129,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  html {
+    scrollbar-gutter: stable;
+  }
 
   body {
     @apply bg-background text-foreground;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
   }
 
   button:not(:disabled),

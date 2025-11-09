@@ -34,14 +34,26 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldTitle,
 } from './ui/field';
 
 export function SiteSettings() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('site-settings-open') === 'true';
+    }
+    return false;
+  });
+
   const isMobile = useIsMobile();
 
+  const handleOpenChange = (value: boolean) => {
+    setOpen(value);
+    sessionStorage.setItem('site-settings-open', String(value));
+  };
+
   return isMobile ? (
-    <Drawer onOpenChange={setOpen} open={open}>
+    <Drawer onOpenChange={handleOpenChange} open={open}>
       <DrawerTrigger asChild>
         <Button size="sm" variant="secondary">
           <SettingsIcon />
@@ -66,7 +78,7 @@ export function SiteSettings() {
       </DrawerContent>
     </Drawer>
   ) : (
-    <Dialog onOpenChange={setOpen} open={open}>
+    <Dialog onOpenChange={handleOpenChange} open={open}>
       <DialogTrigger asChild>
         <Button size="sm" variant="secondary">
           <SettingsIcon />
@@ -101,9 +113,7 @@ function SettingsForm({ ...props }: ComponentProps<typeof FieldGroup>) {
       <Field>
         <FieldLabel htmlFor={`${id}-language`}>Language</FieldLabel>
         <LocaleSelect id={`${id}-language`} />
-        <FieldDescription>
-          Choose your preferred language. This will reload the page.
-        </FieldDescription>
+        <FieldDescription>Choose your preferred language.</FieldDescription>
       </Field>
       <Field>
         <FieldLabel htmlFor={`${id}-theme`}>Color Theme</FieldLabel>
@@ -112,15 +122,17 @@ function SettingsForm({ ...props }: ComponentProps<typeof FieldGroup>) {
           Switch between light and dark appearances.
         </FieldDescription>
       </Field>
-      <Field orientation="horizontal">
-        <FieldContent>
-          <FieldLabel htmlFor={`${id}-font`}>Dyslexic Font</FieldLabel>
-          <FieldDescription>
-            Makes text easier to read for dyslexic users.
-          </FieldDescription>
-        </FieldContent>
-        <FontSwitch id={`${id}-font`} />
-      </Field>
+      <FieldLabel htmlFor={`${id}-font`}>
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Dyslexic Font</FieldTitle>
+            <FieldDescription>
+              Makes text easier to read for dyslexic users.
+            </FieldDescription>
+          </FieldContent>
+          <FontSwitch id={`${id}-font`} />
+        </Field>
+      </FieldLabel>
     </FieldGroup>
   );
 }

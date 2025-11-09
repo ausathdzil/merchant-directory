@@ -2,34 +2,36 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { type ComponentProps, useState } from 'react';
+import { type ComponentProps, useTransition } from 'react';
 
-import { usePathname } from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import type { locales } from '@/i18n/routing';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
 
 export function LocaleSelect({
   className,
   ...props
 }: ComponentProps<typeof NativeSelect>) {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const locale = useLocale();
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value;
     const query = searchParams.toString();
     const path = query ? `${pathname}?${query}` : pathname;
 
-    setIsPending(true);
-    window.location.href = `/${newLocale}${path}`;
+    startTransition(() => {
+      router.replace(path, { locale: newLocale as (typeof locales)[number] });
+    });
   };
 
   return (
     <NativeSelect
-      aria-label="Choose your preferred language"
       defaultValue={locale}
       disabled={isPending}
       onChange={handleChange}
