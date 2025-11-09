@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     inlineCss: true,
     globalNotFound: true,
     turbopackFileSystemCacheForDev: true,
-    viewTransition: true,
   },
   images: {
     remotePatterns: [

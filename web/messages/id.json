@@ -123,7 +123,7 @@
   "ExplorePage": {
     "search": {
       "allResults": "Semua Hasil",
-      "searching": "Mencari “{query}“"
+      "searching": "Mencari “{query}”"
     },
     "empty": {
       "title": "Hasil tidak ditemukan",
