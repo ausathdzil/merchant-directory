@@ -6,6 +6,7 @@ import Form from 'next/form';
 import { useTranslations } from 'next-intl';
 import { useEffect, useId, useRef, useState } from 'react';
 
+import { useIsMac } from '@/hooks/use-mac';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link } from '@/i18n/navigation';
 import { Button, buttonVariants } from './ui/button';
@@ -40,22 +41,16 @@ export function ExploreButton() {
   );
 }
 
-const macRegex = /Mac/;
-
 function AnimatedSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isMac, setIsMac] = useState(false);
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
 
   const t = useTranslations('HomePage.hero');
+  const isMac = useIsMac();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsMac(macRegex.test(window.navigator.userAgent));
-    }
-
     const handleKeyboardShortcut = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !isExpanded) {
         e.preventDefault();
@@ -100,7 +95,7 @@ function AnimatedSearch() {
             initial={{ opacity: 0, scale: 0.95 }}
             key="input-group"
             onAnimationComplete={() => {
-              setTimeout(() => inputRef.current?.focus(), 100);
+              setTimeout(() => inputRef.current?.focus(), 50);
             }}
             transition={{
               duration: 0.15,

@@ -138,13 +138,13 @@ async function Header({ locale }: { locale: Locale }) {
         <div className="h-9">
           <MobileNav homeLabel={t('navigation.home')} navItems={navItems} />
         </div>
-        <Wordmark className="hidden lg:flex" href="/" title={t('title')} />
+        <Wordmark className="hidden md:flex" href="/" title={t('title')} />
       </div>
       <DesktopNav
         navItems={navItems}
         searchPlaceholder={t('search.placeholder')}
       />
-      <div className="flex items-center justify-end gap-4 p-4 lg:w-1/3 lg:px-8">
+      <div className="flex w-1/3 items-center justify-end gap-4 p-4 lg:px-8">
         <Suspense fallback={<Skeleton className="h-8 w-[94px]" />}>
           <SiteSettings />
         </Suspense>

@@ -39,7 +39,7 @@ export function DesktopNav({
   ) : (
     !isMobile && (
       <nav
-        className={cn('hidden items-center gap-4 lg:flex', className)}
+        className={cn('hidden items-center gap-4 md:flex', className)}
         {...props}
       >
         {navItems.map((item) => (
@@ -94,7 +94,7 @@ export function MobileNav({
         <PopoverTrigger asChild>
           <Button
             aria-label="Menu"
-            className={cn('relative, overflow-hidden', className)}
+            className={cn('relative overflow-hidden', className)}
             size="icon"
             variant="ghost"
             {...props}
