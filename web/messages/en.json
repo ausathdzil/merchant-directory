@@ -31,7 +31,8 @@
     "navigation": {
       "home": "Home",
       "explore": "Explore",
-      "about": "About Us"
+      "about": "About Us",
+      "menu": "Menu"
     },
     "search": {
       "placeholder": "Search merchant name or keywords…"
@@ -131,6 +132,64 @@
     },
     "error": {
       "tryAgain": "Try Again"
+    },
+    "filters": {
+      "merchantType": "Merchant Type",
+      "sortBy": "Sort By",
+      "name": "Name",
+      "rating": "Rating"
     }
+  },
+  "MerchantPage": {
+    "sections": {
+      "additionalTypes": "Additional Types",
+      "amenities": "Amenities",
+      "openingHours": "Opening Hours",
+      "reviews": "Reviews",
+      "contactInformation": "Contact Information"
+    },
+    "reviews": {
+      "noReviews": "No reviews yet."
+    },
+    "actions": {
+      "getDirections": "Get Directions",
+      "contactBusiness": "Contact Business"
+    },
+    "contact": {
+      "address": "Address",
+      "noAddress": "No address available",
+      "phone": "Phone",
+      "noPhone": "No phone number available",
+      "website": "Website",
+      "noWebsite": "No website available"
+    }
+  },
+  "SiteSettings": {
+    "button": "Settings",
+    "title": "Site Settings",
+    "description": "Configure site language, theme, and font.",
+    "close": "Close",
+    "fields": {
+      "language": {
+        "label": "Language",
+        "description": "Choose your preferred language."
+      },
+      "theme": {
+        "label": "Color Theme",
+        "description": "Switch between light and dark appearances."
+      },
+      "font": {
+        "label": "Dyslexic Font",
+        "description": "Makes text easier to read for dyslexic users."
+      }
+    }
+  },
+  "ErrorPage": {
+    "title": "Error",
+    "digest": "Digest",
+    "button": "Need Help?"
+  },
+  "Footer": {
+    "source": "Source"
   }
 }

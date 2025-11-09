@@ -136,7 +136,11 @@ async function Header({ locale }: { locale: Locale }) {
     <header className="sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background pt-safe-top lg:flex-nowrap">
       <div className="flex w-1/3 p-4 lg:px-8">
         <div className="h-9">
-          <MobileNav homeLabel={t('navigation.home')} navItems={navItems} />
+          <MobileNav
+            homeLabel={t('navigation.home')}
+            menuLabel={t('navigation.menu')}
+            navItems={navItems}
+          />
         </div>
         <Wordmark className="hidden md:flex" href="/" title={t('title')} />
       </div>

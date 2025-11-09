@@ -1,8 +1,8 @@
 import { SearchIcon, StarIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { hasLocale } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { hasLocale, type Locale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { FilterSelect } from '@/components/filter-select';
@@ -42,8 +42,6 @@ export async function generateMetadata({
     notFound();
   }
 
-  setRequestLocale(locale);
-
   const t = await getTranslations({
     locale,
     namespace: 'Metadata.ExplorePage',
@@ -64,37 +62,37 @@ export default async function ExplorePage({
     notFound();
   }
 
-  setRequestLocale(locale);
-
   return (
     <main className="flex flex-1 flex-col items-center">
       <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-4 lg:p-8">
         <div className="flex flex-wrap justify-between gap-4">
           <Suspense fallback={<Subheading>All Results</Subheading>}>
-            <ResultText searchParams={searchParams} />
+            <ResultText locale={locale} searchParams={searchParams} />
           </Suspense>
           <Suspense fallback={<Skeleton className="h-9 w-[488px]" />}>
             <div className="grid w-full grid-cols-2 items-center gap-4 md:flex md:w-fit [&_div]:w-full md:[&_div]:w-fit">
               <ViewToggle className="hidden md:flex" />
-              <MerchantTypesFilter />
-              <MerchantSortByFilter />
+              <MerchantTypesFilter locale={locale} />
+              <MerchantSortByFilter locale={locale} />
             </div>
           </Suspense>
         </div>
         <Suspense fallback={<MerchantsGridSkeleton />}>
-          <MerchantsResult searchParams={searchParams} />
+          <MerchantsResult locale={locale} searchParams={searchParams} />
         </Suspense>
       </div>
     </main>
   );
 }
 
-async function ResultText({
-  searchParams,
-}: Omit<PageProps<'/[locale]/explore'>, 'params'>) {
+type ResultTextProps = {
+  locale: Locale;
+} & Omit<PageProps<'/[locale]/explore'>, 'params'>;
+
+async function ResultText({ locale, searchParams }: ResultTextProps) {
   const { search } = await searchParams;
 
-  const t = await getTranslations('ExplorePage');
+  const t = await getTranslations({ locale, namespace: 'ExplorePage' });
 
   return (
     <Subheading>
@@ -105,11 +103,12 @@ async function ResultText({
   );
 }
 
-async function MerchantTypesFilter() {
+async function MerchantTypesFilter({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'ExplorePage.filters' });
   const merchantTypes = await getMerchantTypesList();
 
   const opts = [
-    { label: 'Merchant Type', value: '', isDisabled: true },
+    { label: t('merchantType'), value: '', isDisabled: true },
     ...merchantTypes.map((type) => ({
       label: type,
       value: type.toLocaleLowerCase().replace(/\s+/g, '_'),
@@ -119,20 +118,24 @@ async function MerchantTypesFilter() {
   return <FilterSelect name="type" opts={opts} />;
 }
 
-function MerchantSortByFilter() {
+async function MerchantSortByFilter({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'ExplorePage.filters' });
+
   const opts = [
-    { label: 'Sort By', value: '', isDisabled: true },
-    { label: 'Name', value: 'name' },
-    { label: 'Rating', value: 'rating' },
+    { label: t('sortBy'), value: '', isDisabled: true },
+    { label: t('name'), value: 'name' },
+    { label: t('rating'), value: 'rating' },
   ];
 
   return <FilterSelect name="sort_by" opts={opts} />;
 }
 
-async function MerchantsResult({
-  searchParams,
-}: Omit<PageProps<'/[locale]/explore'>, 'params'>) {
-  const t = await getTranslations('ExplorePage');
+type MerchantsResultProps = {
+  locale: Locale;
+} & Omit<PageProps<'/[locale]/explore'>, 'params'>;
+
+async function MerchantsResult({ locale, searchParams }: MerchantsResultProps) {
+  const t = await getTranslations({ locale, namespace: 'ExplorePage' });
 
   const { page, page_size, search, type, sort_by, sort_order, view } =
     await searchParams;

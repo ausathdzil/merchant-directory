@@ -1,6 +1,7 @@
 'use client';
 
 import { CloudAlertIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import {
   Empty,
@@ -17,6 +18,8 @@ export default function ErrorPage({
 }: {
   error: Error & { digest?: string };
 }) {
+  const t = useTranslations('ErrorPage');
+
   return (
     <main className="flex flex-1 flex-col items-center">
       <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-8">
@@ -25,12 +28,16 @@ export default function ErrorPage({
             <EmptyMedia variant="icon">
               <CloudAlertIcon />
             </EmptyMedia>
-            <EmptyTitle>Error: {error.message}</EmptyTitle>
-            <EmptyDescription>Digest: {error.digest}</EmptyDescription>
+            <EmptyTitle>
+              {t('title')}: {error.message}
+            </EmptyTitle>
+            <EmptyDescription>
+              {t('digest')}: {error.digest}
+            </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <EmptyDescription>
-              <Link href="/">Need Help?</Link>
+              <Link href="/">{t('button')}</Link>
             </EmptyDescription>
           </EmptyContent>
         </Empty>

@@ -31,7 +31,8 @@
     "navigation": {
       "home": "Beranda",
       "explore": "Jelajahi",
-      "about": "Tentang Kami"
+      "about": "Tentang Kami",
+      "menu": "Menu"
     },
     "search": {
       "placeholder": "Cari nama atau kata kunci bisnis…"
@@ -131,6 +132,64 @@
     },
     "error": {
       "tryAgain": "Coba lagi"
+    },
+    "filters": {
+      "merchantType": "Tipe Bisnis",
+      "sortBy": "Urutkan Berdasarkan",
+      "name": "Nama",
+      "rating": "Rating"
     }
+  },
+  "MerchantPage": {
+    "sections": {
+      "additionalTypes": "Tipe Tambahan",
+      "amenities": "Fasilitas",
+      "openingHours": "Jam Buka",
+      "reviews": "Ulasan",
+      "contactInformation": "Informasi Kontak"
+    },
+    "reviews": {
+      "noReviews": "Belum ada ulasan."
+    },
+    "actions": {
+      "getDirections": "Dapatkan Petunjuk Arah",
+      "contactBusiness": "Hubungi Bisnis"
+    },
+    "contact": {
+      "address": "Alamat",
+      "noAddress": "Alamat tidak tersedia",
+      "phone": "Telepon",
+      "noPhone": "Nomor telepon tidak tersedia",
+      "website": "Situs Web",
+      "noWebsite": "Situs web tidak tersedia"
+    }
+  },
+  "SiteSettings": {
+    "button": "Pengaturan",
+    "title": "Pengaturan Situs",
+    "description": "Konfigurasi bahasa, tema, dan font situs.",
+    "close": "Tutup",
+    "fields": {
+      "language": {
+        "label": "Bahasa",
+        "description": "Pilih bahasa pilihanmu."
+      },
+      "theme": {
+        "label": "Tema Warna",
+        "description": "Beralih antara tampilan terang dan gelap."
+      },
+      "font": {
+        "label": "Font Disleksia",
+        "description": "Membuat teks lebih mudah dibaca untuk pengguna disleksia."
+      }
+    }
+  },
+  "ErrorPage": {
+    "title": "Error",
+    "digest": "Digest",
+    "button": "Butuh Bantuan?"
+  },
+  "Footer": {
+    "source": "Sumber"
   }
 }

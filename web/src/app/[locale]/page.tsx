@@ -152,7 +152,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
           </motion.div>
         </div>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }
@@ -291,7 +291,13 @@ async function FrequentlyAskedQuestions({
   );
 }
 
-function Footer({ className, ...props }: ComponentProps<'footer'>) {
+async function Footer({
+  locale,
+  className,
+  ...props
+}: { locale: Locale } & ComponentProps<'footer'>) {
+  const t = await getTranslations({ locale, namespace: 'Footer' });
+
   return (
     <footer
       className={cn(
@@ -316,7 +322,7 @@ function Footer({ className, ...props }: ComponentProps<'footer'>) {
             src="/GitHub_light.svg"
             width={16}
           />
-          Source
+          {t('source')}
         </a>
       </div>
     </footer>

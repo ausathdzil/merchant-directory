@@ -10,6 +10,8 @@ import {
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { hasLocale, type Locale } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { ReviewText } from '@/components/review-description';
 import { Subheading, Text } from '@/components/typography';
@@ -41,7 +43,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { locales } from '@/i18n/routing';
+import { locales, routing } from '@/i18n/routing';
 import {
   getMerchant,
   getMerchantAmenities,
@@ -100,13 +102,21 @@ export default function MerchantPage({
 async function MerchantDetail({
   params,
 }: Omit<PageProps<'/[locale]/merchants/[merchant_id]'>, 'searchParams'>) {
-  const { merchant_id } = await params;
+  const { locale, merchant_id } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
 
   const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
 
   if (!merchant) {
     notFound();
   }
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale, namespace: 'MerchantPage' });
 
   const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},18/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
@@ -160,7 +170,7 @@ async function MerchantDetail({
         <Separator />
         {types && types.length > 0 && (
           <div className="grid gap-4">
-            <Subheading>Additional Types</Subheading>
+            <Subheading>{t('sections.additionalTypes')}</Subheading>
             <div className="flex flex-wrap gap-2">
               {types.map((type) => (
                 <Badge key={type.id} variant="secondary">
@@ -172,7 +182,7 @@ async function MerchantDetail({
         )}
         {hasAmenities && (
           <div className="grid gap-4">
-            <Subheading>Amenities</Subheading>
+            <Subheading>{t('sections.amenities')}</Subheading>
             <div className="flex flex-wrap gap-2">
               {Object.entries(amenities)
                 .filter(([_key, value]) => value === true)
@@ -188,7 +198,7 @@ async function MerchantDetail({
         )}
         {opening_hours && Object.keys(opening_hours).length > 0 && (
           <div className="grid gap-4">
-            <Subheading>Opening Hours</Subheading>
+            <Subheading>{t('sections.openingHours')}</Subheading>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -214,20 +224,20 @@ async function MerchantDetail({
           </div>
         )}
         <div className="grid gap-4">
-          <Subheading>Reviews</Subheading>
+          <Subheading>{t('sections.reviews')}</Subheading>
           {reviews && reviews.length > 0 ? (
             <ReviewCards reviews={reviews} />
           ) : (
-            <Text>No reviews yet.</Text>
+            <Text>{t('reviews.noReviews')}</Text>
           )}
         </div>
       </div>
       <div className="lg:col-span-1">
         <Card className="sticky top-24">
           <CardHeader className="border-b">
-            <CardTitle>Contact Information</CardTitle>
+            <CardTitle>{t('sections.contactInformation')}</CardTitle>
           </CardHeader>
-          <MerchantContact merchant={merchant} />
+          <MerchantContact locale={locale} merchant={merchant} />
           <CardFooter className="grid gap-2 border-t">
             <a
               className={buttonVariants({ size: 'lg' })}
@@ -236,14 +246,14 @@ async function MerchantDetail({
               target="_blank"
             >
               <NavigationIcon />
-              Get Directions
+              {t('actions.getDirections')}
             </a>
             <a
               className={buttonVariants({ size: 'lg', variant: 'secondary' })}
               href={`tel:${merchant.phone_international}`}
             >
               <PhoneIcon />
-              Contact Business
+              {t('actions.contactBusiness')}
             </a>
           </CardFooter>
         </Card>
@@ -303,7 +313,15 @@ function ReviewCards({ reviews }: { reviews: MerchantReviewsResponse }) {
   );
 }
 
-function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
+async function MerchantContact({
+  merchant,
+  locale,
+}: {
+  merchant: MerchantDetailType;
+  locale: Locale;
+}) {
+  const t = await getTranslations({ locale, namespace: 'MerchantPage' });
+
   return (
     <CardContent className="space-y-4 **:p-0">
       <Item>
@@ -311,11 +329,11 @@ function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
           <MapPinIcon />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle>Address</ItemTitle>
+          <ItemTitle>{t('contact.address')}</ItemTitle>
           <ItemDescription title={merchant.formatted_address ?? undefined}>
             {merchant.formatted_address
               ? merchant.formatted_address
-              : 'No address available'}
+              : t('contact.noAddress')}
           </ItemDescription>
         </ItemContent>
       </Item>
@@ -324,14 +342,14 @@ function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
           <PhoneIcon />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle>Phone</ItemTitle>
+          <ItemTitle>{t('contact.phone')}</ItemTitle>
           <ItemDescription>
             {merchant.phone_international ? (
               <a href={`tel:${merchant.phone_international}`}>
                 {merchant.phone_international}
               </a>
             ) : (
-              'No phone number available'
+              t('contact.noPhone')
             )}
           </ItemDescription>
         </ItemContent>
@@ -341,7 +359,7 @@ function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
           <GlobeIcon />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle>Website</ItemTitle>
+          <ItemTitle>{t('contact.website')}</ItemTitle>
           <ItemDescription>
             {merchant.website ? (
               <a
@@ -352,7 +370,7 @@ function MerchantContact({ merchant }: { merchant: MerchantDetailType }) {
                 {merchant.website}
               </a>
             ) : (
-              'No website available'
+              t('contact.noWebsite')
             )}
           </ItemDescription>
         </ItemContent>

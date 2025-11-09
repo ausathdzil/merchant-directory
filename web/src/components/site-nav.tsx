@@ -63,11 +63,13 @@ export function DesktopNav({
 type MobileNavProps = {
   navItems: NavItem[];
   homeLabel: string;
+  menuLabel: string;
 } & ComponentProps<typeof Button>;
 
 export function MobileNav({
   navItems,
   homeLabel,
+  menuLabel,
   className,
   ...props
 }: MobileNavProps) {
@@ -125,7 +127,7 @@ export function MobileNav({
           sideOffset={14}
         >
           <div className="flex flex-col gap-4 overflow-auto px-6 py-4">
-            <div className="font-medium text-muted-foreground">Menu</div>
+            <div className="font-medium text-muted-foreground">{menuLabel}</div>
             <nav className="flex flex-col gap-3">
               <Link
                 className="font-medium text-2xl"
