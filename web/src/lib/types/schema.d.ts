@@ -348,6 +348,8 @@ export interface components {
             phone_international: string | null;
             /** Website */
             website: string | null;
+            /** Photo Url */
+            photo_url: string | null;
             /** Latitude */
             latitude: number;
             /** Longitude */
@@ -375,6 +377,8 @@ export interface components {
             user_rating_count: number | null;
             /** Type Count */
             type_count: number;
+            /** Photo Url */
+            photo_url: string | null;
         };
         /** MerchantTypePublic */
         MerchantTypePublic: {

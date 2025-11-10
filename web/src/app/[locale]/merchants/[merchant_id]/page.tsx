@@ -4,7 +4,6 @@ import {
   MapPinIcon,
   NavigationIcon,
   PhoneIcon,
-  Share2Icon,
   StarIcon,
 } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -12,8 +11,10 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { ComponentProps } from 'react';
 
 import { ReviewText } from '@/components/review-description';
+import { ShareButton } from '@/components/share-button';
 import { Subheading, Text } from '@/components/typography';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -118,7 +119,7 @@ async function MerchantDetail({
 
   const t = await getTranslations({ locale, namespace: 'MerchantPage' });
 
-  const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},18/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
+  const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},19/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
   const [reviews, types, opening_hours, amenities] = await Promise.all([
     getMerchantReviews({ merchant_id: Number(merchant_id) }),
@@ -134,13 +135,15 @@ async function MerchantDetail({
     <div className="grid gap-8 p-4 lg:grid-cols-3 lg:p-8">
       <div className="grid gap-8 lg:col-span-2">
         <div className="relative aspect-video w-full rounded-lg bg-muted">
-          <Image
-            alt={merchant.display_name ?? 'Map of the business'}
-            className="rounded-lg object-cover"
-            fill
-            loading="eager"
-            src={mapUrl}
-          />
+          {merchant.photo_url && (
+            <Image
+              alt={merchant.display_name || merchant.name}
+              className="rounded-lg object-scale-down"
+              fill
+              loading="eager"
+              src={merchant.photo_url}
+            />
+          )}
         </div>
         <Item className="p-0">
           <ItemContent className="gap-2">
@@ -162,9 +165,18 @@ async function MerchantDetail({
             </div>
           </ItemContent>
           <ItemActions className="self-start">
-            <Button size="icon-lg" variant="outline">
-              <Share2Icon />
+            <Button
+              aria-label="Contact"
+              asChild
+              className="flex lg:hidden"
+              size="icon-lg"
+              variant="outline"
+            >
+              <a href={`#contact-${merchant_id}`}>
+                <MapPinIcon />
+              </a>
             </Button>
+            <ShareButton aria-label="Share" />
           </ItemActions>
         </Item>
         <Separator />
@@ -232,13 +244,23 @@ async function MerchantDetail({
           )}
         </div>
       </div>
-      <div className="lg:col-span-1">
-        <Card className="sticky top-24">
+      <div className="lg:col-span-1" id={`contact-${merchant_id}`}>
+        <Card className="sticky top-4">
           <CardHeader className="border-b">
             <CardTitle>{t('sections.contactInformation')}</CardTitle>
           </CardHeader>
           <MerchantContact locale={locale} merchant={merchant} />
           <CardFooter className="grid gap-2 border-t">
+            <div className="relative aspect-video w-full rounded-lg bg-muted">
+              <Image
+                alt={merchant.display_name || merchant.name}
+                className="rounded-lg object-scale-down"
+                fill
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                src={mapUrl}
+              />
+            </div>
             <a
               className={buttonVariants({ size: 'lg' })}
               href={`https://www.google.com/maps/dir/?api=1&destination=${merchant.latitude},${merchant.longitude}`}
@@ -313,17 +335,21 @@ function ReviewCards({ reviews }: { reviews: MerchantReviewsResponse }) {
   );
 }
 
+type MerchantContactProps = {
+  merchant: MerchantDetailType;
+  locale: Locale;
+} & ComponentProps<typeof CardContent>;
+
 async function MerchantContact({
   merchant,
   locale,
-}: {
-  merchant: MerchantDetailType;
-  locale: Locale;
-}) {
+  className,
+  ...props
+}: MerchantContactProps) {
   const t = await getTranslations({ locale, namespace: 'MerchantPage' });
 
   return (
-    <CardContent className="space-y-4 **:p-0">
+    <CardContent className={cn('space-y-4 **:p-0', className)} {...props}>
       <Item>
         <ItemMedia variant="icon">
           <MapPinIcon />

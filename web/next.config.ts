@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      new URL('https://qge8bmbe4b0zsl99.public.blob.vercel-storage.com/**'),
       {
         protocol: 'https',
         hostname: 'api.mapbox.com',

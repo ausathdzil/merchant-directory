@@ -1,5 +1,6 @@
 import { SearchIcon, StarIcon } from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
@@ -21,7 +22,10 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -142,7 +146,7 @@ async function MerchantsResult({ locale, searchParams }: MerchantsResultProps) {
 
   const query: MerchantsQuery = {
     page: page ? Number(page) : 1,
-    page_size: page_size ? Number(page_size) : 18,
+    page_size: page_size ? Number(page_size) : 16,
     search: typeof search === 'string' ? search : undefined,
     type: typeof type === 'string' ? type : undefined,
     sort_by:
@@ -196,13 +200,39 @@ function MerchantsGrid({
     <ItemGroup
       className={cn(
         'grid gap-4',
-        view === 'list' ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'
+        view === 'list'
+          ? 'grid-cols-1'
+          : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
       )}
     >
       {merchants.map((merchant) => (
         <li className="list-none" key={merchant.id}>
-          <Item asChild className="items-start" variant="outline">
+          <Item asChild className="h-full" variant="outline">
             <Link href={`/merchants/${merchant.id}`} prefetch>
+              {merchant.photo_url &&
+                (view === 'list' ? (
+                  <ItemMedia variant="image">
+                    <Image
+                      alt={merchant.display_name || merchant.name}
+                      className="object-cover grayscale"
+                      height={32}
+                      loading="eager"
+                      src={merchant.photo_url}
+                      width={32}
+                    />
+                  </ItemMedia>
+                ) : (
+                  <ItemHeader>
+                    <Image
+                      alt={merchant.display_name || merchant.name}
+                      className="aspect-square w-full rounded-sm object-cover"
+                      height={128}
+                      loading="eager"
+                      src={merchant.photo_url}
+                      width={128}
+                    />
+                  </ItemHeader>
+                ))}
               <ItemContent>
                 <ItemTitle className="line-clamp-1">
                   {merchant.display_name}
@@ -214,14 +244,25 @@ function MerchantsGrid({
                   </ItemDescription>
                 </div>
               </ItemContent>
-              <ItemActions>
-                {merchant.primary_type && (
-                  <Badge variant="secondary">{merchant.primary_type}</Badge>
-                )}
-                {merchant.type_count > 1 && (
-                  <Badge variant="outline">+{merchant.type_count - 1}</Badge>
-                )}
-              </ItemActions>
+              {view === 'list' ? (
+                <ItemActions>
+                  {merchant.primary_type && (
+                    <Badge variant="secondary">{merchant.primary_type}</Badge>
+                  )}
+                  {merchant.type_count > 1 && (
+                    <Badge variant="outline">+{merchant.type_count - 1}</Badge>
+                  )}
+                </ItemActions>
+              ) : (
+                <ItemFooter>
+                  {merchant.primary_type && (
+                    <Badge variant="secondary">{merchant.primary_type}</Badge>
+                  )}
+                  {merchant.type_count > 1 && (
+                    <Badge variant="outline">+{merchant.type_count - 1}</Badge>
+                  )}
+                </ItemFooter>
+              )}
             </Link>
           </Item>
         </li>
@@ -232,10 +273,10 @@ function MerchantsGrid({
 
 function MerchantsGridSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 21 }).map((_, i) => (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {Array.from({ length: 16 }).map((_, i) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton
-        <Skeleton className="h-[73px]" key={i} />
+        <Skeleton className="h-[353px]" key={i} />
       ))}
     </div>
   );

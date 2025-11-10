@@ -10,6 +10,7 @@ import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { SiteSettings } from '@/components/site-settings';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Toaster } from '@/components/ui/sonner';
 import { Wordmark } from '@/components/wordmark';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
@@ -117,6 +118,7 @@ export default async function LocaleLayout({
               <Header locale={locale} />
               {children}
             </div>
+            <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
