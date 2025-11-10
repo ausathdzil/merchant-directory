@@ -156,6 +156,7 @@ def read_merchants(
             rating=merchant.rating,
             user_rating_count=merchant.user_rating_count,
             type_count=len(merchant.types),
+            photo_url=merchant.photo_url,
         )
         for merchant in merchants
     ]
@@ -205,6 +206,7 @@ def read_merchant(merchant_id: int, session: SessionDep):
         phone_national=merchant.phone_national,
         phone_international=merchant.phone_international,
         website=merchant.website,
+        photo_url=merchant.photo_url,
         latitude=merchant.latitude,
         longitude=merchant.longitude,
         rating=merchant.rating,
