@@ -36,6 +36,9 @@ class Merchant(Base):
     website: Mapped[str | None] = mapped_column(Text)
     photo_url: Mapped[str | None] = mapped_column(Text)
 
+    description_en: Mapped[str | None] = mapped_column(Text)
+    description_id: Mapped[str | None] = mapped_column(Text)
+
     latitude: Mapped[float] = mapped_column(Float, index=True, nullable=False)
     longitude: Mapped[float] = mapped_column(Float, index=True, nullable=False)
     plus_code: Mapped[str | None] = mapped_column(String(50))
@@ -226,6 +229,7 @@ class MerchantListItem(BaseModel):
     user_rating_count: int | None
     type_count: int
     photo_url: str | None
+    description: str | None
 
 
 class MerchantsPublic(BaseModel):
@@ -244,6 +248,7 @@ class MerchantDetail(BaseModel):
     phone_international: str | None
     website: str | None
     photo_url: str | None
+    description: str | None
     latitude: float
     longitude: float
     rating: float | None

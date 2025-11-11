@@ -36,7 +36,7 @@ def read_merchants(
     page_size: Annotated[int, Query(ge=1, le=100)] = 10,
     search: Annotated[str | None, Query()] = None,
     type: Annotated[str | None, Query()] = None,
-    search_lang: Annotated[Literal["english", "indonesian"], Query()] = "english",
+    lang: Annotated[Literal["english", "indonesian"], Query()] = "english",
     sort_by: Annotated[
         Literal["name", "rating", "distance", "created_at"], Query()
     ] = "created_at",
@@ -52,10 +52,10 @@ def read_merchants(
         search = None
 
     if search:
-        ts_config = "english" if search_lang == "english" else "indonesian"
+        ts_config = "english" if lang == "english" else "indonesian"
         search_vector_col = (
             Merchant.search_vector_en
-            if search_lang == "english"
+            if lang == "english"
             else Merchant.search_vector_id
         )
         tsquery = func.plainto_tsquery(ts_config, search)
@@ -157,6 +157,11 @@ def read_merchants(
             user_rating_count=merchant.user_rating_count,
             type_count=len(merchant.types),
             photo_url=merchant.photo_url,
+            description=(
+                merchant.description_en
+                if lang == "english"
+                else merchant.description_id
+            ),
         )
         for merchant in merchants
     ]
@@ -187,7 +192,11 @@ def read_merchant_types(session: SessionDep):
 
 
 @router.get("/{merchant_id}", response_model=MerchantDetail)
-def read_merchant(merchant_id: int, session: SessionDep):
+def read_merchant(
+    merchant_id: int,
+    session: SessionDep,
+    lang: Annotated[Literal["english", "indonesian"], Query()] = "english",
+):
     stmt = select(Merchant).where(Merchant.id == merchant_id)
     merchant = session.scalar(stmt)
 
@@ -207,6 +216,9 @@ def read_merchant(merchant_id: int, session: SessionDep):
         phone_international=merchant.phone_international,
         website=merchant.website,
         photo_url=merchant.photo_url,
+        description=(
+            merchant.description_en if lang == "english" else merchant.description_id
+        ),
         latitude=merchant.latitude,
         longitude=merchant.longitude,
         rating=merchant.rating,
