@@ -381,8 +381,6 @@ export interface components {
             type_count: number;
             /** Photo Url */
             photo_url: string | null;
-            /** Description */
-            description: string | null;
         };
         /** MerchantTypePublic */
         MerchantTypePublic: {

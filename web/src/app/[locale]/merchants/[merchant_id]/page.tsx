@@ -77,9 +77,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps<'/[locale]/merchants/[merchant_id]'>): Promise<Metadata> {
-  const { merchant_id } = await params;
+  const { locale, merchant_id } = await params;
 
-  const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  const merchant = await getMerchant(
+    { merchant_id: Number(merchant_id) },
+    locale
+  );
 
   if (!merchant) {
     notFound();
