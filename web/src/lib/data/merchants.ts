@@ -35,9 +35,9 @@ export async function getMerchants(query: MerchantsQuery, locale?: string) {
   }
 
   if (locale && locale === 'id') {
-    searchParams.set('search_lang', 'indonesian');
+    searchParams.set('lang', 'indonesian');
   } else {
-    searchParams.set('search_lang', 'english');
+    searchParams.set('lang', 'english');
   }
 
   const res = await fetch(`${API_URL}/merchants?${searchParams.toString()}`, {
@@ -69,14 +69,25 @@ export async function getMerchants(query: MerchantsQuery, locale?: string) {
   return { data, meta };
 }
 
-export async function getMerchant(path: MerchantPath) {
-  const res = await fetch(`${API_URL}/merchants/${path.merchant_id}`, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-    cache: 'force-cache',
-  });
+export async function getMerchant(path: MerchantPath, locale?: string) {
+  const searchParams = new URLSearchParams();
+
+  if (locale && locale === 'id') {
+    searchParams.set('lang', 'indonesian');
+  } else {
+    searchParams.set('lang', 'english');
+  }
+
+  const res = await fetch(
+    `${API_URL}/merchants/${path.merchant_id}?${searchParams.toString()}`,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+      cache: 'force-cache',
+    }
+  );
 
   if (!res.ok) {
     if (res.status === 404) {

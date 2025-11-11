@@ -87,6 +87,7 @@ export async function generateMetadata({
 
   return {
     title: merchant.display_name,
+    description: merchant.description,
   };
 }
 
@@ -109,7 +110,10 @@ async function MerchantDetail({
     notFound();
   }
 
-  const merchant = await getMerchant({ merchant_id: Number(merchant_id) });
+  const merchant = await getMerchant(
+    { merchant_id: Number(merchant_id) },
+    locale
+  );
 
   if (!merchant) {
     notFound();
@@ -180,6 +184,12 @@ async function MerchantDetail({
           </ItemActions>
         </Item>
         <Separator />
+        <div className="grid gap-4">
+          <Subheading>{t('sections.about')}</Subheading>
+          <Text className="mt-0!">
+            {merchant.description ? merchant.description : t('about.noAbout')}
+          </Text>
+        </div>
         {types && types.length > 0 && (
           <div className="grid gap-4">
             <Subheading>{t('sections.additionalTypes')}</Subheading>
@@ -240,7 +250,7 @@ async function MerchantDetail({
           {reviews && reviews.length > 0 ? (
             <ReviewCards reviews={reviews} />
           ) : (
-            <Text>{t('reviews.noReviews')}</Text>
+            <Text className="mt-0!">{t('reviews.noReviews')}</Text>
           )}
         </div>
       </div>

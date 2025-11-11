@@ -159,7 +159,7 @@ async function MerchantsResult({ locale, searchParams }: MerchantsResultProps) {
         : undefined,
   };
 
-  const merchants = await getMerchants(query);
+  const merchants = await getMerchants(query, locale);
 
   if (merchants.data.length === 0) {
     return (

@@ -142,11 +142,15 @@
   },
   "MerchantPage": {
     "sections": {
+      "about": "About",
       "additionalTypes": "Additional Types",
       "amenities": "Amenities",
       "openingHours": "Opening Hours",
       "reviews": "Reviews",
       "contactInformation": "Contact Information"
+    },
+    "about": {
+      "noAbout": "No description yet."
     },
     "reviews": {
       "noReviews": "No reviews yet."

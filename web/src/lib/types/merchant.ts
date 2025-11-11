@@ -18,6 +18,9 @@ export type MerchantsError =
 export type MerchantPath =
   paths['/api/v1/merchants/{merchant_id}']['get']['parameters']['path'];
 
+export type MerchantQuery =
+  paths['/api/v1/merchants/{merchant_id}']['get']['parameters']['query'];
+
 export type MerchantResponse =
   paths['/api/v1/merchants/{merchant_id}']['get']['responses']['200']['content']['application/json'];
 

@@ -142,11 +142,15 @@
   },
   "MerchantPage": {
     "sections": {
+      "about": "Tentang",
       "additionalTypes": "Tipe Tambahan",
       "amenities": "Fasilitas",
       "openingHours": "Jam Buka",
       "reviews": "Ulasan",
       "contactInformation": "Informasi Kontak"
+    },
+    "about": {
+      "noAbout": "Belum ada deskripsi."
     },
     "reviews": {
       "noReviews": "Belum ada ulasan."

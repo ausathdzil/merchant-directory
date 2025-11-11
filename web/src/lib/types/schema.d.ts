@@ -350,6 +350,8 @@ export interface components {
             website: string | null;
             /** Photo Url */
             photo_url: string | null;
+            /** Description */
+            description: string | null;
             /** Latitude */
             latitude: number;
             /** Longitude */
@@ -379,6 +381,8 @@ export interface components {
             type_count: number;
             /** Photo Url */
             photo_url: string | null;
+            /** Description */
+            description: string | null;
         };
         /** MerchantTypePublic */
         MerchantTypePublic: {
@@ -647,7 +651,7 @@ export interface operations {
                 page_size?: number;
                 search?: string | null;
                 type?: string | null;
-                search_lang?: "english" | "indonesian";
+                lang?: "english" | "indonesian";
                 sort_by?: "name" | "rating" | "distance" | "created_at";
                 sort_order?: "asc" | "desc";
             };
@@ -699,7 +703,9 @@ export interface operations {
     };
     read_merchant_api_v1_merchants__merchant_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                lang?: "english" | "indonesian";
+            };
             header?: never;
             path: {
                 merchant_id: number;
