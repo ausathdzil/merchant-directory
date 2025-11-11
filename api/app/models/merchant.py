@@ -229,7 +229,6 @@ class MerchantListItem(BaseModel):
     user_rating_count: int | None
     type_count: int
     photo_url: str | None
-    description: str | None
 
 
 class MerchantsPublic(BaseModel):

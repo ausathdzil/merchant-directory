@@ -157,11 +157,6 @@ def read_merchants(
             user_rating_count=merchant.user_rating_count,
             type_count=len(merchant.types),
             photo_url=merchant.photo_url,
-            description=(
-                merchant.description_en
-                if lang == "english"
-                else merchant.description_id
-            ),
         )
         for merchant in merchants
     ]
