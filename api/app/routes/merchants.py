@@ -239,10 +239,8 @@ def read_merchant_photos(merchant_id: int, session: SessionDep):
     return [
         PhotoPublic(
             id=photo.id,
-            photo_reference=photo.photo_reference,
-            width=photo.width,
-            height=photo.height,
-            author_name=photo.author_name,
+            vercel_blob_url=photo.vercel_blob_url,
+            file_extension=photo.file_extension,
             is_primary=photo.is_primary,
             order=photo.order,
         )

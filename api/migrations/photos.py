@@ -1,15 +1,15 @@
 """
-Seed script to upload merchant photos to Vercel Blob storage
+Seed script to upload primary merchant photos to Vercel Blob storage
 
 This script:
 1. Reads photos from data/merchant_photos/ directory
-2. Uploads them to Vercel Blob storage
-3. Updates the photos table with the vercel_blob_url
+2. Uploads them to Vercel Blob storage as "primary.{ext}"
+3. Creates records in the photos table
 4. Updates the merchants table photo_url with the Vercel Blob URL
 
 Usage:
     1. Make sure BLOB_READ_WRITE_TOKEN is set in your .env file
-    2. Run migrations/add_photo_url.py first to add columns
+    2. Run migrations/recreate_photos_table.py first
     3. Install dependencies: uv sync
     4. Run the script: uv run python -m migrations.photos
 """
@@ -48,17 +48,22 @@ def upload_to_vercel_blob(file_path: str, merchant_id: int) -> str:
     Returns:
         The URL of the uploaded blob
     """
-    filename = Path(file_path).name
+    file_ext = Path(file_path).suffix  # e.g., ".jpg"
 
-    # Use merchant_id in the path for organization
-    blob_path = f"merchants/{merchant_id}/{filename}"
+    # Use "primary" naming for primary photos
+    blob_path = f"merchants/{merchant_id}/primary{file_ext}"
+
+    # Detect content type based on extension
+    content_type = (
+        "image/jpeg" if file_ext.lower() in [".jpg", ".jpeg"] else "image/png"
+    )
 
     # Upload file using Vercel SDK
     uploaded = blob_client.upload_file(
         file_path,
         blob_path,
         access="public",
-        content_type="image/jpeg",
+        content_type=content_type,
     )
 
     return uploaded.url
@@ -83,12 +88,9 @@ def seed_photo_for_merchant(
         print(f"SKIP: Merchant with ID {merchant_id} not found")
         return
 
-    # Get the primary photo for this merchant
+    # Check if primary photo already exists for this merchant
     stmt = (
-        select(Photo)
-        .where(Photo.merchant_id == merchant_id, Photo.is_primary)
-        .order_by(Photo.order)
-        .limit(1)
+        select(Photo).where(Photo.merchant_id == merchant_id, Photo.is_primary).limit(1)
     )
     existing_photo = session.scalar(stmt)
 
@@ -96,42 +98,36 @@ def seed_photo_for_merchant(
     safe_name = name.encode("ascii", "replace").decode("ascii") if name else "Unknown"
 
     # Check if Vercel Blob URL already exists
-    if existing_photo and existing_photo.vercel_blob_url:
+    if existing_photo:
         print(
-            f"SKIP: Vercel Blob URL already set for merchant {merchant_id} ({safe_name})"
+            f"SKIP: Primary photo already exists for merchant {merchant_id} ({safe_name})"
         )
         return
 
     try:
-        print(f"Uploading photo for merchant {merchant_id} ({safe_name})...")
+        print(f"Uploading primary photo for merchant {merchant_id} ({safe_name})...")
+
+        # Get file extension
+        file_ext = Path(photo_path).suffix.lstrip(".")  # e.g., "jpg"
 
         # Upload to Vercel Blob
         blob_url = upload_to_vercel_blob(photo_path, merchant_id)
 
-        if existing_photo:
-            # Update existing photo record with Vercel Blob URL
-            existing_photo.vercel_blob_url = blob_url
-            print("  Updated existing photo record with Vercel Blob URL")
-        else:
-            # Create new Photo record
-            photo = Photo(
-                merchant_id=merchant_id,
-                photo_reference=f"local/{merchant_id}.jpg",  # Placeholder reference
-                vercel_blob_url=blob_url,
-                width=None,  # Could use PIL to get dimensions if needed
-                height=None,
-                author_name=None,
-                is_primary=True,  # First/only photo is primary
-                order=0,
-            )
-            session.add(photo)
-            print("  Created new photo record with Vercel Blob URL")
+        # Create new Photo record
+        photo = Photo(
+            merchant_id=merchant_id,
+            vercel_blob_url=blob_url,
+            file_extension=file_ext,
+            is_primary=True,
+            order=0,
+        )
+        session.add(photo)
 
         # Update merchant's photo_url
         merchant.photo_url = blob_url
 
         session.commit()
-        print(f"SUCCESS: Uploaded photo for merchant {merchant_id}")
+        print(f"SUCCESS: Uploaded primary photo for merchant {merchant_id}")
 
     except Exception as e:
         print(f"ERROR: Failed to upload photo for merchant {merchant_id}: {e}")
@@ -173,24 +169,34 @@ def main():
                 skip_count += 1
                 continue
 
-            result_before = session.execute(
-                select(Photo.vercel_blob_url)
-                .where(Photo.merchant_id == merchant_id)
+            # Check if already exists before seeding
+            existing = session.execute(
+                select(Photo.id)
+                .where(Photo.merchant_id == merchant_id, Photo.is_primary)
                 .limit(1)
             ).scalar()
 
-            seed_photo_for_merchant(session, merchant_id, str(photo_file))
-
-            result_after = session.execute(
-                select(Photo.vercel_blob_url)
-                .where(Photo.merchant_id == merchant_id)
-                .limit(1)
-            ).scalar()
-
-            if result_after and result_after != result_before:
-                success_count += 1
-            else:
+            if existing:
                 skip_count += 1
+                continue
+
+            # Attempt to seed
+            try:
+                seed_photo_for_merchant(session, merchant_id, str(photo_file))
+
+                # Verify it was created
+                created = session.execute(
+                    select(Photo.id)
+                    .where(Photo.merchant_id == merchant_id, Photo.is_primary)
+                    .limit(1)
+                ).scalar()
+
+                if created:
+                    success_count += 1
+                else:
+                    skip_count += 1
+            except Exception:
+                error_count += 1
 
         print(f"\n{'=' * 50}")
         print("Photo upload completed!")

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venvScriptspython.exe -c \"from vercel.blob import list as list_blobs; help(list_blobs)\")",
+      "Bash(.venv/Scripts/python.exe:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
