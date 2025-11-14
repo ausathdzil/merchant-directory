@@ -244,6 +244,7 @@ class MerchantDetail(BaseModel):
     phone_international: str | None
     website: str | None
     photo_url: str | None
+    additional_photos: list[str]
     description: str | None
     latitude: float
     longitude: float

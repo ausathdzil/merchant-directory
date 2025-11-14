@@ -350,6 +350,8 @@ export interface components {
             website: string | null;
             /** Photo Url */
             photo_url: string | null;
+            /** Additional Photos */
+            additional_photos: string[];
             /** Description */
             description: string | null;
             /** Latitude */
@@ -440,14 +442,10 @@ export interface components {
         PhotoPublic: {
             /** Id */
             id: number;
-            /** Photo Reference */
-            photo_reference: string;
-            /** Width */
-            width: number | null;
-            /** Height */
-            height: number | null;
-            /** Author Name */
-            author_name: string | null;
+            /** Vercel Blob Url */
+            vercel_blob_url: string;
+            /** File Extension */
+            file_extension: string;
             /** Is Primary */
             is_primary: boolean;
             /** Order */
