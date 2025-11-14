@@ -13,6 +13,7 @@ import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ComponentProps } from 'react';
 
+import { MerchantPhotos } from '@/components/merchant-photos';
 import { ReviewText } from '@/components/review-description';
 import { ShareButton } from '@/components/share-button';
 import { Subheading, Text } from '@/components/typography';
@@ -49,6 +50,7 @@ import {
   getMerchant,
   getMerchantAmenities,
   getMerchantOpeningHours,
+  getMerchantPhotos,
   getMerchantReviews,
   getMerchants,
   getMerchantTypes,
@@ -103,12 +105,12 @@ export default function MerchantPage({
 }: PageProps<'/[locale]/merchants/[merchant_id]'>) {
   return (
     <main className="flex flex-1 flex-col items-center justify-center">
-      <MerchantDetail params={params} />
+      <MerchantDetails params={params} />
     </main>
   );
 }
 
-async function MerchantDetail({
+async function MerchantDetails({
   params,
 }: Omit<PageProps<'/[locale]/merchants/[merchant_id]'>, 'searchParams'>) {
   const { locale, merchant_id } = await params;
@@ -132,7 +134,8 @@ async function MerchantDetail({
 
   const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+2563eb(${merchant.longitude},${merchant.latitude})/${merchant.longitude},${merchant.latitude},19/1280x720@2x?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
-  const [reviews, types, opening_hours, amenities] = await Promise.all([
+  const [photos, reviews, types, opening_hours, amenities] = await Promise.all([
+    getMerchantPhotos({ merchant_id: Number(merchant_id) }),
     getMerchantReviews({ merchant_id: Number(merchant_id) }),
     getMerchantTypes({ merchant_id: Number(merchant_id) }),
     getMerchantOpeningHours({ merchant_id: Number(merchant_id) }),
@@ -145,17 +148,10 @@ async function MerchantDetail({
   return (
     <div className="grid gap-8 p-4 lg:grid-cols-3 lg:p-8">
       <div className="grid gap-8 lg:col-span-2">
-        <div className="relative aspect-video w-full rounded-lg bg-muted">
-          {merchant.photo_url && (
-            <Image
-              alt={merchant.display_name || merchant.name}
-              className="rounded-lg object-scale-down"
-              fill
-              loading="eager"
-              src={merchant.photo_url}
-            />
-          )}
-        </div>
+        <MerchantPhotos
+          merchantName={merchant.display_name || merchant.name}
+          photos={photos || []}
+        />
         <Item className="p-0">
           <ItemContent className="gap-2">
             {merchant.display_name && (
@@ -181,13 +177,14 @@ async function MerchantDetail({
               asChild
               className="flex lg:hidden"
               size="icon-lg"
+              title="Contact"
               variant="outline"
             >
               <a href={`#contact-${merchant_id}`}>
                 <MapPinIcon />
               </a>
             </Button>
-            <ShareButton aria-label="Share" />
+            <ShareButton aria-label="Share" title="Share" />
           </ItemActions>
         </Item>
         <Separator />
@@ -301,9 +298,13 @@ async function MerchantDetail({
   );
 }
 
-function ReviewCards({ reviews }: { reviews: MerchantReviewsResponse }) {
+type ReviewCardProps = {
+  reviews: MerchantReviewsResponse;
+} & ComponentProps<typeof ItemGroup>;
+
+function ReviewCards({ reviews, className, ...props }: ReviewCardProps) {
   return (
-    <ItemGroup className="list-none gap-4">
+    <ItemGroup className={cn('list-none gap-4', className)} {...props}>
       {reviews.map((review) => (
         <li key={review.id}>
           <Item variant="outline">

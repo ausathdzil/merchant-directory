@@ -8,7 +8,7 @@ import { usePathname, useRouter } from '@/i18n/navigation';
 import { Button } from './ui/button';
 import { ButtonGroup } from './ui/button-group';
 
-export function ViewToggle({ ...props }: ComponentProps<typeof ButtonGroup>) {
+export function ViewToggle(props: ComponentProps<typeof ButtonGroup>) {
   const [isPending, startTransition] = useTransition();
 
   const searchParams = useSearchParams();

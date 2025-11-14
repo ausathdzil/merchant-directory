@@ -3,7 +3,7 @@
 import { type ComponentProps, useEffect, useState } from 'react';
 import { Switch } from './ui/switch';
 
-export function FontSwitch({ ...props }: ComponentProps<typeof Switch>) {
+export function FontSwitch(props: ComponentProps<typeof Switch>) {
   const [font, setFont] = useState<'default' | 'open-dyslexic'>('default');
 
   useEffect(() => {

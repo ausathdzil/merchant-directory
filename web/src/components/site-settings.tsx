@@ -104,7 +104,7 @@ export function SiteSettings() {
   );
 }
 
-function SettingsForm({ ...props }: ComponentProps<typeof FieldGroup>) {
+function SettingsForm(props: ComponentProps<typeof FieldGroup>) {
   const t = useTranslations('SiteSettings.fields');
   const id = useId();
 

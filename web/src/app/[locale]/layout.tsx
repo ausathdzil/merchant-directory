@@ -4,7 +4,7 @@ import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Suspense } from 'react';
+import { type ComponentProps, Suspense } from 'react';
 
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { SiteSettings } from '@/components/site-settings';
@@ -126,7 +126,11 @@ export default async function LocaleLayout({
   );
 }
 
-async function Header({ locale }: { locale: Locale }) {
+type HeaderProps = {
+  locale: Locale;
+} & ComponentProps<'header'>;
+
+async function Header({ locale, className, ...props }: HeaderProps) {
   const t = await getTranslations({ locale, namespace: 'Header' });
 
   const navItems: NavItem[] = [
@@ -135,7 +139,13 @@ async function Header({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background pt-safe-top lg:flex-nowrap">
+    <header
+      className={cn(
+        'sticky top-0 z-50 flex shrink-0 flex-wrap items-center justify-between border-b bg-background pt-safe-top lg:flex-nowrap',
+        className
+      )}
+      {...props}
+    >
       <div className="flex w-1/3 p-4 lg:px-8">
         <div className="h-9">
           <MobileNav

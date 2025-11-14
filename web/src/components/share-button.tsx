@@ -5,7 +5,7 @@ import type { ComponentProps } from 'react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
 
-export function ShareButton({ ...props }: ComponentProps<typeof Button>) {
+export function ShareButton(props: ComponentProps<typeof Button>) {
   const handleShare = async () => {
     if (navigator.share) {
       await navigator.share({
