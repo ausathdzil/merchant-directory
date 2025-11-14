@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from PIL import Image
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from vercel.blob import BlobClient
@@ -120,6 +121,10 @@ def seed_additional_photos_for_merchant(
             # Get file extension
             file_ext = photo_file.suffix.lstrip(".")  # e.g., "jpg"
 
+            # Get image dimensions
+            with Image.open(str(photo_file)) as img:
+                width, height = img.width, img.height
+
             # Upload to Vercel Blob
             blob_url = upload_to_vercel_blob(str(photo_file), merchant_id, idx)
 
@@ -128,13 +133,15 @@ def seed_additional_photos_for_merchant(
                 merchant_id=merchant_id,
                 vercel_blob_url=blob_url,
                 file_extension=file_ext,
+                width=width,
+                height=height,
                 is_primary=False,
                 order=idx,  # order starts at 1 for additional photos
             )
             session.add(photo)
             session.commit()
 
-            print(f"  [OK] Uploaded photo-{idx}.{file_ext}")
+            print(f"  [OK] Uploaded photo-{idx}.{file_ext} ({width}x{height})")
             uploaded_count += 1
 
         except Exception as e:

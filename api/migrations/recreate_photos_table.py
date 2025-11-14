@@ -35,6 +35,8 @@ def main():
                     merchant_id INTEGER NOT NULL,
                     vercel_blob_url TEXT NOT NULL,
                     file_extension VARCHAR(10) NOT NULL,
+                    width INTEGER,
+                    height INTEGER,
                     is_primary BOOLEAN NOT NULL DEFAULT FALSE,
                     "order" INTEGER NOT NULL DEFAULT 0,
                     CONSTRAINT fk_merchant

@@ -129,30 +129,15 @@ def seed_merchant_types(session: Session, merchant: Merchant, types: list[str]) 
 
 
 def seed_photos(session: Session, merchant: Merchant, photos: list[dict]) -> int:
-    """Seed merchant photos"""
-    count = 0
-    for idx, photo_data in enumerate(photos):
-        try:
-            author_name = None
-            author_attrs = photo_data.get("authorAttributions", [])
-            if author_attrs and len(author_attrs) > 0:
-                author_name = author_attrs[0].get("displayName")
+    """
+    Seed merchant photos (Google Maps API photos only stored as references)
 
-            photo = Photo(
-                merchant_id=merchant.id,
-                photo_reference=photo_data.get("name", ""),
-                width=photo_data.get("widthPx"),
-                height=photo_data.get("heightPx"),
-                author_name=author_name,
-                is_primary=(idx == 0),  # First photo is primary
-                order=idx,
-            )
-            session.add(photo)
-            count += 1
-        except Exception as e:
-            print(f"  WARNING: Error adding photo {idx}: {e}")
-            continue
-    return count
+    Note: This stores Google Maps photo references in the photos table.
+    For Vercel Blob photos, use migrations/photos.py and migrations/additional_photos.py
+    """
+    # Skip seeding Google Maps photos as we're now using Vercel Blob storage
+    # The photos table is reserved for Vercel Blob uploaded photos only
+    return 0
 
 
 def seed_reviews(session: Session, merchant: Merchant, reviews: list[dict]) -> int:

@@ -110,6 +110,8 @@ class Photo(Base):
 
     vercel_blob_url: Mapped[str] = mapped_column(Text, nullable=False)
     file_extension: Mapped[str] = mapped_column(String(10), nullable=False)
+    width: Mapped[int | None] = mapped_column(Integer)
+    height: Mapped[int | None] = mapped_column(Integer)
 
     is_primary: Mapped[bool] = mapped_column(
         Boolean, index=True, default=False, nullable=False
@@ -244,7 +246,6 @@ class MerchantDetail(BaseModel):
     phone_international: str | None
     website: str | None
     photo_url: str | None
-    additional_photos: list[str]
     description: str | None
     latitude: float
     longitude: float
@@ -259,6 +260,8 @@ class PhotoPublic(BaseModel):
     id: int
     vercel_blob_url: str
     file_extension: str
+    width: int | None
+    height: int | None
     is_primary: bool
     order: int
 

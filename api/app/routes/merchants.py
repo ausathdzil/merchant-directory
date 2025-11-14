@@ -198,13 +198,6 @@ def read_merchant(
     if not merchant:
         raise HTTPException(status_code=404, detail="Merchant not found")
 
-    stmt_photos = (
-        select(Photo)
-        .where(Photo.merchant_id == merchant_id, Photo.is_primary == False)
-        .order_by(Photo.order.asc())
-    )
-    additional_photos = session.scalars(stmt_photos).all()
-
     return MerchantDetail(
         id=merchant.id,
         display_name=merchant.display_name,
@@ -218,7 +211,6 @@ def read_merchant(
         phone_international=merchant.phone_international,
         website=merchant.website,
         photo_url=merchant.photo_url,
-        additional_photos=[photo.vercel_blob_url for photo in additional_photos],
         description=(
             merchant.description_en if lang == "english" else merchant.description_id
         ),
@@ -249,6 +241,8 @@ def read_merchant_photos(merchant_id: int, session: SessionDep):
             id=photo.id,
             vercel_blob_url=photo.vercel_blob_url,
             file_extension=photo.file_extension,
+            width=photo.width,
+            height=photo.height,
             is_primary=photo.is_primary,
             order=photo.order,
         )
