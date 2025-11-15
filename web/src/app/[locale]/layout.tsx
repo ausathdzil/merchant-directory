@@ -1,9 +1,7 @@
-import { MailIcon } from 'lucide-react';
 import type { Metadata, Viewport } from 'next';
 import { Atkinson_Hyperlegible_Next } from 'next/font/google';
 import localFont from 'next/font/local';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -13,9 +11,11 @@ import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { SiteSettings } from '@/components/site-settings';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Small } from '@/components/typography';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Toaster } from '@/components/ui/sonner';
 import { Wordmark } from '@/components/wordmark';
+import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
@@ -185,7 +185,7 @@ async function Footer({
   return (
     <footer
       className={cn(
-        'mx-auto flex w-full max-w-6xl flex-wrap items-start gap-4 p-4 lg:p-8',
+        'mx-auto flex w-full max-w-6xl flex-col items-start gap-4 p-4 md:flex-row lg:p-8',
         className
       )}
       {...props}
@@ -211,17 +211,13 @@ async function Footer({
         </div>
       </div>
       <div className="flex flex-col items-end gap-2">
-        <p>Socials</p>
-        <div className="flex items-center gap-2 [&>a]:opacity-50 [&>a]:hover:opacity-100">
+        <Button
+          asChild
+          className="-ml-2 md:-mt-2 mt-0 md:ml-0"
+          size="sm"
+          variant="ghost"
+        >
           <a
-            href="https://github.com/ausathdzil/merchant-directory"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <MailIcon size={16} />
-          </a>
-          <a
-            aria-label={t('source')}
             href="https://github.com/ausathdzil/merchant-directory"
             rel="noopener noreferrer"
             target="_blank"
@@ -234,8 +230,9 @@ async function Footer({
               src="/GitHub_light.svg"
               width={16}
             />
+            {t('source')}
           </a>
-        </div>
+        </Button>
       </div>
     </footer>
   );

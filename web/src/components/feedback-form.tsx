@@ -42,7 +42,7 @@ export function FeedbackForm() {
   }, [state]);
 
   return (
-    <form action={formAction} className="w-full max-w-lg self-center">
+    <form action={formAction} className="mt-4 w-full max-w-lg self-center">
       <FieldGroup>
         <Field data-invalid={!!state.errors?.name}>
           <FieldLabel htmlFor={`${id}-name`}>{t('name.label')}</FieldLabel>

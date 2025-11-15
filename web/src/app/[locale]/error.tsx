@@ -21,7 +21,7 @@ export default function ErrorPage({
   const t = useTranslations('ErrorPage');
 
   return (
-    <main className="flex flex-1 flex-col items-center">
+    <main className="grid min-h-[calc(100vh-101px)] flex-1 place-items-center">
       <div className="flex w-full max-w-6xl flex-1 flex-col gap-4 p-8">
         <Empty>
           <EmptyHeader>

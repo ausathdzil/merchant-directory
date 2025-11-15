@@ -33,7 +33,7 @@ export default function NotFound() {
   const t = useTranslations('NotFound.Layout');
 
   return (
-    <main className="grid flex-1 place-items-center">
+    <main className="grid min-h-[calc(100vh-101px)] flex-1 place-items-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia>

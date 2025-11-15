@@ -12,6 +12,10 @@ export const metadata: Metadata = {
       id: '/id',
     },
   },
+  openGraph: {
+    siteName: 'Veteran Market',
+    url: new URL(baseUrl),
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
