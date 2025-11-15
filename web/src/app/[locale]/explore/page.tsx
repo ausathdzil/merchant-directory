@@ -210,13 +210,16 @@ function MerchantsGrid({
           <Item asChild className="h-full" variant="outline">
             <Link href={`/merchants/${merchant.id}`} prefetch>
               {merchant.photo_url &&
+                merchant.photo_blur_data_url &&
                 (view === 'list' ? (
                   <ItemMedia variant="image">
                     <Image
                       alt={merchant.display_name || merchant.name}
+                      blurDataURL={merchant.photo_blur_data_url}
                       className="object-cover grayscale"
                       height={32}
                       loading="eager"
+                      placeholder="blur"
                       src={merchant.photo_url}
                       width={32}
                     />
@@ -225,9 +228,11 @@ function MerchantsGrid({
                   <ItemHeader>
                     <Image
                       alt={merchant.display_name || merchant.name}
+                      blurDataURL={merchant.photo_blur_data_url}
                       className="aspect-square w-full rounded-sm object-cover"
                       height={128}
                       loading="eager"
+                      placeholder="blur"
                       src={merchant.photo_url}
                       width={128}
                     />

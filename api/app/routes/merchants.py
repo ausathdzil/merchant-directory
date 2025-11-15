@@ -2,6 +2,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import func, select
+from sqlalchemy.orm import selectinload
 
 from app.dependencies import SessionDep
 from app.models.merchant import (
@@ -42,7 +43,7 @@ def read_merchants(
     ] = "created_at",
     sort_order: Annotated[Literal["asc", "desc"], Query()] = "desc",
 ):
-    stmt = select(Merchant)
+    stmt = select(Merchant).options(selectinload(Merchant.photos))
     rank_expr = None
     similarity_expr = None
 
@@ -142,24 +143,34 @@ def read_merchants(
 
     merchants = session.scalars(stmt).all()
 
-    merchant_items = [
-        MerchantListItem(
-            id=merchant.id,
-            display_name=merchant.display_name,
-            name=merchant.name,
-            primary_type=(
-                format_type_name(merchant.primary_type)
-                if merchant.primary_type
-                else None
-            ),
-            short_address=merchant.short_address,
-            rating=merchant.rating,
-            user_rating_count=merchant.user_rating_count,
-            type_count=len(merchant.types),
-            photo_url=merchant.photo_url,
+    merchant_items = []
+    for merchant in merchants:
+        primary_photo = next(
+            (photo for photo in merchant.photos if photo.is_primary), None
         )
-        for merchant in merchants
-    ]
+
+        merchant_items.append(
+            MerchantListItem(
+                id=merchant.id,
+                display_name=merchant.display_name,
+                name=merchant.name,
+                primary_type=(
+                    format_type_name(merchant.primary_type)
+                    if merchant.primary_type
+                    else None
+                ),
+                short_address=merchant.short_address,
+                rating=merchant.rating,
+                user_rating_count=merchant.user_rating_count,
+                type_count=len(merchant.types),
+                photo_url=merchant.photo_url,
+                photo_width=primary_photo.width if primary_photo else None,
+                photo_height=primary_photo.height if primary_photo else None,
+                photo_blur_data_url=primary_photo.blur_data_url
+                if primary_photo
+                else None,
+            )
+        )
 
     total_pages = (total_count + page_size - 1) // page_size
     has_next = page < total_pages
@@ -243,6 +254,7 @@ def read_merchant_photos(merchant_id: int, session: SessionDep):
             file_extension=photo.file_extension,
             width=photo.width,
             height=photo.height,
+            blur_data_url=photo.blur_data_url,
             is_primary=photo.is_primary,
             order=photo.order,
         )

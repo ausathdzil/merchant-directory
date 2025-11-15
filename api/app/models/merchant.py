@@ -112,6 +112,7 @@ class Photo(Base):
     file_extension: Mapped[str] = mapped_column(String(10), nullable=False)
     width: Mapped[int | None] = mapped_column(Integer)
     height: Mapped[int | None] = mapped_column(Integer)
+    blur_data_url: Mapped[str | None] = mapped_column(Text)
 
     is_primary: Mapped[bool] = mapped_column(
         Boolean, index=True, default=False, nullable=False
@@ -228,6 +229,9 @@ class MerchantListItem(BaseModel):
     user_rating_count: int | None
     type_count: int
     photo_url: str | None
+    photo_width: int | None
+    photo_height: int | None
+    photo_blur_data_url: str | None
 
 
 class MerchantsPublic(BaseModel):
@@ -262,6 +266,7 @@ class PhotoPublic(BaseModel):
     file_extension: str
     width: int | None
     height: int | None
+    blur_data_url: str | None
     is_primary: bool
     order: int
 

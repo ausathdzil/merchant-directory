@@ -1,5 +1,6 @@
 import { format, isAfter, subMonths } from 'date-fns';
 import {
+  ExpandIcon,
   GlobeIcon,
   MapPinIcon,
   NavigationIcon,
@@ -45,6 +46,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Link } from '@/i18n/navigation';
 import { locales, routing } from '@/i18n/routing';
 import {
   getMerchant,
@@ -274,6 +276,15 @@ async function MerchantDetails({
                 sizes="(max-width: 768px) 100vw, 33vw"
                 src={mapUrl}
               />
+              <Button
+                asChild
+                className="absolute top-2 right-2 hover:[&_svg]:scale-110"
+                size="icon"
+              >
+                <Link href="/maps">
+                  <ExpandIcon />
+                </Link>
+              </Button>
             </div>
             <a
               className={buttonVariants({ size: 'lg' })}

@@ -381,6 +381,12 @@ export interface components {
             type_count: number;
             /** Photo Url */
             photo_url: string | null;
+            /** Photo Width */
+            photo_width: number | null;
+            /** Photo Height */
+            photo_height: number | null;
+            /** Photo Blur Data Url */
+            photo_blur_data_url: string | null;
         };
         /** MerchantTypePublic */
         MerchantTypePublic: {
@@ -448,6 +454,8 @@ export interface components {
             width: number | null;
             /** Height */
             height: number | null;
+            /** Blur Data Url */
+            blur_data_url: string | null;
             /** Is Primary */
             is_primary: boolean;
             /** Order */

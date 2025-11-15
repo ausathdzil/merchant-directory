@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { type ComponentProps, useRef } from 'react';
+
 import { Item, ItemGroup } from '@/components/ui/item';
 import type { MerchantPhotosResponse } from '@/lib/types/merchant';
 
@@ -18,29 +19,38 @@ export function MerchantPhotos({
   return (
     <div className="grid gap-4">
       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-card">
-        {primaryPhoto?.width && primaryPhoto.height && (
-          <ImageZoom
-            alt={merchantName}
-            className="size-full cursor-zoom-in rounded-lg object-contain"
-            height={primaryPhoto.height}
-            loading="eager"
-            sizes="(max-width: 1024px) 100vw, 66vw"
-            src={primaryPhoto.vercel_blob_url}
-            width={primaryPhoto.width}
-          />
-        )}
+        {primaryPhoto?.width &&
+          primaryPhoto.height &&
+          primaryPhoto.blur_data_url && (
+            <ImageZoom
+              alt={merchantName}
+              blurDataURL={primaryPhoto.blur_data_url}
+              className="size-full cursor-zoom-in rounded-lg object-contain"
+              height={primaryPhoto.height}
+              loading="eager"
+              placeholder="blur"
+              sizes="(max-width: 1024px) 100vw, 66vw"
+              src={primaryPhoto.vercel_blob_url}
+              width={primaryPhoto.width}
+            />
+          )}
       </div>
       {additionalPhotos.length > 0 && (
         <ItemGroup className="grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8">
           {additionalPhotos.map((photo) => (
             <li className="list-none" key={photo.id}>
-              <Item className="aspect-square overflow-hidden" variant="outline">
-                {photo.width && photo.height && (
+              <Item
+                className="aspect-square overflow-hidden p-2"
+                variant="outline"
+              >
+                {photo.width && photo.height && photo.blur_data_url && (
                   <ImageZoom
                     alt={`${merchantName} - Photo ${photo.order}`}
+                    blurDataURL={photo.blur_data_url}
                     className="size-full cursor-zoom-in object-cover"
                     height={photo.height}
                     loading="eager"
+                    placeholder="blur"
                     src={photo.vercel_blob_url}
                     width={photo.width}
                   />
