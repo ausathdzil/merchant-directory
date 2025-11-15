@@ -42,6 +42,27 @@ export function Text({ className, ...props }: ComponentProps<'p'>) {
   return <p className={cn('not-first:mt-6 leading-7', className)} {...props} />;
 }
 
+export function Blockquote({
+  className,
+  ...props
+}: ComponentProps<'blockquote'>) {
+  return (
+    <blockquote
+      className={cn('mt-6 border-primary/50 border-l-2 pl-6 italic', className)}
+      {...props}
+    />
+  );
+}
+
+export function UnorderedList({ className, ...props }: ComponentProps<'ul'>) {
+  return (
+    <ul
+      className={cn('my-6 ml-6 list-disc [&>li]:mt-2', className)}
+      {...props}
+    />
+  );
+}
+
 export function Lead({ className, ...props }: ComponentProps<'p'>) {
   return (
     <p className={cn('text-muted-foreground text-xl', className)} {...props} />

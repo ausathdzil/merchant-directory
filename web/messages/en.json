@@ -10,6 +10,10 @@
     "NotFoundPage": {
       "title": "Page Not Found",
       "description": "The page you're looking for does not exist"
+    },
+    "AboutPage": {
+      "title": "About Us | Veteran Market",
+      "description": "Learn about Veteran Market and how we connect communities with local businesses in South Jakarta."
     }
   },
   "NotFound": {
@@ -195,5 +199,58 @@
   },
   "Footer": {
     "source": "Source"
+  },
+  "AboutPage": {
+    "hero": {
+      "title": "Connecting Communities with Local Businesses",
+      "description": "Merchant Directory is dedicated to empowering small and medium enterprises in South Jakarta by making them more discoverable to the local community."
+    },
+    "problem": {
+      "heading": "Local MSMEs Still Struggle to Be Seen in the Digital Age",
+      "quote": "Indonesia has 65 million MSMEs, but only 25.5 million (39%) have gone digital.",
+      "quoteSource": "— Kemenkop UKM, AntaraNews, 2024",
+      "points": {
+        "point1": "Around UPN Veteran Jakarta campuses, MSMEs still rely on manual promotion and word-of-mouth.",
+        "point2": "The issue is not with business quality — but with low digital visibility"
+      }
+    },
+    "values": {
+      "heading": "Our Values",
+      "accessibility": {
+        "title": "Accessibility",
+        "description": "We believe everyone should be able to discover and access local businesses. Our platform is designed with accessibility in mind, ensuring an inclusive experience for all users."
+      },
+      "performance": {
+        "title": "Performance",
+        "description": "Fast, responsive, and reliable. We optimize every aspect of our platform to ensure quick load times and smooth interactions, making it easy for users to find what they need."
+      },
+      "languages": {
+        "title": "Indonesian and English",
+        "description": "We serve a diverse community. Our platform supports both Indonesian and English languages, making local businesses accessible to everyone in our community."
+      },
+      "quality": {
+        "title": "Quality",
+        "description": "We maintain high standards for the businesses listed on our platform. Every merchant is verified to ensure accurate information and a trustworthy directory."
+      },
+      "transparency": {
+        "title": "Transparency",
+        "description": "Honest information, clear communication, and open processes. We believe transparency builds trust between businesses and the community."
+      }
+    },
+    "roadmap": {
+      "heading": "Roadmap",
+      "userSubmitted": {
+        "title": "User Submitted Merchants",
+        "description": "Allow community members to suggest and submit new businesses to expand our directory."
+      },
+      "msmeExpansion": {
+        "title": "MSME Expansion",
+        "description": "Expand our coverage to reach more small and medium enterprises across South Jakarta and beyond."
+      },
+      "reviews": {
+        "title": "Review & Rating System",
+        "description": "Enable users to share their experiences and help others make informed decisions."
+      }
+    }
   }
 }

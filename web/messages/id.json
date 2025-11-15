@@ -10,6 +10,10 @@
     "NotFoundPage": {
       "title": "Halaman Tidak Ditemukan",
       "description": "Halaman yang kamu cari tidak ada"
+    },
+    "AboutPage": {
+      "title": "Tentang Kami | Veteran Market",
+      "description": "Pelajari tentang Veteran Market dan bagaimana kami menghubungkan komunitas dengan bisnis lokal di Jakarta Selatan."
     }
   },
   "NotFound": {
@@ -195,5 +199,58 @@
   },
   "Footer": {
     "source": "Sumber"
+  },
+  "AboutPage": {
+    "hero": {
+      "title": "Menghubungkan Komunitas dengan Bisnis Lokal",
+      "description": "Merchant Directory didedikasikan untuk memberdayakan usaha kecil dan menengah di Jakarta Selatan dengan membuat mereka lebih mudah ditemukan oleh komunitas lokal."
+    },
+    "problem": {
+      "heading": "UMKM Lokal Masih Berjuang untuk Terlihat di Era Digital",
+      "quote": "Indonesia memiliki 65 juta UMKM, tetapi hanya 25,5 juta (39%) yang telah go digital.",
+      "quoteSource": "— Kemenkop UKM, AntaraNews, 2024",
+      "points": {
+        "point1": "Di sekitar kampus UPN Veteran Jakarta, UMKM masih mengandalkan promosi manual dan word-of-mouth.",
+        "point2": "Masalahnya bukan pada kualitas usaha — tapi pada visibilitas digital yang rendah"
+      }
+    },
+    "values": {
+      "heading": "Nilai-Nilai Kami",
+      "accessibility": {
+        "title": "Aksesibilitas",
+        "description": "Kami percaya semua orang harus dapat menemukan dan mengakses bisnis lokal. Platform kami dirancang dengan mempertimbangkan aksesibilitas, memastikan pengalaman yang inklusif untuk semua pengguna."
+      },
+      "performance": {
+        "title": "Kinerja",
+        "description": "Cepat, responsif, dan andal. Kami mengoptimalkan setiap aspek platform kami untuk memastikan waktu pemuatan yang cepat dan interaksi yang lancar, memudahkan pengguna menemukan apa yang mereka butuhkan."
+      },
+      "languages": {
+        "title": "Bahasa Indonesia dan Inggris",
+        "description": "Kami melayani komunitas yang beragam. Platform kami mendukung bahasa Indonesia dan Inggris, membuat bisnis lokal dapat diakses oleh semua orang di komunitas kami."
+      },
+      "quality": {
+        "title": "Kualitas",
+        "description": "Kami mempertahankan standar tinggi untuk bisnis yang terdaftar di platform kami. Setiap merchant diverifikasi untuk memastikan informasi yang akurat dan direktori yang dapat dipercaya."
+      },
+      "transparency": {
+        "title": "Transparansi",
+        "description": "Informasi yang jujur, komunikasi yang jelas, dan proses yang terbuka. Kami percaya transparansi membangun kepercayaan antara bisnis dan komunitas."
+      }
+    },
+    "roadmap": {
+      "heading": "Peta Jalan",
+      "userSubmitted": {
+        "title": "Merchant yang Dikirim Pengguna",
+        "description": "Izinkan anggota komunitas untuk menyarankan dan mengirimkan bisnis baru untuk memperluas direktori kami."
+      },
+      "msmeExpansion": {
+        "title": "Ekspansi UMKM",
+        "description": "Perluas cakupan kami untuk menjangkau lebih banyak usaha kecil dan menengah di seluruh Jakarta Selatan dan sekitarnya."
+      },
+      "reviews": {
+        "title": "Sistem Ulasan & Rating",
+        "description": "Memungkinkan pengguna untuk berbagi pengalaman mereka dan membantu orang lain membuat keputusan yang tepat."
+      }
+    }
   }
 }

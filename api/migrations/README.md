@@ -1,16 +1,18 @@
 # Migration Scripts
 
-This directory contains database migration and seeding scripts for the Merchant Directory API.
+This directory contains database migration and seeding scripts for the Veteran Market API.
 
 ## Data Seeding Scripts
 
 ### Core Data
+
 - **`seed.py`** - Seeds merchants, types, reviews, opening hours, and amenities from Google Maps API JSON data
   - Usage: `uv run python -m migrations.seed [path/to/data.json]`
   - Default: Uses `data/pondok-labu.json`
   - Note: Does not seed photos (photos table is now for Vercel Blob storage only)
 
 ### Photo Management
+
 - **`reseed_all_photos.py`** - Master script to run all photo migration steps in order
   - Usage: `uv run python -m migrations.reseed_all_photos`
   - Runs: cleanup → recreate table → primary photos → additional photos
@@ -34,10 +36,12 @@ This directory contains database migration and seeding scripts for the Merchant 
 ## Database Schema Migrations
 
 ### Search Features
+
 - **`fts.py`** - Adds full-text search support using PostgreSQL tsvector
 - **`trgm.py`** - Adds trigram similarity search using pg_trgm extension
 
 ### Content
+
 - **`add_descriptions.py`** - Adds description columns to merchants table
 
 ## Obsolete Files
@@ -63,10 +67,12 @@ CREATE TABLE photos (
 ### Photo Naming Convention
 
 **Primary photos:**
+
 - Blob path: `merchants/{merchant_id}/primary.{ext}`
 - Database: `is_primary=True`, `order=0`
 
 **Additional photos:**
+
 - Blob path: `merchants/{merchant_id}/photo-1.{ext}`, `photo-2.{ext}`, etc.
 - Database: `is_primary=False`, `order=1,2,3...`
 
@@ -75,6 +81,7 @@ CREATE TABLE photos (
 All migration scripts require the `BLOB_READ_WRITE_TOKEN` environment variable to be set in `.env` for Vercel Blob operations.
 
 ### Full Fresh Setup
+
 ```bash
 # 1. Seed merchants from Google Maps data
 uv run python -m migrations.seed data/pondok-labu.json
@@ -91,6 +98,7 @@ uv run python -m migrations.reseed_all_photos
 ```
 
 ### Photo Updates Only
+
 ```bash
 # Update specific photo sets
 uv run python -m migrations.photos              # Primary photos only

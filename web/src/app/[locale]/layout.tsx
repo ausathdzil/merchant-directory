@@ -135,7 +135,7 @@ async function Header({ locale, className, ...props }: HeaderProps) {
 
   const navItems: NavItem[] = [
     { label: t('navigation.explore'), href: '/explore' },
-    { label: t('navigation.about'), href: '#' },
+    { label: t('navigation.about'), href: '/about' },
   ];
 
   return (
