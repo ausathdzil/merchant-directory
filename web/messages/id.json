@@ -12,8 +12,12 @@
       "description": "Halaman yang kamu cari tidak ada"
     },
     "AboutPage": {
-      "title": "Tentang Kami | Veteran Market",
+      "title": "Tentang Kami",
       "description": "Pelajari tentang Veteran Market dan bagaimana kami menghubungkan komunitas dengan bisnis lokal di Jakarta Selatan."
+    },
+    "ContactPage": {
+      "title": "Bantuan & Dukungan",
+      "description": "Dapatkan bantuan dan dukungan untuk Veteran Market. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung."
     }
   },
   "NotFound": {
@@ -36,7 +40,8 @@
       "home": "Beranda",
       "explore": "Jelajahi",
       "about": "Tentang Kami",
-      "menu": "Menu"
+      "menu": "Menu",
+      "support": "Bantuan & Dukungan"
     },
     "search": {
       "placeholder": "Cari nama atau kata kunci bisnis…"
@@ -251,6 +256,12 @@
         "title": "Sistem Ulasan & Rating",
         "description": "Memungkinkan pengguna untuk berbagi pengalaman mereka dan membantu orang lain membuat keputusan yang tepat."
       }
+    }
+  },
+  "ContactPage": {
+    "contact": {
+      "heading": "Hubungi Kami",
+      "description": "Kami di sini untuk membantu Anda dengan pertanyaan atau kekhawatiran yang mungkin Anda miliki."
     }
   }
 }

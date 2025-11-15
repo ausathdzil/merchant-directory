@@ -12,8 +12,12 @@
       "description": "The page you're looking for does not exist"
     },
     "AboutPage": {
-      "title": "About Us | Veteran Market",
+      "title": "About Us",
       "description": "Learn about Veteran Market and how we connect communities with local businesses in South Jakarta."
+    },
+    "ContactPage": {
+      "title": "Help & Support",
+      "description": "Get help and support for Veteran Market. Find answers to your questions or contact us directly."
     }
   },
   "NotFound": {
@@ -36,7 +40,8 @@
       "home": "Home",
       "explore": "Explore",
       "about": "About Us",
-      "menu": "Menu"
+      "menu": "Menu",
+      "support": "Help & Support"
     },
     "search": {
       "placeholder": "Search merchant name or keywords…"
@@ -251,6 +256,12 @@
         "title": "Review & Rating System",
         "description": "Enable users to share their experiences and help others make informed decisions."
       }
+    }
+  },
+  "ContactPage": {
+    "contact": {
+      "heading": "Contact Us",
+      "description": "We're here to help you with any questions or concerns you may have."
     }
   }
 }

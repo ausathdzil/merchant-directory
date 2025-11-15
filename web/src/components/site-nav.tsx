@@ -39,7 +39,7 @@ export function DesktopNav({
   ) : (
     !isMobile && (
       <nav
-        className={cn('hidden items-center gap-4 md:flex', className)}
+        className={cn('hidden items-center gap-4 lg:flex', className)}
         {...props}
       >
         {navItems.map((item) => (

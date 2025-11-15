@@ -136,6 +136,7 @@ async function Header({ locale, className, ...props }: HeaderProps) {
   const navItems: NavItem[] = [
     { label: t('navigation.explore'), href: '/explore' },
     { label: t('navigation.about'), href: '/about' },
+    { label: t('navigation.support'), href: '/contact' },
   ];
 
   return (
@@ -154,7 +155,7 @@ async function Header({ locale, className, ...props }: HeaderProps) {
             navItems={navItems}
           />
         </div>
-        <Wordmark className="hidden md:flex" href="/" title={t('title')} />
+        <Wordmark className="hidden lg:flex" href="/" title={t('title')} />
       </div>
       <DesktopNav
         navItems={navItems}

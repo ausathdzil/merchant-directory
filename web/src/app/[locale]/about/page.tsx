@@ -21,7 +21,6 @@ import {
   Lead,
   Muted,
   Title,
-  UnorderedList,
 } from '@/components/typography';
 import {
   Item,
@@ -66,6 +65,44 @@ export default async function AboutPage({
 
   const t = await getTranslations({ locale, namespace: 'AboutPage' });
 
+  const values = [
+    {
+      key: 'accessibility',
+      icon: CheckCircleIcon,
+    },
+    {
+      key: 'performance',
+      icon: ZapIcon,
+    },
+    {
+      key: 'languages',
+      icon: LanguagesIcon,
+    },
+    {
+      key: 'quality',
+      icon: ShieldCheckIcon,
+    },
+    {
+      key: 'transparency',
+      icon: SparklesIcon,
+    },
+  ] as const;
+
+  const roadmap = [
+    {
+      key: 'userSubmitted',
+      icon: UsersIcon,
+    },
+    {
+      key: 'msmeExpansion',
+      icon: MapPinIcon,
+    },
+    {
+      key: 'reviews',
+      icon: StarIcon,
+    },
+  ] as const;
+
   return (
     <main className="flex flex-1 flex-col items-center">
       <div className="flex w-full max-w-4xl flex-1 flex-col gap-12 p-4 sm:px-8 md:gap-16 md:py-16">
@@ -96,10 +133,22 @@ export default async function AboutPage({
               {t('problem.quoteSource')}
             </Muted>
           </Blockquote>
-          <UnorderedList>
-            <li>{t('problem.points.point1')}</li>
-            <li>{t('problem.points.point2')}</li>
-          </UnorderedList>
+          <ItemGroup className="grid list-none grid-cols-2 gap-4">
+            <li>
+              <Item variant="outline">
+                <ItemContent>
+                  <ItemTitle>{t('problem.points.point1')}</ItemTitle>
+                </ItemContent>
+              </Item>
+            </li>
+            <li>
+              <Item variant="outline">
+                <ItemContent>
+                  <ItemTitle>{t('problem.points.point2')}</ItemTitle>
+                </ItemContent>
+              </Item>
+            </li>
+          </ItemGroup>
         </motion.section>
 
         <motion.section
@@ -114,61 +163,24 @@ export default async function AboutPage({
         >
           <Heading>{t('values.heading')}</Heading>
           <ItemGroup className="gap-4">
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <CheckCircleIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('values.accessibility.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('values.accessibility.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <ZapIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('values.performance.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('values.performance.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <LanguagesIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('values.languages.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('values.languages.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <ShieldCheckIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('values.quality.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('values.quality.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <SparklesIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('values.transparency.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('values.transparency.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
+            {values.map((value) => {
+              const Icon = value.icon;
+              return (
+                <li className="list-none" key={value.key}>
+                  <Item variant="outline">
+                    <ItemMedia variant="icon">
+                      <Icon className="stroke-primary" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{t(`values.${value.key}.title`)}</ItemTitle>
+                      <ItemDescription className="line-clamp-none">
+                        {t(`values.${value.key}.description`)}
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </li>
+              );
+            })}
           </ItemGroup>
         </motion.section>
 
@@ -184,39 +196,24 @@ export default async function AboutPage({
         >
           <Heading>{t('roadmap.heading')}</Heading>
           <ItemGroup className="gap-4">
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <UsersIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('roadmap.userSubmitted.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('roadmap.userSubmitted.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <MapPinIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('roadmap.msmeExpansion.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('roadmap.msmeExpansion.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <Item variant="outline">
-              <ItemMedia variant="icon">
-                <StarIcon className="stroke-primary" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{t('roadmap.reviews.title')}</ItemTitle>
-                <ItemDescription className="line-clamp-none">
-                  {t('roadmap.reviews.description')}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
+            {roadmap.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li className="list-none" key={item.key}>
+                  <Item variant="outline">
+                    <ItemMedia variant="icon">
+                      <Icon className="stroke-primary" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{t(`roadmap.${item.key}.title`)}</ItemTitle>
+                      <ItemDescription className="line-clamp-none">
+                        {t(`roadmap.${item.key}.description`)}
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </li>
+              );
+            })}
           </ItemGroup>
         </motion.section>
       </div>
