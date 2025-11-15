@@ -37,7 +37,7 @@ export default function ErrorPage({
           </EmptyHeader>
           <EmptyContent>
             <EmptyDescription>
-              <Link href="/">{t('button')}</Link>
+              <Link href="/contact">{t('button')}</Link>
             </EmptyDescription>
           </EmptyContent>
         </Empty>

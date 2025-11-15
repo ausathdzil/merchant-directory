@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { Lead, Title } from '@/components/typography';
+import { FeedbackForm } from '@/components/feedback-form';
+import { Heading, Lead } from '@/components/typography';
 import { routing } from '@/i18n/routing';
 
 export async function generateMetadata({
@@ -53,9 +54,10 @@ export default async function ContactPage({
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
-          <Title>{t('contact.heading')}</Title>
-          <Lead className="max-w-[60ch]">{t('contact.description')}</Lead>
+          <Heading>{t('contact.heading')}</Heading>
+          <Lead>{t('contact.description')}</Lead>
         </motion.section>
+        <FeedbackForm />
       </div>
     </main>
   );

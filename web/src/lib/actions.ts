@@ -2,34 +2,63 @@
 
 // biome-ignore lint/performance/noNamespaceImport: Zod just works better this way
 import * as z from 'zod';
+
 import type { CreateFeedbackBody, CreateFeedbackError } from './types/feedback';
 import { API_URL } from './utils';
 
-export const createFeedbackSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  message: z.string().min(1, { message: 'Message is required' }),
+const createFeedbackSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: 'Name is required' })
+    .max(50, { message: 'Name must be less than 50 characters' }),
+  message: z
+    .string()
+    .min(1, { message: 'Message is required' })
+    .max(255, { message: 'Message must be less than 255 characters' }),
   rating: z
     .number()
-    .min(1)
+    .min(1, { message: 'Rating is required' })
     .max(5, { message: 'Rating must be between 1 and 5' }),
 }) satisfies z.ZodSchema<CreateFeedbackBody>;
 
+export type CreateFeedbackFormState = {
+  success: boolean;
+  message?: string;
+  errors?: {
+    name?: string[];
+    message?: string[];
+    rating?: string[];
+  };
+  fields: {
+    name: string;
+    message: string;
+    rating: number;
+  };
+};
+
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Server action and validation logic
 export async function createFeedback(
-  // biome-ignore lint/suspicious/noExplicitAny: action
-  _prevState: any,
+  _prevState: CreateFeedbackFormState,
   formData: FormData
 ) {
-  const rawFormData = Object.fromEntries(formData.entries());
+  const rawFormData = {
+    name: formData.get('name') as string,
+    message: formData.get('message') as string,
+    rating: Number(formData.get('rating')),
+  };
 
   const validatedFormData = createFeedbackSchema.safeParse(rawFormData);
 
   if (!validatedFormData.success) {
+    const fieldErrors = z.flattenError(validatedFormData.error).fieldErrors;
     return {
       success: false,
-      message:
-        'Failed to create feedback, please check the form and try again.',
-      errors: z.flattenError(validatedFormData.error).fieldErrors,
-      fields: rawFormData,
+      errors: fieldErrors,
+      fields: {
+        name: fieldErrors.name ? '' : rawFormData.name,
+        message: fieldErrors.message ? '' : rawFormData.message,
+        rating: fieldErrors.rating ? 0 : rawFormData.rating,
+      },
     };
   }
 

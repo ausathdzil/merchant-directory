@@ -14,11 +14,6 @@
     "domains": {
       "next": "recommended",
       "react": "recommended"
-    },
-    "rules": {
-      "style": {
-        "noMagicNumbers": "off"
-      }
     }
   },
   "javascript": {

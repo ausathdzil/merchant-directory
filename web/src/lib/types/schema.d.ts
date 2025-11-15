@@ -346,10 +346,7 @@ export interface components {
             name: string;
             /** Message */
             message: string;
-            /**
-             * Rating
-             * @description Rating from 1 to 5
-             */
+            /** Rating */
             rating: number;
         };
         /** FeedbackPublic */
