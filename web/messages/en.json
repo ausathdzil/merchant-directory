@@ -16,7 +16,7 @@
       "description": "Learn about Veteran Market and how we connect communities with local businesses in South Jakarta."
     },
     "ContactPage": {
-      "title": "Help & Support",
+      "title": "Help",
       "description": "Get help and support for Veteran Market. Find answers to your questions or contact us directly."
     }
   },
@@ -41,7 +41,7 @@
       "explore": "Explore",
       "about": "About Us",
       "menu": "Menu",
-      "support": "Help & Support"
+      "support": "Help"
     },
     "search": {
       "placeholder": "Search merchant name or keywords…"
@@ -262,6 +262,24 @@
     "contact": {
       "heading": "Contact Us",
       "description": "We're here to help you with any questions or concerns you may have."
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "John Doe"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Write your message here…"
+      },
+      "rating": {
+        "label": "Rate your experience"
+      },
+      "submit": "Submit",
+      "stars": {
+        "one": "1 star",
+        "other": "{count} stars"
+      }
     }
   }
 }

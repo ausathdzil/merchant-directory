@@ -1,6 +1,7 @@
 'use client';
 
 import { MessageCircleDashedIcon, StarIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useActionState, useEffect, useId, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -24,6 +25,7 @@ const initialState: CreateFeedbackFormState = {
 
 export function FeedbackForm() {
   const id = useId();
+  const t = useTranslations('ContactPage.form');
   const [state, formAction, isPending] = useActionState(
     createFeedback,
     initialState
@@ -43,7 +45,7 @@ export function FeedbackForm() {
     <form action={formAction} className="w-full max-w-lg self-center">
       <FieldGroup>
         <Field data-invalid={!!state.errors?.name}>
-          <FieldLabel htmlFor={`${id}-name`}>Name</FieldLabel>
+          <FieldLabel htmlFor={`${id}-name`}>{t('name.label')}</FieldLabel>
           <Input
             aria-invalid={!!state.errors?.name}
             defaultValue={state.fields.name}
@@ -51,7 +53,7 @@ export function FeedbackForm() {
             maxLength={50}
             minLength={1}
             name="name"
-            placeholder="John Doe"
+            placeholder={t('name.placeholder')}
             required
           />
           {state.errors?.name && (
@@ -61,7 +63,9 @@ export function FeedbackForm() {
           )}
         </Field>
         <Field data-invalid={!!state.errors?.message}>
-          <FieldLabel htmlFor={`${id}-message`}>Message</FieldLabel>
+          <FieldLabel htmlFor={`${id}-message`}>
+            {t('message.label')}
+          </FieldLabel>
           <Textarea
             aria-invalid={!!state.errors?.message}
             defaultValue={state.fields.message}
@@ -69,7 +73,7 @@ export function FeedbackForm() {
             maxLength={255}
             minLength={1}
             name="message"
-            placeholder="Write your message here…"
+            placeholder={t('message.placeholder')}
             required
           />
           {state.errors?.message && (
@@ -86,7 +90,7 @@ export function FeedbackForm() {
             type="submit"
           >
             {isPending ? <Spinner /> : <MessageCircleDashedIcon />}
-            Submit
+            {t('submit')}
           </Button>
         </Field>
       </FieldGroup>
@@ -96,6 +100,7 @@ export function FeedbackForm() {
 
 function RatingField({ state }: { state: CreateFeedbackFormState }) {
   const id = useId();
+  const t = useTranslations('ContactPage.form');
 
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [currentRating, setCurrentRating] = useState<string>(
@@ -108,7 +113,7 @@ function RatingField({ state }: { state: CreateFeedbackFormState }) {
   return (
     <Field data-invalid={!!state.errors?.rating}>
       <FieldLabel className="leading-none" htmlFor={`${id}-rating-group`}>
-        Rate your experience
+        {t('rating.label')}
       </FieldLabel>
       <RadioGroup
         aria-invalid={!!state.errors?.rating}
@@ -121,27 +126,28 @@ function RatingField({ state }: { state: CreateFeedbackFormState }) {
       >
         {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => {
           const radioId = `${id}-rating-${value}`;
+          const starLabel =
+            value === 1
+              ? t('stars.one')
+              : t('stars.other', { count: value.toString() });
           return (
+            // biome-ignore lint/a11y/noNoninteractiveElementInteractions: Label is interactive per HTML spec
             <label
               className="relative block cursor-pointer rounded p-0.5 outline-none has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50"
               htmlFor={radioId}
               key={value}
+              onMouseEnter={() => setHoverRating(value)}
+              onMouseLeave={() => setHoverRating(null)}
             >
               <RadioGroupItem
-                aria-label={`${value} star${value === 1 ? '' : 's'}`}
+                aria-label={starLabel}
                 className="sr-only"
                 id={radioId}
                 value={value.toString()}
               />
-              <span
-                aria-hidden="true"
-                className="block"
-                onMouseEnter={() => setHoverRating(value)}
-                onMouseLeave={() => setHoverRating(null)}
-              >
+              <span aria-hidden="true" className="block">
                 <StarIcon
                   className={cn(
-                    'transition-all',
                     displayRating >= value
                       ? 'fill-amber-500 stroke-amber-500'
                       : 'text-input'

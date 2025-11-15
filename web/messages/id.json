@@ -16,7 +16,7 @@
       "description": "Pelajari tentang Veteran Market dan bagaimana kami menghubungkan komunitas dengan bisnis lokal di Jakarta Selatan."
     },
     "ContactPage": {
-      "title": "Bantuan & Dukungan",
+      "title": "Bantuan",
       "description": "Dapatkan bantuan dan dukungan untuk Veteran Market. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung."
     }
   },
@@ -41,7 +41,7 @@
       "explore": "Jelajahi",
       "about": "Tentang Kami",
       "menu": "Menu",
-      "support": "Bantuan & Dukungan"
+      "support": "Bantuan"
     },
     "search": {
       "placeholder": "Cari nama atau kata kunci bisnis…"
@@ -262,6 +262,24 @@
     "contact": {
       "heading": "Hubungi Kami",
       "description": "Kami di sini untuk membantu Anda dengan pertanyaan atau kekhawatiran yang mungkin Anda miliki."
+    },
+    "form": {
+      "name": {
+        "label": "Nama",
+        "placeholder": "John Doe"
+      },
+      "message": {
+        "label": "Pesan",
+        "placeholder": "Tulis pesan Anda di sini…"
+      },
+      "rating": {
+        "label": "Beri rating pengalaman Anda"
+      },
+      "submit": "Kirim",
+      "stars": {
+        "one": "1 bintang",
+        "other": "{count} bintang"
+      }
     }
   }
 }
