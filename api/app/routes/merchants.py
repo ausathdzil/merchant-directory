@@ -203,11 +203,15 @@ def read_merchant(
     session: SessionDep,
     lang: Annotated[Literal["english", "indonesian"], Query()] = "english",
 ):
-    stmt = select(Merchant).where(Merchant.id == merchant_id)
+    stmt = select(Merchant).where(Merchant.id == merchant_id).options(selectinload(Merchant.photos))
     merchant = session.scalar(stmt)
 
     if not merchant:
         raise HTTPException(status_code=404, detail="Merchant not found")
+
+    primary_photo = next(
+        (photo for photo in merchant.photos if photo.is_primary), None
+    )
 
     return MerchantDetail(
         id=merchant.id,
@@ -222,6 +226,9 @@ def read_merchant(
         phone_international=merchant.phone_international,
         website=merchant.website,
         photo_url=merchant.photo_url,
+        photo_width=primary_photo.width if primary_photo else None,
+        photo_height=primary_photo.height if primary_photo else None,
+        photo_blur_data_url=primary_photo.blur_data_url if primary_photo else None,
         description=(
             merchant.description_en if lang == "english" else merchant.description_id
         ),

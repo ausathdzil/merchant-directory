@@ -250,6 +250,9 @@ class MerchantDetail(BaseModel):
     phone_international: str | None
     website: str | None
     photo_url: str | None
+    photo_width: int | None
+    photo_height: int | None
+    photo_blur_data_url: str | None
     description: str | None
     latitude: float
     longitude: float
