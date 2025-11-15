@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { Heading, Lead } from '@/components/typography';
+import { Lead, Title } from '@/components/typography';
 import { routing } from '@/i18n/routing';
 
 export async function generateMetadata({
@@ -46,15 +46,15 @@ export default async function ContactPage({
       <div className="flex w-full max-w-4xl flex-1 flex-col gap-12 px-4 py-12 sm:px-8 md:gap-16 md:py-16">
         <motion.section
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 text-center"
           initial={{ opacity: 0, y: 20 }}
           transition={{
             duration: 0.4,
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
-          <Heading>{t('contact.heading')}</Heading>
-          <Lead>{t('contact.description')}</Lead>
+          <Title>{t('contact.heading')}</Title>
+          <Lead className="max-w-[60ch]">{t('contact.description')}</Lead>
         </motion.section>
       </div>
     </main>

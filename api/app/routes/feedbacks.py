@@ -12,6 +12,7 @@ def create_feedback(feedback: FeedbackCreate, session: SessionDep):
         db_feedback = Feedback(
             name=feedback.name,
             message=feedback.message,
+            rating=feedback.rating,
         )
         session.add(db_feedback)
         session.commit()
@@ -19,5 +20,6 @@ def create_feedback(feedback: FeedbackCreate, session: SessionDep):
         return FeedbackPublic.model_validate(db_feedback)
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to create feedback: {str(e)}")
-
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create feedback: {str(e)}"
+        )
