@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 // biome-ignore lint/performance/noNamespaceImport: Motion for React Server Components
 import * as motion from 'motion/react-client';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -48,112 +47,109 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   return (
-    <>
-      <main className="flex flex-1 flex-col items-center gap-8">
-        <motion.div
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-24"
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <article className="flex max-w-[80ch] flex-col items-center gap-4">
-            <HeroDecorations className="mb-4" />
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              initial={{ opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.4,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-            >
-              <Title className="text-wrap sm:text-balance">
-                {t('hero.title')}
-              </Title>
-            </motion.div>
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              initial={{ opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.4,
-                ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.2,
-              }}
-            >
-              <Text className="text-center text-sm sm:text-base">
-                {t('hero.description')}
-              </Text>
-            </motion.div>
-          </article>
+    <main className="flex flex-1 flex-col items-center gap-8">
+      <motion.div
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-24"
+        initial={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <article className="flex max-w-[80ch] flex-col items-center gap-4">
+          <HeroDecorations className="mb-4" />
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             transition={{
-              duration: 0.5,
+              duration: 0.4,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+          >
+            <Title className="text-wrap sm:text-balance">
+              {t('hero.title')}
+            </Title>
+          </motion.div>
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            transition={{
+              duration: 0.4,
               ease: [0.25, 0.46, 0.45, 0.94],
               delay: 0.2,
             }}
           >
-            <ExploreButton />
+            <Text className="text-center text-sm sm:text-base">
+              {t('hero.description')}
+            </Text>
           </motion.div>
-        </motion.div>
+        </article>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center gap-8 px-4 lg:px-8"
           initial={{ opacity: 0, y: 30 }}
           transition={{
-            duration: 0.8,
+            duration: 0.5,
             ease: [0.25, 0.46, 0.45, 0.94],
-            delay: 0.3,
+            delay: 0.2,
           }}
         >
-          <article className="text-center">
-            <Heading>{t('features.heading')}</Heading>
-            <Text className="text-sm sm:text-base">
-              {t('features.description')}
-            </Text>
-          </article>
-          <Features className="lg:max-w-6xl" locale={locale} />
+          <ExploreButton />
         </motion.div>
-        <div className="flex w-full flex-col items-center gap-8 px-4 lg:px-8">
-          <article className="text-center">
-            <Heading>{t('faq.heading')}</Heading>
-            <Text className="text-sm sm:text-base">{t('faq.description')}</Text>
-          </article>
-          <FrequentlyAskedQuestions
-            className="w-full lg:max-w-6xl"
-            collapsible
-            locale={locale}
-            type="single"
-          />
-        </div>
-        <div className="flex w-full flex-col items-center gap-4 bg-accent/50 py-8">
-          <TelescopeIcon className="stroke-primary" size={64} />
-          <article className="max-w-[60ch] px-8 text-center md:px-0">
-            <Heading>{t('cta.heading')}</Heading>
-            <Text className="text-sm md:text-base">{t('cta.description')}</Text>
-          </article>
-          <motion.div
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
-            }}
-            whileTap={{ scale: 0.95 }}
+      </motion.div>
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center gap-8 px-4 lg:px-8"
+        initial={{ opacity: 0, y: 30 }}
+        transition={{
+          duration: 0.8,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          delay: 0.3,
+        }}
+      >
+        <article className="text-center">
+          <Heading>{t('features.heading')}</Heading>
+          <Text className="text-sm sm:text-base">
+            {t('features.description')}
+          </Text>
+        </article>
+        <Features className="lg:max-w-6xl" locale={locale} />
+      </motion.div>
+      <div className="flex w-full flex-col items-center gap-8 px-4 lg:px-8">
+        <article className="text-center">
+          <Heading>{t('faq.heading')}</Heading>
+          <Text className="text-sm sm:text-base">{t('faq.description')}</Text>
+        </article>
+        <FrequentlyAskedQuestions
+          className="w-full lg:max-w-6xl"
+          collapsible
+          locale={locale}
+          type="single"
+        />
+      </div>
+      <div className="flex w-full flex-col items-center gap-4 bg-accent/50 py-8">
+        <TelescopeIcon className="stroke-primary" size={64} />
+        <article className="max-w-[60ch] px-8 text-center md:px-0">
+          <Heading>{t('cta.heading')}</Heading>
+          <Text className="text-sm md:text-base">{t('cta.description')}</Text>
+        </article>
+        <motion.div
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 },
+          }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Link
+            className={buttonVariants({
+              size: 'pill-lg',
+              variant: 'ghost-colorful',
+            })}
+            href="/explore"
           >
-            <Link
-              className={buttonVariants({
-                size: 'pill-lg',
-                variant: 'ghost-colorful',
-              })}
-              href="/explore"
-            >
-              {t('cta.button')}
-              <ArrowRightIcon />
-            </Link>
-          </motion.div>
-        </div>
-      </main>
-      <Footer locale={locale} />
-    </>
+            {t('cta.button')}
+            <ArrowRightIcon />
+          </Link>
+        </motion.div>
+      </div>
+    </main>
   );
 }
 
@@ -288,43 +284,5 @@ async function FrequentlyAskedQuestions({
         </AccordionItem>
       ))}
     </Accordion>
-  );
-}
-
-async function Footer({
-  locale,
-  className,
-  ...props
-}: { locale: Locale } & ComponentProps<'footer'>) {
-  const t = await getTranslations({ locale, namespace: 'Footer' });
-
-  return (
-    <footer
-      className={cn(
-        'mx-auto flex w-full flex-wrap items-center justify-between gap-4 p-4 lg:max-w-6xl',
-        className
-      )}
-      {...props}
-    >
-      <Small>&copy; 2025</Small>
-      <div className="flex items-center gap-4">
-        <a
-          className={buttonVariants({ variant: 'link', size: 'sm' })}
-          href="https://github.com/ausathdzil/merchant-directory"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <Image
-            alt="GitHub icon"
-            aria-hidden
-            className="dark:invert"
-            height={16}
-            src="/GitHub_light.svg"
-            width={16}
-          />
-          {t('source')}
-        </a>
-      </div>
-    </footer>
   );
 }

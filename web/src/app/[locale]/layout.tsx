@@ -1,6 +1,9 @@
+import { MailIcon } from 'lucide-react';
 import type { Metadata, Viewport } from 'next';
 import { Atkinson_Hyperlegible_Next } from 'next/font/google';
 import localFont from 'next/font/local';
+import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -9,6 +12,7 @@ import { type ComponentProps, Suspense } from 'react';
 import { DesktopNav, MobileNav } from '@/components/site-nav';
 import { SiteSettings } from '@/components/site-settings';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Small } from '@/components/typography';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Toaster } from '@/components/ui/sonner';
 import { Wordmark } from '@/components/wordmark';
@@ -117,6 +121,7 @@ export default async function LocaleLayout({
             <div className="flex min-h-screen flex-col">
               <Header locale={locale} />
               {children}
+              <Footer locale={locale} />
             </div>
             <Toaster />
           </ThemeProvider>
@@ -167,5 +172,71 @@ async function Header({ locale, className, ...props }: HeaderProps) {
         </Suspense>
       </div>
     </header>
+  );
+}
+
+async function Footer({
+  locale,
+  className,
+  ...props
+}: { locale: Locale } & ComponentProps<'footer'>) {
+  const t = await getTranslations({ locale, namespace: 'Footer' });
+
+  return (
+    <footer
+      className={cn(
+        'mx-auto flex w-full max-w-6xl flex-wrap items-start gap-4 p-4 lg:p-8',
+        className
+      )}
+      {...props}
+    >
+      <div className="flex flex-col gap-8 md:flex-1 md:flex-row md:gap-16">
+        <Small className="text-base">&copy; 2025</Small>
+        <div className="flex flex-col gap-2">
+          <p>Resources</p>
+          <ul className="space-y-2 [&>li]:text-muted-foreground [&>li]:transition-colors [&>li]:hover:text-foreground">
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <Link href="/explore">Explore</Link>
+            </li>
+            <li>
+              <Link href="/about">About Us</Link>
+            </li>
+            <li>
+              <Link href="/contact">Help</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="flex flex-col items-end gap-2">
+        <p>Socials</p>
+        <div className="flex items-center gap-2 [&>a]:opacity-50 [&>a]:hover:opacity-100">
+          <a
+            href="https://github.com/ausathdzil/merchant-directory"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <MailIcon size={16} />
+          </a>
+          <a
+            aria-label={t('source')}
+            href="https://github.com/ausathdzil/merchant-directory"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <Image
+              alt="GitHub icon"
+              aria-hidden
+              className="dark:invert"
+              height={16}
+              src="/GitHub_light.svg"
+              width={16}
+            />
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }
