@@ -49,7 +49,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
 
   return (
     <>
-      <main className="flex flex-1 flex-col items-center gap-16">
+      <main className="flex flex-1 flex-col items-center gap-8">
         <motion.div
           animate={{ opacity: 1 }}
           className="flex flex-col items-center gap-4 px-8 py-16 sm:gap-8 md:py-24"

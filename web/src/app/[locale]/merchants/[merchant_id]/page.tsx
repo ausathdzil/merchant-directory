@@ -277,11 +277,17 @@ async function MerchantDetails({
                 src={mapUrl}
               />
               <Button
+                aria-label="Map"
                 asChild
                 className="absolute top-2 right-2 hover:[&_svg]:scale-110"
                 size="icon"
               >
-                <Link href="/maps">
+                <Link
+                  href={{
+                    pathname: '/map',
+                    search: `?merchant_id=${merchant.id}`,
+                  }}
+                >
                   <ExpandIcon />
                 </Link>
               </Button>

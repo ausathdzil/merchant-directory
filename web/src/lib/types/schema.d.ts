@@ -350,6 +350,12 @@ export interface components {
             website: string | null;
             /** Photo Url */
             photo_url: string | null;
+            /** Photo Width */
+            photo_width: number | null;
+            /** Photo Height */
+            photo_height: number | null;
+            /** Photo Blur Data Url */
+            photo_blur_data_url: string | null;
             /** Description */
             description: string | null;
             /** Latitude */
