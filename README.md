@@ -8,6 +8,28 @@ A merchant directory platform connecting customers with small and medium enterpr
 - [Muhammad Boby Pratama](http://github.com/MBobyPratama)
 - [Rafki Aulia Hazli](https://github.com/rafkiaulia)
 
+## Features
+
+- **Merchant Directory**: Browse and search through a comprehensive directory of local businesses
+- **Interactive Map**: View merchant locations on an interactive Mapbox map
+- **Search & Filter**: Search merchants by name and filter by category/type
+- **Merchant Profiles**: Detailed profiles with photos, descriptions, contact information, ratings, and operating hours
+- **Multi-language Support**: Available in English and Indonesian (Bahasa Indonesia)
+- **Location-based Search**: Find merchants near UPN Veteran Jakarta campuses
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Theme Switching**: Dark and light mode support
+- **Accessibility**: Font switching options for improved readability
+- **Pagination**: Efficient browsing with paginated merchant listings
+- **SEO Optimization**: Comprehensive SEO features including:
+  - **Dynamic Metadata**: Page-specific metadata generation for all routes (home, explore, about, contact, merchant pages)
+  - **Sitemap Generation**: Automated XML sitemap with all pages, merchant listings, and language alternates
+  - **Robots.txt**: Configured robots.txt with sitemap reference for search engine crawlers
+  - **Open Graph Tags**: Social media sharing optimization with Open Graph metadata
+  - **Canonical URLs**: Proper canonical URL configuration to prevent duplicate content issues
+  - **Language Alternates**: Hreflang tags for multi-language SEO with English and Indonesian variants
+  - **Title Templates**: Dynamic title generation with consistent branding across all pages
+  - **Structured Data**: Merchant-specific metadata for better search engine understanding
+
 ## How to Run
 
 ### Prerequisites
@@ -122,19 +144,6 @@ A merchant directory platform connecting customers with small and medium enterpr
 ### Database Seeding (Optional)
 
 If you need to seed the database with merchant data and photos, you'll need to run the migration scripts. See `api/migrations/README.md` for detailed instructions. The photo migration scripts require `BLOB_READ_WRITE_TOKEN` to upload images to Vercel Blob storage.
-
-## Features
-
-- **Merchant Directory**: Browse and search through a comprehensive directory of local businesses
-- **Interactive Map**: View merchant locations on an interactive Mapbox map
-- **Search & Filter**: Search merchants by name and filter by category/type
-- **Merchant Profiles**: Detailed profiles with photos, descriptions, contact information, ratings, and operating hours
-- **Multi-language Support**: Available in English and Indonesian (Bahasa Indonesia)
-- **Location-based Search**: Find merchants near UPN Veteran Jakarta campuses
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Theme Switching**: Dark and light mode support
-- **Accessibility**: Font switching options for improved readability
-- **Pagination**: Efficient browsing with paginated merchant listings
 
 ## Tech Stack
 
