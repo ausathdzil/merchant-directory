@@ -99,6 +99,18 @@ export async function generateMetadata({
   return {
     title: merchant.display_name,
     description: merchant.description,
+    alternates: {
+      canonical: `/${locale}/merchants/${merchant_id}`,
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((loc) => [
+            `${loc}`,
+            `/${loc}/merchants/${merchant_id}`,
+          ])
+        ),
+        'x-default': `/${routing.defaultLocale}/merchants/${merchant_id}`,
+      },
+    },
   };
 }
 

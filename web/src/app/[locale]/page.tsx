@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 // biome-ignore lint/performance/noNamespaceImport: Motion for React Server Components
 import * as motion from 'motion/react-client';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { hasLocale, type Locale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -34,6 +35,28 @@ import {
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
+
+export async function generateMetadata({
+  params,
+}: PageProps<'/[locale]'>): Promise<Metadata> {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  return {
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((loc) => [`${loc}`, `/${loc}`])
+        ),
+        'x-default': `/${routing.defaultLocale}`,
+      },
+    },
+  };
+}
 
 export default async function Home({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;

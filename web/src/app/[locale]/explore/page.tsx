@@ -53,6 +53,15 @@ export async function generateMetadata({
 
   return {
     title: t('title'),
+    alternates: {
+      canonical: `/${locale}/explore`,
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((loc) => [`${loc}`, `/${loc}/explore`])
+        ),
+        'x-default': `/${routing.defaultLocale}/explore`,
+      },
+    },
   };
 }
 

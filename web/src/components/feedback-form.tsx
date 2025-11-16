@@ -121,7 +121,7 @@ function RatingField({ state }: { state: CreateFeedbackFormState }) {
         id={`${id}-rating-group`}
         name="rating"
         onValueChange={setCurrentRating}
-        // required
+        required
         value={currentRating}
       >
         {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => {

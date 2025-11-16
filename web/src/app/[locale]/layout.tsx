@@ -73,6 +73,14 @@ export async function generateMetadata({
       template: `%s | ${t('title')}`,
     },
     description: t('description'),
+    alternates: {
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((loc) => [`${loc}`, `/${loc}`])
+        ),
+        'x-default': `/${routing.defaultLocale}`,
+      },
+    },
     appleWebApp: {
       statusBarStyle: 'black-translucent',
     },

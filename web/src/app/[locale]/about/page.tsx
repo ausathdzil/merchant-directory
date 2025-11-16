@@ -49,6 +49,15 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
+    alternates: {
+      canonical: `/${locale}/about`,
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((loc) => [`${loc}`, `/${loc}/about`])
+        ),
+        'x-default': `/${routing.defaultLocale}/about`,
+      },
+    },
   };
 }
 
